@@ -1,15 +1,12 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, StyleSheet, View} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import Main from './src/Main';
 
 const App = () => {
   return (
-    <SafeAreaView>
-      <StatusBar
-        translucent
-        backgroundColor="rgba(255,255,255,0.1)"
-        barStyle="dark-content"
-      />
-      <View style={styles.sectionContainer} />
+    <SafeAreaView style={styles.sectionContainer}>
+      <StatusBar translucent backgroundColor="#0B1633" barStyle="default" />
+      <Main />
     </SafeAreaView>
   );
 };

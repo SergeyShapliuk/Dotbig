@@ -1,105 +1,77 @@
 import React, {useEffect, useState} from 'react';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
-  // Alert,
   BackHandler,
   Image,
-  // Keyboard,
+  Text,
+  Keyboard,
   ScrollView,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   View,
-  Text,
+  TextInput,
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
 import {useAppNavigation} from '../types/types';
-import {Images} from '../assets/image';
-import {message} from '../config/translations/resources/en';
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
-import LinearGradient from 'react-native-linear-gradient';
+import {Images} from '../assets/image';
 import Modal from 'react-native-modal/dist/modal';
+import {message} from '../config/translations/resources/en';
+import LinearGradient from 'react-native-linear-gradient';
 
-const Login = () => {
+const Forgot = () => {
   const navigation = useAppNavigation();
   const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [hidden, setHidden] = useState<boolean>(false);
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      _keyboardDidShow,
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      _keyboardDidHide,
+    );
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
     };
   }, []);
+
+  const _keyboardDidShow = () => {
+    setHidden(true);
+  };
+
+  const _keyboardDidHide = () => {
+    setHidden(false);
+  };
+
   const handleBackPress = () => {
-    onBack();
+    onBack(); // works best when the goBack is async
     return true;
   };
-  const onForgot = () => {
-    navigation.goBack();
-    navigation.navigate('ForgotScreen');
-  };
-  // const validate = () => {
-  //   if (!userName || userName.length === 0) {
-  //     Alert.alert('', message.loginScreen.usernameEmpty);
-  //     return false;
-  //   }
-  //   if (!password || password.length === 0) {
-  //     Alert.alert('', message.loginScreen.passwordEmpty);
-  //     return false;
-  //   }
-  //   return true;
-  // };
-  const onLogin = () => {};
-  // const onLogin = async () => {
-  //   Keyboard.dismiss();
-  //   const {dispatch} = this.props;
-  //   if (!validate()) {
-  //     return;
-  //   }
-  //   dispatch(setLoading(true));
-  //   const {username, password} = this.state;
-  //   const params = {
-  //     username,
-  //     password,
-  //   };
-  //   const response = await Client.login(params);
-  //   dispatch(setLoading(false));
-  //
-  //   if (response && response?.token) {
-  //     dispatch(saveUserToken(response.token));
-  //     dispatch(setUser(response));
-  //     setToken(response.token);
-  //
-  //     const {navigation} = this.props;
-  //
-  //     if (navigation.state.params?.screen) {
-  //       const responseUser = await Client.getUser(response.user_id);
-  //       dispatch(setUser(responseUser));
-  //       if (
-  //         navigation.state.params?.screen === 'CoursesDetailsScreen' &&
-  //         navigation.state.params?.id
-  //       ) {
-  //         navigation.navigate('CoursesDetailsScreen', {
-  //           id: navigation.state.params.id,
-  //         });
-  //       } else {
-  //         navigation.navigate(navigation.state.params.screen);
-  //       }
-  //     } else {
-  //       dispatch(reset(['HomeTabScreen']));
-  //     }
-  //   } else if (response.code.includes('incorrect_password')) {
-  //     Alert.alert('', t('loginScreen.passwordNotCorrect'));
-  //   } else if (response.code.includes('invalid_username')) {
-  //     Alert.alert('', t('loginScreen.usernameNotCorrect'));
-  //   } else {
-  //     Alert.alert('', t('loginScreen.notFound'));
-  //   }
-  // };
+
   const onBack = () => {
     navigation.goBack();
+  };
+
+  const onSend = async () => {
+    //   if (!ValidateEmail(email)) {
+    //     Alert.alert('Please enter a valid email address');
+    //     return;
+    //   }
+    //   try {
+    //     const response = await Client.resetEmail({ user_login: email });
+    //     if (response.code === 'success') {
+    //       Alert.alert(response.message);
+    //     } else {
+    //       Alert.alert(response?.message);
+    //     }
+    //   } catch (e:string) {
+    //     Alert.alert(e);
+    //   }
   };
 
   return (
@@ -122,14 +94,14 @@ const Login = () => {
             <Image source={Images.iconBack} style={styles.iconBack} />
           </TouchableOpacity>
           <View style={styles.viewLogo}>
-            <Text style={styles.title}>{message.loginScreen.title}</Text>
+            <Text style={styles.title}>{message.forgot.title}</Text>
           </View>
           <ScrollView
             showsVerticalScrollIndicator={false}
             bounces={false}
             keyboardShouldPersistTaps="handled">
-            <View style={{paddingHorizontal: 25, marginTop: 15}}>
-              <Text style={styles.label}>Email</Text>
+            <View style={{paddingHorizontal: 25, marginTop: 25}}>
+              <Text style={styles.label}>Введите ваш Email</Text>
               <View
                 style={[
                   styles.viewInput,
@@ -150,85 +122,34 @@ const Login = () => {
                   <Image source={Images.icEnterEmail} style={styles.icEnter} />
                 )}
               </View>
-              <Text style={styles.label}>Пароль</Text>
-              <View
-                style={[
-                  styles.viewInput,
-                  password.length > 0
-                    ? {borderWidth: 2, borderColor: '#000'}
-                    : {},
-                ]}>
-                <TextInput
-                  // ref={ref => {
-                  //   this.username = ref;
-                  // }}
-                  secureTextEntry={!showPassword}
-                  value={password}
-                  placeholder={message.loginScreen.passwordPlaceholder}
-                  placeholderTextColor="#9E9E9E"
-                  style={styles.textInput}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  onChangeText={value => setPassword(value)}
-                />
-                {password.length > 0 && (
-                  <TouchableOpacity
-                    onPress={() => setShowPassword(!showPassword)}>
-                    <Image
-                      source={Images.icEnterPassword}
-                      style={styles.icEnter}
-                    />
-                  </TouchableOpacity>
-                )}
-              </View>
               <LinearGradient
                 colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
                 start={{x: 0, y: 0.5}}
                 end={{x: 1, y: 1}}
                 style={styles.linearGradient}>
-                <TouchableOpacity onPress={onLogin} style={styles.btnSubmit}>
+                <TouchableOpacity onPress={onSend} style={styles.btnSubmit}>
                   <Text style={styles.txtSubmit}>
-                    {message.loginScreen.btnSubmit}
+                    {message.forgot.btnSubmit}
                   </Text>
                   <Image source={Images.diagonalArrow} style={styles.arrow} />
                 </TouchableOpacity>
               </LinearGradient>
-
-              <Text style={styles.txtQuestion}>
-                {message.loginScreen.forgotPassword}
-              </Text>
-              <TouchableOpacity onPress={onForgot}>
-                <Text
-                  style={[
-                    styles.textBottom,
-                    {textDecorationLine: 'underline'},
-                  ]}>
-                  {' '}
-                  {message.loginScreen.linkLogin}
-                </Text>
-              </TouchableOpacity>
             </View>
           </ScrollView>
+          {!hidden && <Text>Helloerterterte</Text>}
         </View>
       </KeyboardAvoidingView>
     </Modal>
   );
 };
 
-export default Login;
+export default Forgot;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // width: DEVICE_WIDTH,
-    // justifyContent: 'center',
-    // alignSelf: 'center',
-    // backgroundColor: '#0B1633',
-    // backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    // opacity: 0.7,
   },
   modalContainer: {
-    opacity: 1,
     width: DEVICE_WIDTH,
     backgroundColor: 'rgba(11, 22, 51, 0.7)',
     boxShadow: 'rgba(0, 0, 0, 0.55)',

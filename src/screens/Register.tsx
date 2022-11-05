@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   // Alert,
   BackHandler,
@@ -11,8 +10,8 @@ import {
   TouchableOpacity,
   View,
   Text,
-  Platform,
   KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {useAppNavigation} from '../types/types';
 import {Images} from '../assets/image';
@@ -20,12 +19,13 @@ import {message} from '../config/translations/resources/en';
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal/dist/modal';
+import {BlurView} from '@react-native-community/blur';
 
-const Login = () => {
+const Register = () => {
   const navigation = useAppNavigation();
+  const [userName, setUserName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [phone, setPhone] = useState<string>('');
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
     return () => {
@@ -36,10 +36,9 @@ const Login = () => {
     onBack();
     return true;
   };
-  const onForgot = () => {
-    navigation.goBack();
-    navigation.navigate('ForgotScreen');
-  };
+  // const onRegister = () => {
+  //   navigation.navigate('RegisterScreen');
+  // };
   // const validate = () => {
   //   if (!userName || userName.length === 0) {
   //     Alert.alert('', message.loginScreen.usernameEmpty);
@@ -51,7 +50,10 @@ const Login = () => {
   //   }
   //   return true;
   // };
-  const onLogin = () => {};
+  const onLogin = () => {
+    navigation.goBack();
+    navigation.navigate('LoginScreen');
+  };
   // const onLogin = async () => {
   //   Keyboard.dismiss();
   //   const {dispatch} = this.props;
@@ -115,6 +117,12 @@ const Login = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         contentContainerStyle={styles.container}>
         <View style={styles.modalContainer}>
+          {/*<BlurView*/}
+          {/*  style={styles.absolute}*/}
+          {/*  blurType="light"*/}
+          {/*  blurAmount={10}*/}
+          {/*  reducedTransparencyFallbackColor="white"*/}
+          {/*/>*/}
           <TouchableOpacity
             style={styles.imgButton}
             onPress={onBack}
@@ -122,13 +130,40 @@ const Login = () => {
             <Image source={Images.iconBack} style={styles.iconBack} />
           </TouchableOpacity>
           <View style={styles.viewLogo}>
-            <Text style={styles.title}>{message.loginScreen.title}</Text>
+            <Text style={styles.title}>{message.registerScreen.title}</Text>
           </View>
           <ScrollView
             showsVerticalScrollIndicator={false}
             bounces={false}
             keyboardShouldPersistTaps="handled">
-            <View style={{paddingHorizontal: 25, marginTop: 15}}>
+            <View style={{paddingHorizontal: 25, marginTop: 12}}>
+              <Text style={styles.label}>Имя</Text>
+              <View
+                style={[
+                  styles.viewInput,
+                  userName.length > 0
+                    ? {borderWidth: 2, borderColor: '#000'}
+                    : {},
+                ]}>
+                <TextInput
+                  // ref={ref => {
+                  //   this.username = ref;
+                  // }}
+                  value={userName}
+                  placeholder={message.registerScreen.usernamePlaceholder}
+                  placeholderTextColor="#9E9E9E"
+                  style={styles.textInput}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onChangeText={value => setUserName(value)}
+                />
+                {userName.length > 0 && (
+                  <Image
+                    source={Images.icEnterUsername}
+                    style={styles.icEnter}
+                  />
+                )}
+              </View>
               <Text style={styles.label}>Email</Text>
               <View
                 style={[
@@ -139,7 +174,7 @@ const Login = () => {
                   // ref={ref => {
                   //   this.password = ref;
                   // }}
-
+                  // secureTextEntry={!showPassword}
                   placeholder={message.registerScreen.emailPlaceholder}
                   placeholderTextColor="#9E9E9E"
                   style={styles.textInput}
@@ -150,11 +185,11 @@ const Login = () => {
                   <Image source={Images.icEnterEmail} style={styles.icEnter} />
                 )}
               </View>
-              <Text style={styles.label}>Пароль</Text>
+              <Text style={styles.label}>Телефон</Text>
               <View
                 style={[
                   styles.viewInput,
-                  password.length > 0
+                  userName.length > 0
                     ? {borderWidth: 2, borderColor: '#000'}
                     : {},
                 ]}>
@@ -162,23 +197,16 @@ const Login = () => {
                   // ref={ref => {
                   //   this.username = ref;
                   // }}
-                  secureTextEntry={!showPassword}
-                  value={password}
-                  placeholder={message.loginScreen.passwordPlaceholder}
+                  value={phone}
+                  placeholder={message.registerScreen.phonePlaceholder}
                   placeholderTextColor="#9E9E9E"
                   style={styles.textInput}
                   autoCapitalize="none"
                   autoCorrect={false}
-                  onChangeText={value => setPassword(value)}
+                  onChangeText={value => setPhone(value)}
                 />
-                {password.length > 0 && (
-                  <TouchableOpacity
-                    onPress={() => setShowPassword(!showPassword)}>
-                    <Image
-                      source={Images.icEnterPassword}
-                      style={styles.icEnter}
-                    />
-                  </TouchableOpacity>
+                {phone.length > 0 && (
+                  <Image source={Images.iconPhone} style={styles.icEnter} />
                 )}
               </View>
               <LinearGradient
@@ -188,23 +216,23 @@ const Login = () => {
                 style={styles.linearGradient}>
                 <TouchableOpacity onPress={onLogin} style={styles.btnSubmit}>
                   <Text style={styles.txtSubmit}>
-                    {message.loginScreen.btnSubmit}
+                    {message.registerScreen.btnSubmit}
                   </Text>
                   <Image source={Images.diagonalArrow} style={styles.arrow} />
                 </TouchableOpacity>
               </LinearGradient>
 
               <Text style={styles.txtQuestion}>
-                {message.loginScreen.forgotPassword}
+                {message.registerScreen.question}
               </Text>
-              <TouchableOpacity onPress={onForgot}>
+              <TouchableOpacity onPress={onLogin}>
                 <Text
                   style={[
                     styles.textBottom,
                     {textDecorationLine: 'underline'},
                   ]}>
                   {' '}
-                  {message.loginScreen.linkLogin}
+                  {message.registerScreen.linkLogin}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -215,17 +243,23 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // height: 200,
     // width: DEVICE_WIDTH,
     // justifyContent: 'center',
     // alignSelf: 'center',
-    // backgroundColor: '#0B1633',
-    // backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    // opacity: 0.7,
+    // backgroundColor: 'white',
+  },
+  absolute: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
   modalContainer: {
     opacity: 1,
@@ -264,7 +298,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   textBottom: {
-    marginTop: 5,
+    marginTop: 2,
     fontSize: 13,
     lineHeight: 22,
     color: '#A363A1',
@@ -288,7 +322,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Inter',
     fontSize: 24,
-    lineHeight: 41,
+    lineHeight: 31,
     fontWeight: '800',
     color: '#FFFFFF',
   },
@@ -303,7 +337,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: 13,
     lineHeight: 16,
-    marginBottom: 6,
+    marginBottom: 5,
     color: '#FFFFFF',
   },
   text: {
@@ -356,7 +390,7 @@ const styles = StyleSheet.create({
   btnSubmit: {
     paddingHorizontal: 20,
     paddingVertical: 10,
-    height: 50,
+    height: 49,
     // marginVertical: 15,
     // backgroundColor: '#FFC224',
     flexDirection: 'row',
@@ -402,7 +436,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   txtQuestion: {
-    marginTop: 22,
+    marginTop: 12,
     fontFamily: 'Inter',
     textAlign: 'center',
     fontSize: 13,
@@ -429,7 +463,7 @@ const styles = StyleSheet.create({
     color: '#000',
     backgroundColor: '#F3F3F3',
     borderRadius: 6,
-    marginBottom: 16,
+    marginBottom: 12,
     paddingHorizontal: 15,
     flexDirection: 'row',
     alignItems: 'center',

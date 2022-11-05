@@ -54,12 +54,28 @@ const iconNotification = require('./img/icon/icon-notification.png');
 const iconLession = require('./img/icon/icon-lession.png');
 const iconQuiz = require('./img/icon/icon-quiz.png');
 const iconAssignment = require('./img/icon/icon-assignment.png');
-
+const diagonalArrow = require('./img/icon/diagonal-arrow-right-up.png');
+const iconPhone = require('./img/icon/phone-icon.png');
+const D = require('./img/dotbig_logo/d.png');
+const o = require('./img/dotbig_logo/o.png');
+const t = require('./img/dotbig_logo/t.png');
+const b = require('./img/dotbig_logo/b.png');
+const i = require('./img/dotbig_logo/i.png');
+const g = require('./img/dotbig_logo/g.png');
+// Lessons
+const btnBonus = require('./img/pdf-btn-download.png');
+const imgProgressBar1 = require('./img/progressBar_1.png');
+const imgProgressBar2 = require('./img/image-progressBar.png');
+const iconCheckBox = require('./img/icon-tab/icon-checkBox.png');
+const iconChecked = require('./img/icon/icon-arrow_down.png');
 const Images = {
+  iconChecked,
+  iconCheckBox,
   iconSuccessBags,
   iconSearch,
   iconRemove,
   iconBack,
+  diagonalArrow,
   iconArrow,
   iconDefaultUser,
   iconLogOut,
@@ -89,6 +105,7 @@ const Images = {
   iconQuiz,
   iconLession,
   iconCall,
+  iconPhone,
   iconInstagram,
   bannerMyCourse,
   iconClock,
@@ -105,6 +122,10 @@ const Images = {
   iconNext,
   backgroundBanner,
   iconCart,
+  btnBonus,
+  imgProgressBar2,
+  imgProgressBar1,
 };
+export const logo = [D, o, t, b, i, g];
 
 export {Images, Colors};

@@ -1,16 +1,21 @@
 import * as React from 'react';
 import {headerStyle, headerTitleStyle} from '../constans/constants';
 import {NavigationContainer} from '@react-navigation/native';
-import {View, StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
-import Login from '../screens/Login';
+// import Register from '../screens/Register';
 import {RootStackParamList} from '../types/types';
-import Home from '../screens/Home';
+// import Home from '../screens/Home';
+// import Lesson_1 from '../screens/Lesson_1';
+// import BottomTab from '../components/BottomTab';
+import Lesson_2 from '../screens/Lesson_2';
+import Lesson_1 from '../screens/Lesson_1';
+// import Login from '../screens/Login';
+// import Forgot from '../screens/Forgot';
 
 export const stackNavigatorConfig = {
   // initialRouteName: 'LoginWalkScreen',
   initialRouteName: 'HomeTabScreen',
-  mode: 'card', // modal - card
+  mode: 'modal', // modal - card
   navigationOptions: {
     gesturesEnabled: true,
     headerTintColor: '#000',
@@ -25,20 +30,23 @@ const Stack = createStackNavigator<RootStackParamList>();
 const AppNavigator = () => {
   return (
     <NavigationContainer>
-      <View style={styles.container}>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
-          {/*<Stack.Screen name={'HomeTabScreen'} component={BottomTabbar} />*/}
-          <Stack.Screen name={'Home'} component={Home} />
-          <Stack.Screen name={'LoginScreen'} component={Login} />
-        </Stack.Navigator>
-      </View>
+      <Stack.Navigator
+        initialRouteName={'Home'}
+        screenOptions={{
+          headerShown: false,
+          // cardStyle: {backgroundColor: 'transparent'},
+          // presentation: 'transparentModal',
+        }}>
+        {/*<Stack.Screen name={'HomeTabScreen'} component={BottomTabbar} />*/}
+        <Stack.Screen name={'Lesson_1'} component={Lesson_1} />
+        {/*<Stack.Screen name={'Lesson_1'} component={Lesson_1} />*/}
+        <Stack.Screen name={'Lesson_2'} component={Lesson_2} />
+        {/*<Stack.Screen name={'Home'} component={Home} />*/}
+        {/*<Stack.Screen name={'RegisterScreen'} component={Register} />*/}
+        {/*<Stack.Screen name={'LoginScreen'} component={Login} />*/}
+        {/*<Stack.Screen name={'ForgotScreen'} component={Forgot} />*/}
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
 export default AppNavigator;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

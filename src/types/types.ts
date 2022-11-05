@@ -6,6 +6,10 @@ export type RootStackParamList = {
   LoginScreen: undefined;
   RegisterScreen: undefined;
   ForgotScreen: undefined;
+  Lesson_1: undefined;
+  Lesson_2: undefined;
+  Lesson_3: undefined;
+  Lesson_4: undefined;
 };
 export type UseNavigationType = NavigationProp<RootStackParamList>;
 

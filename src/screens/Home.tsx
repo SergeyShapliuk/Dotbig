@@ -1,4 +1,5 @@
 import React, {useCallback, useState} from 'react';
+import LinearGradient from 'react-native-linear-gradient';
 import {
   Image,
   Platform,
@@ -9,12 +10,16 @@ import {
   TouchableOpacity,
   View,
   Text,
+  StatusBar,
 } from 'react-native';
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
 import {Images} from '../assets/image';
 import {useAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
+import VideoPlayer from '../components/VideoPlayer';
+
+// import {home} from '../assets/img/uri';
 
 const wait = (timeout: any) => {
   // @ts-ignore
@@ -24,6 +29,7 @@ const wait = (timeout: any) => {
 const Home = () => {
   const navigation = useAppNavigation();
   const [refreshing, setRefreshing] = useState(false);
+  // const play = useRef<any>();
   // const onRefresh = async () => {
   //   setRefreshing({
   //     refreshing: true,
@@ -41,269 +47,69 @@ const Home = () => {
   }, []);
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+        translucent
+        backgroundColor="#0B1633"
+        barStyle="default"
+        networkActivityIndicatorVisible={true}
+      />
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 150}}>
-        <Image source={Images.bannerHome} style={styles.imgBanner} />
         <View style={styles.header}>
           <Image source={Images.iconHome} style={styles.iconHome} />
-          {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image source={Images.iconSearch} style={styles.iconHeader} />
-              <Image
-                source={Images.iconNotification}
-                style={styles.iconHeader}
-              />
-            </View> */}
+          <Text style={styles.logoText}>Dotbig</Text>
           {/*{!user?.token && (*/}
-          <View style={styles.loginRegister}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('LoginScreen')}>
-              <Text style={styles.loginRegisterText}>{message.login}</Text>
-            </TouchableOpacity>
-            <Text style={styles.loginRegisterIcon}>|</Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('RegisterScreen')}>
-              <Text style={styles.loginRegisterText}>{message.register}</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('RegisterScreen')}>
+            <LinearGradient
+              colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
+              start={{x: 0.0, y: 1.0}}
+              end={{x: 1.0, y: 1.0}}
+              style={styles.linearGradient}>
+              <View style={styles.loginRegister}>
+                <Text style={styles.startRegisterText}>{message.login}</Text>
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
           {/*// )}*/}
         </View>
 
-        {/*{user?.token && (*/}
-        {/*  <View*/}
-        {/*    style={{*/}
-        {/*      paddingHorizontal: 16,*/}
-        {/*      marginTop: 16,*/}
-        {/*    }}>*/}
-        {/*    <TouchableOpacity*/}
-        {/*      onPress={() => navigation.navigate('ProfileStackScreen')}*/}
-        {/*      style={{flexDirection: 'row'}}>*/}
-        {/*      <Image*/}
-        {/*        style={styles.avatar}*/}
-        {/*        source={{*/}
-        {/*          uri:*/}
-        {/*            user?.info?.avatar_url ||*/}
-        {/*            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMjCj43UJiVu-3Qp9b5yj-SwLGR-kndCzqLaiMv5SMkITd4CcbQQ7vX_CEZd-xxqka8ZM&usqp=CAU',*/}
-        {/*        }}*/}
-        {/*      />*/}
-        {/*      <View style={{marginLeft: 15}}>*/}
-        {/*        <Text style={styles.fullname}>{user?.info?.name}</Text>*/}
-        {/*        <Text style={styles.email}>{user?.info?.email}</Text>*/}
-        {/*      </View>*/}
-        {/*    </TouchableOpacity>*/}
-        {/*  </View>*/}
-        {/*)}*/}
-
-        {/*{user?.token && dataOverview?.id && (*/}
-        {/*  <View style={styles.overview}>*/}
-        {/*    <Text style={styles.overTitle}>{t('home.overview.title')}</Text>*/}
-        {/*    <View*/}
-        {/*      style={{*/}
-        {/*        flexDirection: 'row',*/}
-        {/*        alignItems: 'center',*/}
-        {/*        marginTop: 16,*/}
-        {/*      }}>*/}
-        {/*      <ProgressCircle*/}
-        {/*        widthX={77}*/}
-        {/*        progress={*/}
-        {/*          Math.round(dataOverview.course_data?.result?.result) / 100*/}
-        {/*        }*/}
-        {/*        strokeWidth={8}*/}
-        {/*        backgroundColor="#F6F6F6"*/}
-        {/*        progressColor="#958CFF"*/}
-        {/*      />*/}
-        {/*      <View style={{marginLeft: 24}}>*/}
-        {/*        <View style={styles.viewItem}>*/}
-        {/*          <Image source={Images.iconLession} style={styles.iconItem} />*/}
-        {/*          <View>*/}
-        {/*            <Text style={styles.txtItem}>{t('lesson')}</Text>*/}
-        {/*            <View style={styles.line}>*/}
-        {/*              <View*/}
-        {/*                style={[*/}
-        {/*                  styles.progress,*/}
-        {/*                  {*/}
-        {/*                    width: `${*/}
-        {/*                      (dataOverview.course_data?.result?.items?.lesson*/}
-        {/*                        ?.completed /*/}
-        {/*                        dataOverview.course_data?.result?.items?.lesson*/}
-        {/*                          ?.total) **/}
-        {/*                      100*/}
-        {/*                    }%`,*/}
-        {/*                    backgroundColor: '#FFD336',*/}
-        {/*                  },*/}
-        {/*                ]}*/}
-        {/*              />*/}
-        {/*            </View>*/}
-        {/*          </View>*/}
-        {/*        </View>*/}
-        {/*        <View style={styles.viewItem}>*/}
-        {/*          <Image source={Images.iconQuiz} style={styles.iconItem} />*/}
-        {/*          <View>*/}
-        {/*            <Text style={styles.txtItem}>{t('quiz')}</Text>*/}
-        {/*            <View style={styles.line}>*/}
-        {/*              <View*/}
-        {/*                style={[*/}
-        {/*                  styles.progress,*/}
-        {/*                  {*/}
-        {/*                    width: `${*/}
-        {/*                      (dataOverview.course_data?.result?.items?.quiz*/}
-        {/*                        ?.completed /*/}
-        {/*                        dataOverview.course_data?.result?.items?.quiz*/}
-        {/*                          ?.total) **/}
-        {/*                      100*/}
-        {/*                    }%`,*/}
-        {/*                    backgroundColor: '#41DBD2',*/}
-        {/*                  },*/}
-        {/*                ]}*/}
-        {/*              />*/}
-        {/*            </View>*/}
-        {/*          </View>*/}
-        {/*        </View>*/}
-
-        {/*        {dataOverview.course_data?.result?.items?.assignment?.total >*/}
-        {/*          0 && (*/}
-        {/*          <View style={styles.viewItem}>*/}
-        {/*            <Image*/}
-        {/*              source={Images.iconAssignment}*/}
-        {/*              style={styles.iconItem}*/}
-        {/*            />*/}
-        {/*            <View>*/}
-        {/*              <Text style={styles.txtItem}>{t('assignment')}</Text>*/}
-        {/*              <View style={styles.line}>*/}
-        {/*                <View*/}
-        {/*                  style={[*/}
-        {/*                    styles.progress,*/}
-        {/*                    {*/}
-        {/*                      width: `${*/}
-        {/*                        (dataOverview.course_data?.result?.items*/}
-        {/*                          ?.assignment?.completed /*/}
-        {/*                          dataOverview.course_data?.result?.items*/}
-        {/*                            ?.assignment?.total) **/}
-        {/*                        100*/}
-        {/*                      }%`,*/}
-        {/*                      backgroundColor: '#958CFF',*/}
-        {/*                    },*/}
-        {/*                  ]}*/}
-        {/*                />*/}
-        {/*              </View>*/}
-        {/*            </View>*/}
-        {/*          </View>*/}
-        {/*        )}*/}
-        {/*      </View>*/}
-        {/*    </View>*/}
-        {/*    <TouchableOpacity*/}
-        {/*      onPress={() =>*/}
-        {/*        navigation.navigate('CoursesDetailsScreen', {*/}
-        {/*          id: dataOverview.id,*/}
-        {/*        })*/}
-        {/*      }*/}
-        {/*      style={styles.container}>*/}
-        {/*      <Text*/}
-        {/*        numberOfLines={1}*/}
-        {/*        style={[styles.overTitle, {marginTop: 30}]}>*/}
-        {/*        {dataOverview?.name}*/}
-        {/*      </Text>*/}
-        {/*      <Text style={styles.txt1}>*/}
-        {/*        {dataOverview?.sections.length}{' '}*/}
-        {/*        {dataOverview?.sections.length > 1*/}
-        {/*          ? t('home.overview.sections').toUpperCase()*/}
-        {/*          : t('home.overview.section').toUpperCase()}*/}
-        {/*      </Text>*/}
-        {/*    </TouchableOpacity>*/}
-        {/*  </View>*/}
-        {/*)}*/}
-        {/*<View style={styles.viewList}>*/}
-        {/*  <View*/}
-        {/*    style={{*/}
-        {/*      flexDirection: 'row',*/}
-        {/*      alignItems: 'center',*/}
-        {/*      justifyContent: 'space-between',*/}
-        {/*      marginRight: 15,*/}
-        {/*    }}>*/}
-        {/*    <Text style={styles.titleList}>{t('home.category')}</Text>*/}
-        {/*  </View>*/}
-        {/*  {dataCate.length > 0 && (*/}
-        {/*    <LearnToday*/}
-        {/*      navigation={navigation}*/}
-        {/*      contentContainerStyle={{paddingHorizontal: 16}}*/}
-        {/*      data={dataCate}*/}
-        {/*      horizontal*/}
-        {/*    />*/}
-        {/*  )}*/}
-        {/*  {loading1 && <LazyLoading visible={loading1} horizontal />}*/}
-        {/*</View>*/}
-
-        {/*{topCourseWithStudent.length > 0 && (*/}
-        {/*  <View style={styles.viewList}>*/}
-        {/*    <Text style={styles.titleList}>{t('home.popular')}</Text>*/}
-        {/*    <PopularCourses*/}
-        {/*      navigation={navigation}*/}
-        {/*      contentContainerStyle={{paddingHorizontal: 16}}*/}
-        {/*      data={topCourseWithStudent}*/}
-        {/*      horizontal*/}
-        {/*    />*/}
-        {/*  </View>*/}
-        {/*)}*/}
-        {/*{loading2 && (*/}
-        {/*  <View style={styles.viewList}>*/}
-        {/*    <Text style={styles.titleList}>{t('home.popular')}</Text>*/}
-        {/*    <LazyLoading visible={loading2} horizontal />*/}
-        {/*  </View>*/}
-        {/*)}*/}
-        {/*{dataNewCourse.length > 0 && (*/}
-        {/*  <View style={styles.viewList}>*/}
-        {/*    <Text style={styles.titleList}>{t('home.new')}</Text>*/}
-        {/*    <PopularCourses*/}
-        {/*      navigation={navigation}*/}
-        {/*      contentContainerStyle={{paddingHorizontal: 16}}*/}
-        {/*      data={dataNewCourse}*/}
-        {/*      horizontal*/}
-        {/*    />*/}
-        {/*  </View>*/}
-        {/*)}*/}
-        {/*{loading3 && (*/}
-        {/*  <View style={styles.viewList}>*/}
-        {/*    <Text style={styles.titleList}>{t('home.new')}</Text>*/}
-        {/*    <LazyLoading visible={loading3} horizontal />*/}
-        {/*  </View>*/}
-        {/*)}*/}
-        {/* <View style={styles.viewList}>
-            <Text style={styles.titleList}>Upcoming Courses</Text>
-            <UpcomingCourses
-              navigation={navigation}
-              contentContainerStyle={{ paddingHorizontal: 16 }}
-              data={dataUpcomimg}
-              horizontal
-            />
-          </View> */}
-        {/*{dataInstructor && dataInstructor.length > 0 && (*/}
-        {/*  <View style={styles.viewList}>*/}
-        {/*    <Text style={[styles.titleList, {marginBottom: 8}]}>*/}
-        {/*      {t('instructor')}*/}
-        {/*    </Text>*/}
-
-        {/*    <Instructor*/}
-        {/*      navigation={navigation}*/}
-        {/*      contentContainerStyle={{*/}
-        {/*        paddingHorizontal: 16,*/}
-        {/*        paddingVertical: 16,*/}
-        {/*      }}*/}
-        {/*      data={dataInstructor}*/}
-        {/*      horizontal*/}
-        {/*    />*/}
-        {/*  </View>*/}
-        {/*)}*/}
-        {/*{loading4 && (*/}
-        {/*  <View style={styles.viewList}>*/}
-        {/*    <Text style={[styles.titleList, {marginBottom: 8}]}>*/}
-        {/*      {t('instructor')}*/}
-        {/*    </Text>*/}
-        {/*    <LazyLoading visible={loading4} horizontal />*/}
-        {/*  </View>*/}
-        {/*)}*/}
+        <Image source={Images.bannerHome} style={styles.imgBanner} />
+        <View style={styles.main}>
+          <Text style={styles.mainTextDescription}>
+            {message.home.overview.description}
+          </Text>
+          <Text style={styles.mainTextTitle}>
+            Как
+            <Text style={styles.mainTextTitleMasked}>
+              {message.home.overview.titleMasked}
+            </Text>
+            {message.home.overview.title}
+          </Text>
+          <VideoPlayer />
+          <LinearGradient
+            colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
+            start={{x: 0, y: 0.5}}
+            end={{x: 1, y: 1}}
+            style={styles.buttonStart}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('RegisterScreen')}>
+              <Text style={styles.buttonStartText}>Начать обучение</Text>
+            </TouchableOpacity>
+          </LinearGradient>
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>
+              {message.home.overview.footerText}
+              <Text onPress={() => {}} style={styles.footerTextAgree}>
+                {message.home.overview.footerTextAgree}
+              </Text>
+            </Text>
+          </View>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -316,209 +122,201 @@ const styles = StyleSheet.create({
     backgroundColor: '#0B1633',
     paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
+  play: {
+    position: 'absolute',
+    marginTop: 359,
+    width: 20,
+    height: 20,
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  // linearGradientUp: {
+  //   position: 'absolute',
+  //   width: 416,
+  //   height: 416,
+  //   left: -208,
+  //   top: -208,
+  //   opacity: 0.28,
+  // },
+  // gradientUp: {
+  //   position: 'absolute',
+  //   width: 416,
+  //   height: 416,
+  //   left: -108,
+  //   top: -108,
+  //   borderRadius: 50,
+  //   backgroundColor: '#314d94',
+  //   opacity: 0.05,
+  // },
+  // gradientUps: {
+  //   position: 'absolute',
+  //   top: 0,
+  //   left: 0,
+  //   bottom: 0,
+  //   right: 0,
+  // },
   header: {
+    width: DEVICE_WIDTH,
     height: 66,
     paddingTop: Platform.OS === 'ios' ? getStatusBarHeight(0) : 0,
-    marginTop: 20,
-    paddingHorizontal: 16,
+    // marginTop: 10,
+    // paddingHorizontal: 80,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  iconHome: {
+    width: 24.15,
+    height: 19.04,
+    // marginLeft: 30,
+    // right: '77%',
+    resizeMode: 'contain',
+  },
+
+  logoText: {
+    fontSize: 25,
+    fontWeight: '900',
+    letterSpacing: -2,
+    marginRight: 70,
+    bottom: 2,
+    left: 5,
+    resizeMode: 'contain',
+    color: '#0B1633',
+    // position: "absolute",
+  },
+  loginRegister: {
+    // flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 6,
+    backgroundColor: 'white',
+    margin: 2,
+  },
+  linearGradient: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 7,
+  },
+  startRegisterText: {
+    paddingHorizontal: 8,
+    fontFamily: 'Inter',
+    fontWeight: '700',
+    fontSize: 13,
+    lineHeight: 24,
+    textAlign: 'center',
+    marginBottom: 2,
+    color: '#000000',
   },
   imgBanner: {
     width: DEVICE_WIDTH,
-    height: (198 / 375) * DEVICE_WIDTH,
+    height: DEVICE_HEIGHT,
     resizeMode: 'contain',
     position: 'absolute',
-    top: -20,
+    top: 120,
     zIndex: -1,
   },
-  iconHome: {
-    width: 115,
-    height: 30,
-    resizeMode: 'contain',
-  },
-  iconHeader: {
-    width: 16,
-    height: 16,
-    resizeMode: 'contain',
-    marginLeft: 10,
-  },
-  imgBottom: {
+  main: {
     width: DEVICE_WIDTH,
-    height: (440 / 1500) * DEVICE_WIDTH,
-    resizeMode: 'contain',
-    position: 'absolute',
-    bottom: 0,
+    height: (550 / 375) * DEVICE_WIDTH,
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    // backgroundColor: 'red',
+    // color: '#000',
+    // fontWeight: '500',
+    // marginHorizontal: 5,
+    // backgroundColor: 'red',
   },
-  textBottom: {
-    marginTop: 40,
-    fontSize: 14,
-    color: '#fff',
-    fontFamily: 'Sniglet-Regular',
+  mainTextDescription: {
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
     fontWeight: '400',
-  },
-  logo: {
-    height: (98 / 375) * DEVICE_WIDTH,
-    width: (73 / 375) * DEVICE_WIDTH,
-    resizeMode: 'contain',
-    // position: "absolute",
-  },
-  viewLogo: {
-    alignSelf: 'center',
-    zIndex: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: '400',
-    fontFamily: 'Sniglet-Regular',
-  },
-  containerImg: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
-  text: {
     fontSize: 15,
-    color: '#000',
-  },
-  textInput: {
-    flex: 1,
-    color: '#000',
-    backgroundColor: '#F3F3F3',
-    height: 45,
-    borderRadius: 4,
-    marginBottom: 16,
-    paddingHorizontal: 15,
-    fontFamily: 'Poppins',
-    fontSize: 14,
-  },
-  button: {
-    position: 'absolute',
-    alignSelf: 'center',
-    zIndex: 1,
-    top: DEVICE_HEIGHT / 2 - 20,
-  },
-  nextButton: {
-    height: (264 / 375) * DEVICE_WIDTH,
-    width: (264 / 375) * DEVICE_WIDTH,
-    resizeMode: 'contain',
-  },
-  iconBack: {
-    height: 22,
-    width: 22,
-    resizeMode: 'contain',
-  },
-  avatar: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-  },
-  fullname: {
-    fontSize: 16,
-    color: '#000',
     lineHeight: 24,
-    fontWeight: '500',
-    fontFamily: 'Poppins-Medium',
+    textAlign: 'center',
+    padding: 50,
+    color: '#FFFFFF',
   },
-  email: {
-    fontSize: 13,
-    color: '#929292',
-    lineHeight: 19,
-    fontFamily: 'Poppins',
+  mainTextTitle: {
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: '800',
+    fontSize: 24,
+    lineHeight: 34,
+    textAlign: 'center',
+    padding: 50,
+    bottom: 80,
+    color: '#FFFFFF',
   },
-  overview: {
-    paddingHorizontal: 30,
-    paddingVertical: 20,
-    borderRadius: 24,
-    backgroundColor: '#fff',
-    marginTop: 25,
-    marginHorizontal: 16,
-    // width: deviceWidth - 32,
-    // height: isIos ? (260 / 375) * deviceWidth : (260 / 375) * deviceWidth + 30,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 10,
+  mainTextTitleMasked: {
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: '800',
+    fontSize: 24,
+    lineHeight: 34,
+    textAlign: 'center',
+    left: 10,
+    // padding: 60,
+    top: 5,
+    color: '#D58EA4',
   },
-  overTitle: {
-    fontSize: 14,
-    color: '#000',
-    lineHeight: 21,
-    fontFamily: 'Poppins',
-  },
-  viewItem: {
-    flexDirection: 'row',
-    marginBottom: 22,
+  video: {
+    width: DEVICE_WIDTH - 50,
+    // position: 'absolute',
+    // top: 210,
+    // left: 0,
+    bottom: 100,
+    // right: 0,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  iconItem: {
-    width: 20,
-    height: 20,
-    resizeMode: 'contain',
-    marginRight: 13,
+  buttonStart: {
+    width: DEVICE_WIDTH - 50,
+    top: 110,
+    borderRadius: 6,
+    padding: 15,
   },
-  txtItem: {
-    fontFamily: 'Poppins-Medium',
+  buttonStartText: {
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: '700',
+    fontSize: 15,
+    lineHeight: 25,
+    textAlign: 'center',
+    bottom: 2,
+    color: '#FFFFFF',
+  },
+  footer: {
+    width: DEVICE_WIDTH - 30,
+    // flexDirection: 'row',
+    // flexWrap: 'wrap',
+    // height: (100 / 375) * DEVICE_WIDTH,
+    // paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    top: 140,
+    bottom: 0,
+    // backgroundColor: 'red',
+  },
+  footerText: {
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
     fontWeight: '500',
-    fontSize: 10,
+    fontSize: 12,
+    lineHeight: 22,
+    textAlign: 'center',
+    color: '#909CA9',
   },
-  line: {
-    marginTop: 4,
-    width: (150 / 375) * DEVICE_WIDTH,
-    height: 6,
-    borderColor: '#000',
-    borderWidth: 1,
-  },
-  progress: {
-    height: 4,
-  },
-  txt1: {
-    fontFamily: 'Poppins',
+  footerTextAgree: {
+    // width: DEVICE_WIDTH,
+    fontFamily: 'e-Ukraine',
+    fontStyle: 'normal',
+    fontWeight: '300',
     fontSize: 12,
     lineHeight: 18,
-    color: '#929292',
-  },
-  viewList: {
-    // paddingHorizontal: 16,
-  },
-  titleList: {
-    fontFamily: 'Poppins-Medium',
-    fontSize: 16,
-    lineHeight: 24,
-    color: '#000',
-    fontWeight: '500',
-    marginLeft: 16,
-    marginVertical: 25,
-  },
-  txtAllSource: {
-    fontFamily: 'Poppins-ExtraLight',
-    fontSize: 13,
-    lineHeight: 19,
-    color: '#929292',
-    fontWeight: '300',
+    color: '#A363A1',
+    // flexWrap: 'wrap',
     textDecorationLine: 'underline',
-  },
-  loginRegister: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  loginRegisterText: {
-    fontFamily: 'Poppins-Medium',
-    fontSize: 14,
-  },
-  loginRegisterIcon: {
-    color: '#000',
-    fontWeight: '500',
-    marginHorizontal: 5,
   },
 });

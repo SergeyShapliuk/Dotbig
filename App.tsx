@@ -1,11 +1,18 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 import Main from './src/Main';
+// import {useFocusEffect} from '@react-navigation/native';
 
 const App = () => {
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     StatusBar.setBarStyle(isDark?'dark-content':); // 'light-content' is also available
+  //     StatusBar.setBackgroundColor('white'); //add color code
+  //     StatusBar.setTranslucent(true);
+  //   }, []),
+  // );
   return (
     <SafeAreaView style={styles.sectionContainer}>
-      <StatusBar translucent backgroundColor="#0B1633" barStyle="default" />
       <Main />
     </SafeAreaView>
   );

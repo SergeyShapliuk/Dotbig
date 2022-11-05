@@ -1,5 +1,5 @@
 export const message = {
-  login: 'Login',
+  login: 'Начать обучение',
   register: 'Register',
   logout: 'Logout',
   lesson: 'Lesson',
@@ -30,11 +30,15 @@ export const message = {
     profile: 'My profile',
   },
   loginScreen: {
-    title: 'Login to your account',
-    usernamePlaceholder: 'Username',
-    passwordPlaceholder: 'Password',
+    title: 'Вход в кабинет',
+    usernamePlaceholder: 'John Jonson',
+    emailPlaceholder: 'john.jonson@gmail.com',
+    phonePlaceholder: '201-455-7787',
+    passwordPlaceholder: '* * * * * * * *',
     btnLogin: 'Login',
-    forgotPassword: 'Forgot your password',
+    btnSubmit: 'Начать обучение',
+    forgotPassword: 'Забыли пароль?',
+    linkLogin: 'Восстановить доступ',
     registerText: "Don't have account?",
     register: 'Sign up',
     usernameEmpty: 'Username is required',
@@ -44,13 +48,16 @@ export const message = {
     notFound: 'Not found',
   },
   registerScreen: {
-    title: 'Create an account',
-    usernamePlaceholder: 'Username',
-    emailPlaceholder: 'Email',
+    title: 'Регистрация',
+    usernamePlaceholder: 'John Jonson',
+    emailPlaceholder: 'john.jonson@gmail.com',
+    phonePlaceholder: '201-455-7787',
     passwordPlaceholder: 'Password',
     confirmPasswordPlaceholder: 'Confirm password',
     termAndCondition: 'I agree to the terms and conditions Agreement',
-    btnSubmit: 'Sign up',
+    btnSubmit: 'Зарегистрироваться на курс',
+    question: 'Ранее регистрировались?',
+    linkLogin: 'Перейти на вход',
     usernameEmpty: 'Username is required',
     emailEmpty: 'Email is required',
     validEmail: 'Email is not valid',
@@ -61,7 +68,12 @@ export const message = {
   },
   home: {
     overview: {
-      title: 'Overview your latest course',
+      description: '4-х дневный онлайн-курс «Первые деньги на инвестициях».',
+      title: ' в условиях нестабильной экономики',
+      titleMasked: ' зарабатывать от 10.000$',
+      footerText: 'Продолжая, Вы соглашаетесь с',
+      footerTextAgree:
+        ' Условиями использования и Политикой конфиденциальности',
       section: 'Section',
       sections: 'Sections',
     },
@@ -71,9 +83,40 @@ export const message = {
     countCourse: '{{count}} Courses',
     countStudent: '{{count}} Students',
   },
-  courses: {
-    title: 'Courses',
-    searching: 'Searching {{keySearch}}',
+  Lesson_1: {
+    title: 'Как определить свой уровень финансовой грамотности',
+    description:
+      'Пять шагов к пассивному доходу. Что такое инвестиции и как они влияют на Ваши финансы',
+    bonusTitle: 'Заберите бонус к Уроку 1',
+    bonus:
+      'Список международных компаний, акции которых сейчас выгодно покупать',
+    taskTitle: 'Чтобы перейти к Уроку 2, выполните 4 простых шага:',
+    step_1: 'Шаг 1: Просмотрел видео к Уроку 1',
+    step_2:
+      'Шаг 2: Просмотрите видеозапись с кабинета брокера: как правильно верифицироваться, как внести свой первый депозит',
+    step_3: 'Шаг 3: Выполните домашнее задание:',
+    step_4:
+      'Шаг 4: Активируйте брокерский счёт в Dotbig – это идеальный вариант для новичков.',
+    task_1:
+      '1. Пропишите свой уровень финансовой защиты: Сколько вам нужно денег, чтобы прожить 6 месяцев?',
+    task_2:
+      '2. Пропишите ваш уровень финансовой безопасности: Комфортный уровень умножим на 150.',
+    task_3:
+      '3. Пропишите ваш уровень финансовой свободы, желаемый уровень умноженный на 150',
+  },
+  Lesson_2: {
+    title: 'Как стать миллионером, благодаря инвестициям',
+    description:
+      'Как составить личный финансовый план. Виды инструментов инвестирования',
+    bonusTitle: 'Заберите бонус к Уроку 1',
+    bonus:
+      'Чек-лист «10 законов денег», который позволит Вам эффективнее общаться с личными финансами',
+    taskTitle: 'Чтобы перейти к Уроку 3, выполните 3 простых шага:',
+    step_1: 'Шаг 1: Просмотрите видео к Уроку 2',
+    step_2:
+      'Шаг 2: Просмотрите видеозапись с кабинета брокера: как правильно совершить покупку первой акции',
+    step_3: 'Шаг 3: Выполните домашнее задание:',
+    task: '1. С помощью калькулятора сложного процента, посчитайте какой капитал и к какому сроку Вы можете сделать.',
     filters: {
       filter: 'Filter',
       default: 'Default',
@@ -170,11 +213,11 @@ export const message = {
     restoreCourseNotPurchase: 'You can not restore this course',
   },
   forgot: {
-    title: 'Forgot your password',
+    title: 'Восстановить доступ',
     description:
       'Please enter your email address. You will receive a code to create a new password via email',
     emailPlaceholder: 'Your email address',
-    btnSubmit: 'Reset password',
+    btnSubmit: 'Сброс пароля',
   },
   learningScreen: {
     finishCourse: 'Finish course',

@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {HEIGHT, WIDTH} from './constans/constants';
 import AppNavigator from './navigation/AppNavigator';
 
 const Main = () => {
@@ -23,12 +22,12 @@ const styles = StyleSheet.create({
     // backgroundColor: '#fff',
   },
   overlay: {
-    WIDTH,
-    HEIGHT,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 0,
-    ...StyleSheet.absoluteFillObject,
+    //   WIDTH,
+    //   HEIGHT,
+    //   backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    //   alignItems: 'center',
+    //   justifyContent: 'center',
+    //   zIndex: 0,
+    //   ...StyleSheet.absoluteFillObject,
   },
 });

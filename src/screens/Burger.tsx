@@ -1,66 +1,26 @@
-import React, {useCallback, useState} from 'react';
-import LinearGradient from 'react-native-linear-gradient';
+import React from 'react';
 import {
   Image,
   Platform,
-  RefreshControl,
   SafeAreaView,
   ScrollView,
+  StatusBar,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
-  Text,
-  StatusBar,
-  TextInput,
-  Pressable,
 } from 'react-native';
-import {DEVICE_WIDTH} from '../constans/constants';
 import {Images} from '../assets/image';
-import {useAppNavigation} from '../types/types';
+import LinearGradient from 'react-native-linear-gradient';
+// import GradientText from '../common/utils/GradientText';
 import {message} from '../config/translations/resources/en';
+
 import {getStatusBarHeight} from '../common/deviceInfo';
-import VideoPlayer from '../components/VideoPlayer';
-// import MaskedView from '@react-native-masked-view/masked-view';
-import GradientText from '../common/utils/GradientText';
-// import CheckBox from '@react-native-community/checkbox';
-import CheckBoxTxt from '../components/CheckBox';
-// import {LinearGradientText} from 'react-native-linear-gradient-text';
-// import {useFocusEffect} from '@react-navigation/native';
+import {DEVICE_WIDTH} from '../constans/constants';
+import {useAppNavigation} from '../types/types';
 
-// import {home} from '../assets/img/uri';
-
-const wait = (timeout: any) => {
-  // @ts-ignore
-  return new Promise(resolve => setTimeout(resolve, timeout));
-};
-
-const Lesson_1 = () => {
+const Burger = () => {
   const navigation = useAppNavigation();
-  const [refreshing, setRefreshing] = useState(false);
-
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     StatusBar.setBarStyle('dark-content'); // 'light-content' is also available
-  //     StatusBar.setBackgroundColor('#FFFFFF'); //add color code
-  //     // StatusBar.setTranslucent(true);
-  //   }, []),
-  // );
-  // const play = useRef<any>();
-  // const onRefresh = async () => {
-  //   setRefreshing({
-  //     refreshing: true,
-  //     loading1: true,
-  //     loading2: true,
-  //     loading3: true,
-  //     loading4: true,
-  //   });
-  //   await this.onGetData();
-  //   this.setState({refreshing: false});
-  // };
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -70,9 +30,9 @@ const Lesson_1 = () => {
         networkActivityIndicatorVisible={true}
       />
       <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
+        // refreshControl={
+        //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        // }
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 250}}>
         <View style={styles.header}>
@@ -97,87 +57,124 @@ const Lesson_1 = () => {
             </View>
           </TouchableOpacity>
         </View>
+        <View style={styles.underLine} />
         <View style={styles.mainText}>
-          <GradientText text={'Урок 1'} style={styles.mainTextTitleMasked} />
-          <Text style={styles.mainTextTitle}>{message.Lesson_1.title}</Text>
-          <Text style={styles.mainTextDescription}>
-            {message.Lesson_1.description}
-          </Text>
-        </View>
-        <View style={styles.main}>
-          <VideoPlayer />
-          <View style={styles.mainBonus}>
-            <Text style={styles.mainBonusTitle}>
-              {message.Lesson_1.bonusTitle}
-            </Text>
-            <TouchableOpacity style={styles.btnBonus}>
-              <Image source={Images.btnBonus} style={styles.imgBonus} />
-              <Text style={styles.mainBonusLink}>{message.Lesson_1.bonus}</Text>
-            </TouchableOpacity>
+          <View style={styles.mainTitle}>
+            <Text style={styles.title}>Обучение</Text>
+            <Text style={styles.title}>1</Text>
           </View>
-          <View style={styles.mainLesson}>
-            <Text style={styles.mainLessonText}>
-              {message.Lesson_1.taskTitle}
-            </Text>
-            <Image
-              source={Images.imgProgressBar1}
-              style={{width: 290, margin: 20}}
-            />
-            <View style={styles.underLine} />
-            <Text style={styles.mainLesson_step}>
-              {message.Lesson_1.step_1}
-            </Text>
-            <CheckBoxTxt />
-            <View style={styles.underLine} />
-            <View>
-              <Text style={styles.mainLesson_step}>
-                {message.Lesson_1.step_2}
-              </Text>
-              <View style={{height: 195, marginTop: 30}}>
-                <VideoPlayer />
+
+          <TouchableOpacity>
+            <LinearGradient
+              colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
+              start={{x: 0.0, y: 1.0}}
+              end={{x: 1.0, y: 1.0}}
+              style={styles.linearGradient}>
+              <View style={styles.lessonBtn}>
+                <View style={styles.mainTitle}>
+                  <Text style={styles.title}>Урок 1</Text>
+                  <Text style={styles.title}>38 мин</Text>
+                </View>
+                <View style={styles.underLine} />
+                <View style={styles.descriptionBlock}>
+                  <Text style={styles.mainTextDescription}>
+                    {message.Lesson_1.title} {message.Lesson_1.description}
+                  </Text>
+                  <Image
+                    source={Images.diagonalArrow}
+                    style={{
+                      tintColor: '#0B1633',
+                      transform: [{rotate: '45deg'}],
+                    }}
+                  />
+                </View>
               </View>
-              <CheckBoxTxt />
-              <View style={styles.underLine} />
-            </View>
-            <View>
-              <Text style={styles.mainLesson_step}>
-                {message.Lesson_1.step_3}
-              </Text>
-              <Text style={styles.taskText}>{message.Lesson_1.task_1}</Text>
-              <TextInput
-                placeholder={'$18 000'}
-                placeholderTextColor="#8A8C95"
-                style={styles.textInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <Text style={styles.taskText}>{message.Lesson_1.task_2}</Text>
-              <TextInput
-                placeholder={'$450 000'}
-                placeholderTextColor="#8A8C95"
-                style={styles.textInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <Text style={styles.taskText}>{message.Lesson_1.task_3}</Text>
-              <TextInput
-                placeholder={'$15 000 000'}
-                placeholderTextColor="#8A8C95"
-                style={styles.textInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <CheckBoxTxt />
-              <View style={styles.underLine} />
-              <View>
-                <Text style={styles.mainLesson_step}>
-                  {message.Lesson_1.step_4}
-                </Text>
-                <CheckBoxTxt />
+            </LinearGradient>
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <LinearGradient
+              colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
+              start={{x: 0.0, y: 1.0}}
+              end={{x: 1.0, y: 1.0}}
+              style={styles.linearGradient}>
+              <View style={styles.lessonBtn}>
+                <View style={styles.mainTitle}>
+                  <Text style={styles.title}>Урок 2</Text>
+                  <Text style={styles.title}>40 мин</Text>
+                </View>
+                <View style={styles.underLine} />
+                <View style={styles.descriptionBlock}>
+                  <Text style={styles.mainTextDescription}>
+                    {message.Lesson_2.title} {message.Lesson_2.description}
+                  </Text>
+                  <Image
+                    source={Images.diagonalArrow}
+                    style={{
+                      tintColor: '#0B1633',
+                      transform: [{rotate: '45deg'}],
+                    }}
+                  />
+                </View>
               </View>
-            </View>
-            <Text style={styles.notAuthText}>{message.alert.notAuth}</Text>
-          </View>
+            </LinearGradient>
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <LinearGradient
+              colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
+              start={{x: 0.0, y: 1.0}}
+              end={{x: 1.0, y: 1.0}}
+              style={styles.linearGradient}>
+              <View style={styles.lessonBtn}>
+                <View style={styles.mainTitle}>
+                  <Text style={styles.title}>Урок 3</Text>
+                  <Text style={styles.title}>57 мин</Text>
+                </View>
+                <View style={styles.underLine} />
+                <View style={styles.descriptionBlock}>
+                  <Text style={styles.mainTextDescription}>
+                    {message.Lesson_3.title} {message.Lesson_3.description}
+                  </Text>
+                  <Image
+                    source={Images.diagonalArrow}
+                    style={{
+                      tintColor: '#0B1633',
+                      transform: [{rotate: '45deg'}],
+                    }}
+                  />
+                </View>
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <LinearGradient
+              colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
+              start={{x: 0.0, y: 1.0}}
+              end={{x: 1.0, y: 1.0}}
+              style={styles.linearGradient}>
+              <View style={styles.lessonBtn}>
+                <View style={styles.mainTitle}>
+                  <Text style={styles.title}>Урок 4</Text>
+                  <Text style={styles.title}>59 мин</Text>
+                </View>
+                <View style={styles.underLine} />
+                <View style={styles.descriptionBlock}>
+                  <Text style={styles.mainTextDescription}>
+                    {message.Lesson_4.title} {message.Lesson_4.description}
+                  </Text>
+                  <Image
+                    source={Images.diagonalArrow}
+                    style={{
+                      tintColor: '#0B1633',
+                      transform: [{rotate: '45deg'}],
+                    }}
+                  />
+                </View>
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
 
         {/*<View style={styles.footer}>*/}
@@ -192,7 +189,7 @@ const Lesson_1 = () => {
     </SafeAreaView>
   );
 };
-export default Lesson_1;
+export default Burger;
 
 const styles = StyleSheet.create({
   container: {
@@ -200,15 +197,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
-  play: {
-    position: 'absolute',
-    marginTop: 359,
-    width: 20,
-    height: 20,
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+
   header: {
     // width: DEVICE_WIDTH,
     height: 66,
@@ -242,7 +231,7 @@ const styles = StyleSheet.create({
   linearGradient: {
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 7,
+    borderRadius: 6,
   },
   startRegisterText: {
     paddingHorizontal: 8,
@@ -274,47 +263,49 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     // zIndex: 3,
   },
-  imgBanner: {
-    // width: DEVICE_WIDTH,
-    // height: DEVICE_HEIGHT,
-    // resizeMode: 'contain',
-    // position: 'absolute',
-    // top: 120,
-    // zIndex: -1,
-  },
-
   mainText: {
-    paddingHorizontal: 32,
+    paddingHorizontal: 30,
     paddingVertical: 30,
     // fontFamily: 'Inter',
     // fontStyle: 'normal',
     // fontWeight: '800',
     // backgroundColor: 'red',
   },
-  mainTextTitleMasked: {
-    // fontFamily: 'Inter',
-    // fontStyle: 'normal',
-    fontWeight: '800',
-    fontSize: 24,
-    lineHeight: 34,
-    color: 'red',
+  mainTitle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  mainTextTitle: {
-    marginTop: 15,
-    fontSize: 34,
-    lineHeight: 41,
-    color: '#0B1633',
-  },
-
-  mainTextDescription: {
-    marginTop: 15,
-    // fontFamily: 'Inter',
-    // fontStyle: 'normal',
-    fontWeight: '400',
+  title: {
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: '700',
     fontSize: 16,
     lineHeight: 27,
+    color: '#0B1633',
+  },
+  lessonBtn: {
+    height: 290,
+    paddingHorizontal: 30,
+    borderRadius: 5,
+    backgroundColor: '#F8F8F8',
+    margin: 2,
+  },
+  descriptionBlock: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  mainTextDescription: {
+    marginRight: 66,
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: '400',
+    fontSize: 14,
+    lineHeight: 24,
+    textAlign: 'left',
     color: '#61646F',
   },
+
   main: {
     // height: HEIGHT,
     // marginVertical: 60,
@@ -380,7 +371,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   underLine: {
-    width: DEVICE_WIDTH - 65,
+    width: '100%',
     alignSelf: 'center',
     marginTop: 25,
     borderWidth: 1,

@@ -7,8 +7,11 @@ import {RootStackParamList} from '../types/types';
 // import Home from '../screens/Home';
 // import Lesson_1 from '../screens/Lesson_1';
 // import BottomTab from '../components/BottomTab';
-import Lesson_2 from '../screens/Lesson_2';
-import Lesson_1 from '../screens/Lesson_1';
+// import Lesson_2 from '../screens/Lesson_2';
+// import Lesson_1 from '../screens/Lesson_1';
+import BottomTab from '../components/BottomTab';
+// import Burger from "../screens/Burger";
+import Lesson_3 from '../screens/Lesson_3';
 // import Login from '../screens/Login';
 // import Forgot from '../screens/Forgot';
 
@@ -38,14 +41,16 @@ const AppNavigator = () => {
           // presentation: 'transparentModal',
         }}>
         {/*<Stack.Screen name={'HomeTabScreen'} component={BottomTabbar} />*/}
-        <Stack.Screen name={'Lesson_1'} component={Lesson_1} />
+        {/*<Stack.Screen name={'Burger'} component={Burger} />*/}
         {/*<Stack.Screen name={'Lesson_1'} component={Lesson_1} />*/}
-        <Stack.Screen name={'Lesson_2'} component={Lesson_2} />
+        {/*<Stack.Screen name={'Lesson_2'} component={Lesson_2} />*/}
+        <Stack.Screen name={'Lesson_3'} component={Lesson_3} />
         {/*<Stack.Screen name={'Home'} component={Home} />*/}
         {/*<Stack.Screen name={'RegisterScreen'} component={Register} />*/}
         {/*<Stack.Screen name={'LoginScreen'} component={Login} />*/}
         {/*<Stack.Screen name={'ForgotScreen'} component={Forgot} />*/}
       </Stack.Navigator>
+      <BottomTab />
     </NavigationContainer>
   );
 };

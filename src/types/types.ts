@@ -10,6 +10,7 @@ export type RootStackParamList = {
   Lesson_2: undefined;
   Lesson_3: undefined;
   Lesson_4: undefined;
+  Burger: undefined;
 };
 export type UseNavigationType = NavigationProp<RootStackParamList>;
 

@@ -11,8 +11,6 @@ import {
   View,
   Text,
   StatusBar,
-  TextInput,
-  Pressable,
 } from 'react-native';
 import {DEVICE_WIDTH} from '../constans/constants';
 import {Images} from '../assets/image';
@@ -34,7 +32,7 @@ const wait = (timeout: any) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
 
-const Lesson_1 = () => {
+const Lesson_3 = () => {
   const navigation = useAppNavigation();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -89,49 +87,39 @@ const Lesson_1 = () => {
               <Text style={styles.startRegisterText}>Кабинет</Text>
             </TouchableOpacity>
           </LinearGradient>
-          <TouchableOpacity>
-            <View style={styles.burger}>
-              <View style={styles.burgerLine} />
-              <View style={styles.burgerLine} />
-              <View style={styles.burgerLine} />
-            </View>
-          </TouchableOpacity>
+
+          <View style={styles.burger}>
+            <View style={styles.burgerLine} />
+            <View style={styles.burgerLine} />
+            <View style={styles.burgerLine} />
+          </View>
         </View>
         <View style={styles.mainText}>
-          <GradientText text={'Урок 1'} style={styles.mainTextTitleMasked} />
-          <Text style={styles.mainTextTitle}>{message.Lesson_1.title}</Text>
+          <GradientText text={'Урок 3'} style={styles.mainTextTitleMasked} />
+          <Text style={styles.mainTextTitle}>{message.Lesson_3.title}</Text>
           <Text style={styles.mainTextDescription}>
-            {message.Lesson_1.description}
+            {message.Lesson_3.description}
           </Text>
         </View>
         <View style={styles.main}>
           <VideoPlayer />
-          <View style={styles.mainBonus}>
-            <Text style={styles.mainBonusTitle}>
-              {message.Lesson_1.bonusTitle}
-            </Text>
-            <TouchableOpacity style={styles.btnBonus}>
-              <Image source={Images.btnBonus} style={styles.imgBonus} />
-              <Text style={styles.mainBonusLink}>{message.Lesson_1.bonus}</Text>
-            </TouchableOpacity>
-          </View>
           <View style={styles.mainLesson}>
             <Text style={styles.mainLessonText}>
-              {message.Lesson_1.taskTitle}
+              {message.Lesson_3.taskTitle}
             </Text>
             <Image
-              source={Images.imgProgressBar1}
+              source={Images.imgProgressBar3}
               style={{width: 290, margin: 20}}
             />
             <View style={styles.underLine} />
             <Text style={styles.mainLesson_step}>
-              {message.Lesson_1.step_1}
+              {message.Lesson_3.step_1}
             </Text>
             <CheckBoxTxt />
             <View style={styles.underLine} />
             <View>
               <Text style={styles.mainLesson_step}>
-                {message.Lesson_1.step_2}
+                {message.Lesson_3.step_2}
               </Text>
               <View style={{height: 195, marginTop: 30}}>
                 <VideoPlayer />
@@ -141,42 +129,14 @@ const Lesson_1 = () => {
             </View>
             <View>
               <Text style={styles.mainLesson_step}>
-                {message.Lesson_1.step_3}
+                {message.Lesson_3.step_3}
               </Text>
-              <Text style={styles.taskText}>{message.Lesson_1.task_1}</Text>
-              <TextInput
-                placeholder={'$18 000'}
-                placeholderTextColor="#8A8C95"
-                style={styles.textInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <Text style={styles.taskText}>{message.Lesson_1.task_2}</Text>
-              <TextInput
-                placeholder={'$450 000'}
-                placeholderTextColor="#8A8C95"
-                style={styles.textInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <Text style={styles.taskText}>{message.Lesson_1.task_3}</Text>
-              <TextInput
-                placeholder={'$15 000 000'}
-                placeholderTextColor="#8A8C95"
-                style={styles.textInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
+              <Text style={styles.taskText}>{message.Lesson_3.task_1}</Text>
+              <Text style={styles.taskText}>{message.Lesson_3.task_2}</Text>
+              <Text style={styles.taskText}>{message.Lesson_3.task_3}</Text>
               <CheckBoxTxt />
               <View style={styles.underLine} />
-              <View>
-                <Text style={styles.mainLesson_step}>
-                  {message.Lesson_1.step_4}
-                </Text>
-                <CheckBoxTxt />
-              </View>
             </View>
-            <Text style={styles.notAuthText}>{message.alert.notAuth}</Text>
           </View>
         </View>
 
@@ -192,7 +152,7 @@ const Lesson_1 = () => {
     </SafeAreaView>
   );
 };
-export default Lesson_1;
+export default Lesson_3;
 
 const styles = StyleSheet.create({
   container: {
@@ -273,14 +233,6 @@ const styles = StyleSheet.create({
     margin: 1.5,
     backgroundColor: '#FFFFFF',
     // zIndex: 3,
-  },
-  imgBanner: {
-    // width: DEVICE_WIDTH,
-    // height: DEVICE_HEIGHT,
-    // resizeMode: 'contain',
-    // position: 'absolute',
-    // top: 120,
-    // zIndex: -1,
   },
 
   mainText: {
@@ -471,15 +423,5 @@ const styles = StyleSheet.create({
     color: '#A363A1',
     // flexWrap: 'wrap',
     textDecorationLine: 'underline',
-  },
-  notAuthText: {
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '400',
-    fontSize: 16,
-    lineHeight: 27,
-    marginTop: 20,
-    textAlign: 'center',
-    color: '#E24D36',
   },
 });

@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import Video from 'react-native-video';
 import {poster} from '../assets/img/uri';
 import {StyleSheet} from 'react-native';
-// import {DEVICE_WIDTH} from '../constans/constants';
+import {DEVICE_WIDTH} from '../constans/constants';
 // import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
 // import {noop} from 'react-native-media-controls/dist/utils';
 
@@ -95,16 +95,16 @@ const VideoPlayer = () => {
 export default VideoPlayer;
 const styles = StyleSheet.create({
   backgroundVideo: {
-    // width: DEVICE_WIDTH/,
-    height: 120,
-    // margin: 0,
-    position: 'absolute',
-    top: 0,
+    width: DEVICE_WIDTH,
+    height: 198,
+    margin: 0,
+    // position: 'absolute',
+    top: 30,
     left: 0,
-    bottom: 250,
+    bottom: 0,
     right: 0,
-    marginHorizontal: 32,
-    padding: 95,
+    // marginHorizontal: 32,
+    // padding: 95,
     // justifyContent: 'center',
     // alignItems: 'center',
     // alignSelf: 'center',

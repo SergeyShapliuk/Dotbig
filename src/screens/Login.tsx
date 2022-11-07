@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+// import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   // Alert,
   BackHandler,
@@ -13,6 +13,8 @@ import {
   Text,
   Platform,
   KeyboardAvoidingView,
+  Alert,
+  Keyboard,
 } from 'react-native';
 import {useAppNavigation} from '../types/types';
 import {Images} from '../assets/image';
@@ -20,8 +22,12 @@ import {message} from '../config/translations/resources/en';
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal/dist/modal';
+import {useAppDispatch} from '../store/store';
+
+import {getLogin} from '../store/mainReducer';
 
 const Login = () => {
+  const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -32,6 +38,9 @@ const Login = () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
   }, []);
+  useEffect(() => {
+    console.log('effect');
+  }, []);
   const handleBackPress = () => {
     onBack();
     return true;
@@ -40,64 +49,65 @@ const Login = () => {
     navigation.goBack();
     navigation.navigate('ForgotScreen');
   };
-  // const validate = () => {
-  //   if (!userName || userName.length === 0) {
-  //     Alert.alert('', message.loginScreen.usernameEmpty);
-  //     return false;
-  //   }
-  //   if (!password || password.length === 0) {
-  //     Alert.alert('', message.loginScreen.passwordEmpty);
-  //     return false;
-  //   }
-  //   return true;
-  // };
-  const onLogin = () => {};
-  // const onLogin = async () => {
-  //   Keyboard.dismiss();
-  //   const {dispatch} = this.props;
-  //   if (!validate()) {
-  //     return;
-  //   }
-  //   dispatch(setLoading(true));
-  //   const {username, password} = this.state;
-  //   const params = {
-  //     username,
-  //     password,
-  //   };
-  //   const response = await Client.login(params);
-  //   dispatch(setLoading(false));
-  //
-  //   if (response && response?.token) {
-  //     dispatch(saveUserToken(response.token));
-  //     dispatch(setUser(response));
-  //     setToken(response.token);
-  //
-  //     const {navigation} = this.props;
-  //
-  //     if (navigation.state.params?.screen) {
-  //       const responseUser = await Client.getUser(response.user_id);
-  //       dispatch(setUser(responseUser));
-  //       if (
-  //         navigation.state.params?.screen === 'CoursesDetailsScreen' &&
-  //         navigation.state.params?.id
-  //       ) {
-  //         navigation.navigate('CoursesDetailsScreen', {
-  //           id: navigation.state.params.id,
-  //         });
-  //       } else {
-  //         navigation.navigate(navigation.state.params.screen);
-  //       }
-  //     } else {
-  //       dispatch(reset(['HomeTabScreen']));
-  //     }
-  //   } else if (response.code.includes('incorrect_password')) {
-  //     Alert.alert('', t('loginScreen.passwordNotCorrect'));
-  //   } else if (response.code.includes('invalid_username')) {
-  //     Alert.alert('', t('loginScreen.usernameNotCorrect'));
-  //   } else {
-  //     Alert.alert('', t('loginScreen.notFound'));
-  //   }
-  // };
+  const validate = () => {
+    if (!email || email.length === 0) {
+      Alert.alert('', message.loginScreen.usernameEmpty);
+      return false;
+    }
+    if (!password || password.length === 0) {
+      Alert.alert('', message.loginScreen.passwordEmpty);
+      return false;
+    }
+    return true;
+  };
+  const onLogin = async () => {
+    console.log('onlogin');
+    Keyboard.dismiss();
+    console.log('onlogin1');
+    if (!validate()) {
+      return;
+    }
+    // dispatch(setLoading(true));
+    const params = {
+      email,
+      password,
+    };
+    console.log('params', params);
+    // const response = await api.login(params);
+
+    dispatch(
+      getLogin({email: 'aliosha.valenok@gmail.com', password: '12345678Aa'}),
+    );
+    //
+    // if (response && response?.token) {
+    //   dispatch(saveUserToken(response.token));
+    //   dispatch(setUser(response));
+    //   setToken(response.token);
+
+    // if (navigation.state.params.screen) {
+    //   const responseUser = await Client.getUser(response.user_id);
+    //   dispatch(setUser(responseUser));
+    //   if (
+    // navigation.state.params?.screen === 'CoursesDetailsScreen' &&
+    // navigation.state.params?.id)
+    // {
+    // navigation.navigate('CoursesDetailsScreen', {
+    //   id: navigation.state.params.id,
+    // });
+    //     } else {
+    //       // navigation.navigate(navigation.state.params.screen);
+    //     }
+    //   } else {
+    //     // dispatch(reset(['HomeTabScreen']));
+    //   }
+    // } else if (response.code.includes('incorrect_password')) {
+    //   Alert.alert('', message.loginScreen.passwordNotCorrect);
+    // } else if (response.code.includes('invalid_username')) {
+    //   Alert.alert('', message.loginScreen.usernameNotCorrect);
+    // } else {
+    //   Alert.alert('', message.loginScreen.notFound);
+    // }
+  };
   const onBack = () => {
     navigation.goBack();
   };
@@ -111,23 +121,26 @@ const Login = () => {
       coverScreen={false}
       style={styles.modal}>
       <KeyboardAvoidingView
-        keyboardVerticalOffset={-280}
+        keyboardVerticalOffset={-320}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         contentContainerStyle={styles.container}>
-        <View style={styles.modalContainer}>
+        <View style={styles.headerModal}>
+          <View style={styles.viewLogo}>
+            <Text style={styles.title}>{message.loginScreen.title}</Text>
+          </View>
           <TouchableOpacity
             style={styles.imgButton}
             onPress={onBack}
             hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
             <Image source={Images.iconBack} style={styles.iconBack} />
           </TouchableOpacity>
-          <View style={styles.viewLogo}>
-            <Text style={styles.title}>{message.loginScreen.title}</Text>
-          </View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            bounces={false}
-            keyboardShouldPersistTaps="handled">
+        </View>
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{paddingBottom: 0}}>
+          <View style={styles.modalContainer}>
             <View style={{paddingHorizontal: 25, marginTop: 15}}>
               <Text style={styles.label}>Email</Text>
               <View
@@ -139,7 +152,8 @@ const Login = () => {
                   // ref={ref => {
                   //   this.password = ref;
                   // }}
-
+                  autoCapitalize="none"
+                  autoCorrect={false}
                   placeholder={message.registerScreen.emailPlaceholder}
                   placeholderTextColor="#9E9E9E"
                   style={styles.textInput}
@@ -208,14 +222,21 @@ const Login = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-          </ScrollView>
-        </View>
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </Modal>
   );
 };
 
 export default Login;
+
+export type ResponseLoginType = {
+  token: string;
+  user_email: string;
+  user_nicename: string;
+  user_display_name: string;
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -227,17 +248,21 @@ const styles = StyleSheet.create({
     // backgroundColor: 'rgba(0, 0, 0, 0.1)',
     // opacity: 0.7,
   },
-  modalContainer: {
-    opacity: 1,
-    width: DEVICE_WIDTH,
+  headerModal: {
     backgroundColor: 'rgba(11, 22, 51, 0.7)',
     boxShadow: 'rgba(0, 0, 0, 0.55)',
-    borderRadius: 10,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+  },
+  modalContainer: {
+    backgroundColor: 'rgba(11, 22, 51, 0.7)',
+    boxShadow: 'rgba(0, 0, 0, 0.55)',
+    paddingBottom: 20,
     // backdropFilter: 3.5,
   },
   modal: {
     justifyContent: 'flex-end',
-    marginBottom: 10,
+    // marginBottom: 10,
     margin: 0,
   },
   imgButton: {

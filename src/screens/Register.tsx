@@ -19,7 +19,7 @@ import {message} from '../config/translations/resources/en';
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal/dist/modal';
-import {BlurView} from '@react-native-community/blur';
+// import {BlurView} from '@react-native-community/blur';
 
 const Register = () => {
   const navigation = useAppNavigation();
@@ -108,35 +108,39 @@ const Register = () => {
     <Modal
       isVisible={true}
       // deviceWidth={DEVICE_WIDTH}
-      deviceHeight={DEVICE_HEIGHT + 50}
+      deviceHeight={DEVICE_HEIGHT + 100}
       backdropOpacity={0.7}
       coverScreen={false}
       style={styles.modal}>
       <KeyboardAvoidingView
-        keyboardVerticalOffset={-280}
+        keyboardVerticalOffset={-270}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         contentContainerStyle={styles.container}>
-        <View style={styles.modalContainer}>
-          {/*<BlurView*/}
-          {/*  style={styles.absolute}*/}
-          {/*  blurType="light"*/}
-          {/*  blurAmount={10}*/}
-          {/*  reducedTransparencyFallbackColor="white"*/}
-          {/*/>*/}
+        <View style={styles.headerModal}>
+          <View style={styles.title}>
+            <Text style={styles.titleText}>{message.registerScreen.title}</Text>
+          </View>
+
           <TouchableOpacity
             style={styles.imgButton}
             onPress={onBack}
             hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
             <Image source={Images.iconBack} style={styles.iconBack} />
           </TouchableOpacity>
-          <View style={styles.viewLogo}>
-            <Text style={styles.title}>{message.registerScreen.title}</Text>
-          </View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            bounces={false}
-            keyboardShouldPersistTaps="handled">
-            <View style={{paddingHorizontal: 25, marginTop: 12}}>
+        </View>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{paddingBottom: 0}}>
+          <View style={styles.modalContainer}>
+            {/*<BlurView*/}
+            {/*  style={styles.absolute}*/}
+            {/*  blurType="light"*/}
+            {/*  blurAmount={10}*/}
+            {/*  reducedTransparencyFallbackColor="white"*/}
+            {/*/>*/}
+
+            <View style={{marginHorizontal: 25, marginTop: 12}}>
               <Text style={styles.label}>Имя</Text>
               <View
                 style={[
@@ -236,8 +240,8 @@ const Register = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-          </ScrollView>
-        </View>
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </Modal>
   );
@@ -254,24 +258,24 @@ const styles = StyleSheet.create({
     // alignSelf: 'center',
     // backgroundColor: 'white',
   },
-  absolute: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-  },
-  modalContainer: {
-    opacity: 1,
-    width: DEVICE_WIDTH,
+  headerModal: {
     backgroundColor: 'rgba(11, 22, 51, 0.7)',
     boxShadow: 'rgba(0, 0, 0, 0.55)',
-    borderRadius: 10,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+  },
+  modalContainer: {
+    // opacity: 1,
+    // width: DEVICE_WIDTH,
+    // height: DEVICE_HEIGHT,
+    backgroundColor: 'rgba(11, 22, 51, 0.7)',
+    boxShadow: 'rgba(0, 0, 0, 0.55)',
+    paddingBottom: 20,
     // backdropFilter: 3.5,
   },
   modal: {
     justifyContent: 'flex-end',
-    marginBottom: 10,
+    // marginBottom: 10,
     margin: 0,
   },
   imgButton: {
@@ -312,14 +316,12 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     // position: "absolute",
   },
-  viewLogo: {
-    alignSelf: 'center',
-    zIndex: 100,
+  title: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 10,
+    marginVertical: 10,
   },
-  title: {
+  titleText: {
     fontFamily: 'Inter',
     fontSize: 24,
     lineHeight: 31,

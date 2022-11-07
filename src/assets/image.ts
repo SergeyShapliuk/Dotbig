@@ -67,6 +67,7 @@ const btnBonus = require('./img/pdf-btn-download.png');
 const imgProgressBar1 = require('./img/progressBar_1.png');
 const imgProgressBar2 = require('./img/image-progressBar.png');
 const imgProgressBar3 = require('./img/progressBar_3.png');
+
 const iconCheckBox = require('./img/icon-tab/icon-checkBox.png');
 const iconChecked = require('./img/icon/icon-arrow_down.png');
 const iconScreen = require('./img/icon-tab/icon-screen.png');

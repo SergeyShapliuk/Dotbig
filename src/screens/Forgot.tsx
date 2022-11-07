@@ -83,23 +83,26 @@ const Forgot = () => {
       coverScreen={false}
       style={styles.modal}>
       <KeyboardAvoidingView
-        keyboardVerticalOffset={-280}
+        keyboardVerticalOffset={-380}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         contentContainerStyle={styles.container}>
-        <View style={styles.modalContainer}>
+        <View style={styles.headerModal}>
+          <View style={styles.viewLogo}>
+            <Text style={styles.title}>{message.forgot.title}</Text>
+          </View>
           <TouchableOpacity
             style={styles.imgButton}
             onPress={onBack}
             hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
             <Image source={Images.iconBack} style={styles.iconBack} />
           </TouchableOpacity>
-          <View style={styles.viewLogo}>
-            <Text style={styles.title}>{message.forgot.title}</Text>
-          </View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            bounces={false}
-            keyboardShouldPersistTaps="handled">
+        </View>
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+          keyboardShouldPersistTaps="handled">
+          <View style={styles.modalContainer}>
             <View style={{paddingHorizontal: 25, marginTop: 25}}>
               <Text style={styles.label}>Введите ваш Email</Text>
               <View
@@ -135,9 +138,9 @@ const Forgot = () => {
                 </TouchableOpacity>
               </LinearGradient>
             </View>
-          </ScrollView>
-          {!hidden && <Text>Helloerterterte</Text>}
-        </View>
+          </View>
+        </ScrollView>
+        {!hidden && <Text>Helloerterterte</Text>}
       </KeyboardAvoidingView>
     </Modal>
   );
@@ -149,11 +152,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  headerModal: {
+    backgroundColor: 'rgba(11, 22, 51, 0.7)',
+    boxShadow: 'rgba(0, 0, 0, 0.55)',
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+  },
   modalContainer: {
     width: DEVICE_WIDTH,
     backgroundColor: 'rgba(11, 22, 51, 0.7)',
     boxShadow: 'rgba(0, 0, 0, 0.55)',
-    borderRadius: 10,
+    paddingBottom: 20,
     // backdropFilter: 3.5,
   },
   modal: {

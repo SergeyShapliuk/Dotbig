@@ -18,6 +18,8 @@ import {useAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
 import VideoPlayer from '../components/VideoPlayer';
+// import GradientText from '../common/utils/GradientText';
+import GradientText from 'react-native-gradient-texts';
 
 // import {home} from '../assets/img/uri';
 
@@ -58,7 +60,7 @@ const Home = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 150}}>
+        contentContainerStyle={{paddingBottom: 10}}>
         <View style={styles.header}>
           <Image source={Images.iconHome} style={styles.iconHome} />
           <Text style={styles.logoText}>Dotbig</Text>
@@ -79,17 +81,23 @@ const Home = () => {
         </View>
 
         <Image source={Images.bannerHome} style={styles.imgBanner} />
-        <View style={styles.main}>
-          <Text style={styles.mainTextDescription}>
-            {message.home.overview.description}
-          </Text>
-          <Text style={styles.mainTextTitle}>
-            Как
-            <Text style={styles.mainTextTitleMasked}>
-              {message.home.overview.titleMasked}
+        <View style={styles.mainContent}>
+          <View style={styles.textContent}>
+            <Text style={styles.mainTextDescription}>
+              {message.home.overview.description}
             </Text>
-            {message.home.overview.title}
-          </Text>
+            <Text style={styles.mainTextTitle}>
+              Как
+              <Text style={{color: '#D58EA4'}}>
+                {message.home.overview.titleMasked}
+              </Text>
+              {/*<GradientText*/}
+              {/*  text={'10.000$'}*/}
+              {/*  style={styles.mainTextTitleMasked}*/}
+              {/*/>*/}
+              {message.home.overview.title}
+            </Text>
+          </View>
           <VideoPlayer />
           <LinearGradient
             colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
@@ -123,13 +131,13 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
   play: {
-    position: 'absolute',
-    marginTop: 359,
-    width: 20,
-    height: 20,
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    alignItems: 'center',
+    // position: 'absolute',
+    // marginTop: 359,
+    // width: 20,
+    // height: 20,
+    // backgroundColor: 'red',
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   // linearGradientUp: {
   //   position: 'absolute',
@@ -157,7 +165,7 @@ const styles = StyleSheet.create({
   //   right: 0,
   // },
   header: {
-    width: DEVICE_WIDTH,
+    // width: DEVICE_WIDTH,
     height: 66,
     paddingTop: Platform.OS === 'ios' ? getStatusBarHeight(0) : 0,
     // marginTop: 10,
@@ -217,16 +225,20 @@ const styles = StyleSheet.create({
     top: 120,
     zIndex: -1,
   },
-  main: {
-    width: DEVICE_WIDTH,
-    height: (550 / 375) * DEVICE_WIDTH,
+  mainContent: {
+    // width: DEVICE_WIDTH,
+    // height: (550 / 375) * DEVICE_WIDTH,
     flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
     // backgroundColor: 'red',
     // color: '#000',
     // fontWeight: '500',
     // marginHorizontal: 5,
-    // backgroundColor: 'red',
+  },
+  textContent: {
+    marginTop: 45,
+    marginHorizontal: 32,
   },
   mainTextDescription: {
     fontFamily: 'Inter',
@@ -235,7 +247,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 24,
     textAlign: 'center',
-    padding: 50,
+    // padding: 50,
     color: '#FFFFFF',
   },
   mainTextTitle: {
@@ -245,8 +257,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 34,
     textAlign: 'center',
-    padding: 50,
-    bottom: 80,
+    // padding: 50,
+    // marginTop: 10,
     color: '#FFFFFF',
   },
   mainTextTitleMasked: {
@@ -254,28 +266,21 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '800',
     fontSize: 24,
-    lineHeight: 34,
+    lineHeight: 24,
+    // margin: 2,
     textAlign: 'center',
-    left: 10,
+    // left: 10,
     // padding: 60,
-    top: 5,
-    color: '#D58EA4',
-  },
-  video: {
-    width: DEVICE_WIDTH - 50,
-    // position: 'absolute',
-    // top: 210,
-    // left: 0,
-    bottom: 100,
-    // right: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: 27,
+    color: 'black',
   },
   buttonStart: {
     width: DEVICE_WIDTH - 50,
-    top: 110,
+    marginHorizontal: 32,
+    marginTop: 60,
     borderRadius: 6,
     padding: 15,
+    backgroundColor: 'blue',
   },
   buttonStartText: {
     fontFamily: 'Inter',
@@ -295,8 +300,8 @@ const styles = StyleSheet.create({
     // paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
     justifyContent: 'center',
     alignItems: 'center',
-    top: 140,
-    bottom: 0,
+    // top: 140,
+    marginTop: 35,
     // backgroundColor: 'red',
   },
   footerText: {

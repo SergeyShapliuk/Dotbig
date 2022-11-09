@@ -17,11 +17,12 @@ import {Images} from '../assets/image';
 import {useAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
-import VideoPlayer from '../components/VideoPlayer';
+import VideoPlayer from '../components/VideoPlayers';
 // import MaskedView from '@react-native-masked-view/masked-view';
 import GradientText from '../common/utils/GradientText';
 // import CheckBox from '@react-native-community/checkbox';
 import CheckBoxTxt from '../components/CheckBox';
+import BottomTab2 from '../components/BottomTab2';
 // import {LinearGradientText} from 'react-native-linear-gradient-text';
 // import {useFocusEffect} from '@react-navigation/native';
 
@@ -72,7 +73,7 @@ const Lesson_3 = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 250}}>
+        contentContainerStyle={{paddingBottom: 70}}>
         <View style={styles.header}>
           <Image source={Images.iconHome} />
           <Text style={styles.logoText}>Dotbig</Text>
@@ -102,7 +103,7 @@ const Lesson_3 = () => {
           </Text>
         </View>
         <View style={styles.main}>
-          <VideoPlayer />
+          <VideoPlayer videoId={'758763314'} />
           <View style={styles.mainLesson}>
             <Text style={styles.mainLessonText}>
               {message.Lesson_3.taskTitle}
@@ -121,8 +122,8 @@ const Lesson_3 = () => {
               <Text style={styles.mainLesson_step}>
                 {message.Lesson_3.step_2}
               </Text>
-              <View style={{height: 195, marginTop: 30}}>
-                <VideoPlayer />
+              <View style={{height: 200, marginTop: 10, alignSelf: 'center'}}>
+                <VideoPlayer videoId={'758763314'} />
               </View>
               <CheckBoxTxt />
               <View style={styles.underLine} />
@@ -135,7 +136,7 @@ const Lesson_3 = () => {
               <Text style={styles.taskText}>{message.Lesson_3.task_2}</Text>
               <Text style={styles.taskText}>{message.Lesson_3.task_3}</Text>
               <CheckBoxTxt />
-              <View style={styles.underLine} />
+              {/*<View style={styles.underLine} />*/}
             </View>
           </View>
         </View>
@@ -149,6 +150,7 @@ const Lesson_3 = () => {
         {/*  </Text>*/}
         {/*</View>*/}
       </ScrollView>
+      <BottomTab2 />
     </SafeAreaView>
   );
 };
@@ -246,12 +248,15 @@ const styles = StyleSheet.create({
   mainTextTitleMasked: {
     // fontFamily: 'Inter',
     // fontStyle: 'normal',
-    fontWeight: '800',
+    fontWeight: '900',
     fontSize: 24,
     lineHeight: 34,
     color: 'red',
   },
   mainTextTitle: {
+    // fontFamily: 'Inter',
+    // fontStyle: 'normal',
+    fontWeight: '900',
     marginTop: 15,
     fontSize: 34,
     lineHeight: 41,
@@ -317,7 +322,7 @@ const styles = StyleSheet.create({
   mainLesson: {
     justifyContent: 'center',
     alignItems: 'center',
-    top: 250,
+    top: 20,
   },
   mainLessonText: {
     // width: DEVICE_WIDTH - 50,

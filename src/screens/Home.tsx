@@ -17,11 +17,7 @@ import {Images} from '../assets/image';
 import {useAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
-import VideoPlayer from '../components/VideoPlayer';
-// import GradientText from '../common/utils/GradientText';
-import GradientText from 'react-native-gradient-texts';
-
-// import {home} from '../assets/img/uri';
+import VideoPlayers from '../components/VideoPlayers';
 
 const wait = (timeout: any) => {
   // @ts-ignore
@@ -79,7 +75,6 @@ const Home = () => {
           </TouchableOpacity>
           {/*// )}*/}
         </View>
-
         <Image source={Images.bannerHome} style={styles.imgBanner} />
         <View style={styles.mainContent}>
           <View style={styles.textContent}>
@@ -87,18 +82,18 @@ const Home = () => {
               {message.home.overview.description}
             </Text>
             <Text style={styles.mainTextTitle}>
-              Как
+              Как выйти на
               <Text style={{color: '#D58EA4'}}>
-                {message.home.overview.titleMasked}
+                {' пассивный доход с 0 до 10.000$ '}
               </Text>
+              за 30 дней
               {/*<GradientText*/}
               {/*  text={'10.000$'}*/}
               {/*  style={styles.mainTextTitleMasked}*/}
               {/*/>*/}
-              {message.home.overview.title}
             </Text>
           </View>
-          <VideoPlayer />
+          <VideoPlayers videoId={'741155263'} />
           <LinearGradient
             colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
             start={{x: 0, y: 0.5}}
@@ -258,7 +253,7 @@ const styles = StyleSheet.create({
     lineHeight: 34,
     textAlign: 'center',
     // padding: 50,
-    // marginTop: 10,
+    marginBottom: 25,
     color: '#FFFFFF',
   },
   mainTextTitleMasked: {
@@ -277,7 +272,7 @@ const styles = StyleSheet.create({
   buttonStart: {
     width: DEVICE_WIDTH - 50,
     marginHorizontal: 32,
-    marginTop: 60,
+    marginTop: 30,
     borderRadius: 6,
     padding: 15,
     backgroundColor: 'blue',

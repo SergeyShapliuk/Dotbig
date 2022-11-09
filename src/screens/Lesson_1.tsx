@@ -12,18 +12,19 @@ import {
   Text,
   StatusBar,
   TextInput,
-  Pressable,
+  Linking,
 } from 'react-native';
 import {DEVICE_WIDTH} from '../constans/constants';
 import {Images} from '../assets/image';
 import {useAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
-import VideoPlayer from '../components/VideoPlayer';
+import VideoPlayer from '../components/VideoPlayers';
 // import MaskedView from '@react-native-masked-view/masked-view';
 import GradientText from '../common/utils/GradientText';
 // import CheckBox from '@react-native-community/checkbox';
 import CheckBoxTxt from '../components/CheckBox';
+import BottomTab from '../components/BottomTab';
 // import {LinearGradientText} from 'react-native-linear-gradient-text';
 // import {useFocusEffect} from '@react-navigation/native';
 
@@ -74,7 +75,7 @@ const Lesson_1 = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 250}}>
+        contentContainerStyle={{paddingBottom: 60}}>
         <View style={styles.header}>
           <Image source={Images.iconHome} />
           <Text style={styles.logoText}>Dotbig</Text>
@@ -89,7 +90,8 @@ const Lesson_1 = () => {
               <Text style={styles.startRegisterText}>Кабинет</Text>
             </TouchableOpacity>
           </LinearGradient>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Lessons', {screen: 'Burger'})}>
             <View style={styles.burger}>
               <View style={styles.burgerLine} />
               <View style={styles.burgerLine} />
@@ -105,12 +107,18 @@ const Lesson_1 = () => {
           </Text>
         </View>
         <View style={styles.main}>
-          <VideoPlayer />
+          <VideoPlayer videoId={'741155263'} />
           <View style={styles.mainBonus}>
             <Text style={styles.mainBonusTitle}>
               {message.Lesson_1.bonusTitle}
             </Text>
-            <TouchableOpacity style={styles.btnBonus}>
+            <TouchableOpacity
+              style={styles.btnBonus}
+              onPress={() =>
+                Linking.openURL(
+                  'https://ru.dotbig.study/files/dotbig/lesson1/bonus.pdf',
+                )
+              }>
               <Image source={Images.btnBonus} style={styles.imgBonus} />
               <Text style={styles.mainBonusLink}>{message.Lesson_1.bonus}</Text>
             </TouchableOpacity>
@@ -133,8 +141,8 @@ const Lesson_1 = () => {
               <Text style={styles.mainLesson_step}>
                 {message.Lesson_1.step_2}
               </Text>
-              <View style={{height: 195, marginTop: 30}}>
-                <VideoPlayer />
+              <View style={{height: 200, marginTop: 10, alignSelf: 'center'}}>
+                <VideoPlayer videoId={'741155263'} />
               </View>
               <CheckBoxTxt />
               <View style={styles.underLine} />
@@ -189,6 +197,7 @@ const Lesson_1 = () => {
         {/*  </Text>*/}
         {/*</View>*/}
       </ScrollView>
+      <BottomTab />
     </SafeAreaView>
   );
 };
@@ -294,12 +303,15 @@ const styles = StyleSheet.create({
   mainTextTitleMasked: {
     // fontFamily: 'Inter',
     // fontStyle: 'normal',
-    fontWeight: '800',
+    fontWeight: '900',
     fontSize: 24,
     lineHeight: 34,
-    color: 'red',
+    color: 'black',
   },
   mainTextTitle: {
+    // fontFamily: 'Sniglet',
+    // fontStyle: 'normal',
+    fontWeight: '900',
     marginTop: 15,
     fontSize: 34,
     lineHeight: 41,
@@ -335,7 +347,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // height: 50,
     // padding: 0,
-    top: 230,
+    top: 40,
     borderWidth: 2,
     borderStyle: 'dashed',
     borderColor: '#D9D9D9',
@@ -365,7 +377,7 @@ const styles = StyleSheet.create({
   mainLesson: {
     justifyContent: 'center',
     alignItems: 'center',
-    top: 250,
+    top: 50,
   },
   mainLessonText: {
     // width: DEVICE_WIDTH - 50,

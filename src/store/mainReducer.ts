@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {api} from '../api/api';
 
 export const getLogin = createAsyncThunk<any, any>(
-  'mainReducer/login',
+  'mainReducer/getLogin',
   async params => {
     try {
       console.log('loginReducer', params);
@@ -11,7 +11,23 @@ export const getLogin = createAsyncThunk<any, any>(
       console.log('responseReducerdata', response.data);
       console.log('responseReducerheaders', response.headers);
       return response.data;
-    } catch (e) {}
+    } catch (e) {
+      return console.log('error', e);
+    }
+  },
+);
+export const getLesson = createAsyncThunk<any>(
+  'mainReducer/getLesson',
+  async () => {
+    try {
+      const response = await api.lesson();
+      console.log('responseReducerstatus', response.status);
+      console.log('responseReducerdata', response.data);
+      console.log('responseReducerheaders', response.headers);
+      return response.data;
+    } catch (e) {
+      return console.log('error', e);
+    }
   },
 );
 

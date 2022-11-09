@@ -13,7 +13,6 @@ import {
   Text,
   Platform,
   KeyboardAvoidingView,
-  Alert,
   Keyboard,
 } from 'react-native';
 import {useAppNavigation} from '../types/types';
@@ -22,12 +21,12 @@ import {message} from '../config/translations/resources/en';
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal/dist/modal';
-import {useAppDispatch} from '../store/store';
+// import {useAppDispatch} from '../store/store';
 
-import {getLogin} from '../store/mainReducer';
+// import {getLogin} from '../store/mainReducer';
 
 const Login = () => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -49,25 +48,27 @@ const Login = () => {
     navigation.goBack();
     navigation.navigate('ForgotScreen');
   };
-  const validate = () => {
-    if (!email || email.length === 0) {
-      Alert.alert('', message.loginScreen.usernameEmpty);
-      return false;
-    }
-    if (!password || password.length === 0) {
-      Alert.alert('', message.loginScreen.passwordEmpty);
-      return false;
-    }
-    return true;
-  };
-  const onLogin = async () => {
+  // const validate = () => {
+  //   if (!email || email.length === 0) {
+  //     Alert.alert('', message.loginScreen.usernameEmpty);
+  //     return false;
+  //   }
+  //   if (!password || password.length === 0) {
+  //     Alert.alert('', message.loginScreen.passwordEmpty);
+  //     return false;
+  //   }
+  //   return true;
+  // };
+  const onLogin = () => {
     console.log('onlogin');
     Keyboard.dismiss();
     console.log('onlogin1');
-    if (!validate()) {
-      return;
-    }
+    navigation.navigate('Lessons', {screen: 'Lesson_1'});
+    // if (!validate()) {
+    //   return;
+    // }
     // dispatch(setLoading(true));
+
     const params = {
       email,
       password,
@@ -75,9 +76,10 @@ const Login = () => {
     console.log('params', params);
     // const response = await api.login(params);
 
-    dispatch(
-      getLogin({email: 'aliosha.valenok@gmail.com', password: '12345678Aa'}),
-    );
+    // dispatch(
+    //   getLogin({username: 'aliosha.valenok@gmail.com', password: '12345678Aa'}),
+    // );
+    // dispatch(getLesson());
     //
     // if (response && response?.token) {
     //   dispatch(saveUserToken(response.token));

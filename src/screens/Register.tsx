@@ -107,10 +107,17 @@ const Register = () => {
   return (
     <Modal
       isVisible={true}
+      // animationIn={'fadeInDown'}
+      // animationOut={'fadeOutDown'}
+      // animationInTiming={700}
+      // animationOutTiming={700}
       // deviceWidth={DEVICE_WIDTH}
-      deviceHeight={DEVICE_HEIGHT + 100}
+      deviceHeight={DEVICE_HEIGHT + 50}
+      // hasBackdrop={true}
+      backdropTransitionInTiming={700}
+      backdropTransitionOutTiming={700}
       backdropOpacity={0.7}
-      coverScreen={false}
+      // coverScreen={false}
       style={styles.modal}>
       <KeyboardAvoidingView
         keyboardVerticalOffset={-270}

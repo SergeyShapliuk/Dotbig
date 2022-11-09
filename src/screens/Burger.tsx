@@ -34,7 +34,7 @@ const Burger = () => {
         //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         // }
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 250}}>
+        contentContainerStyle={{paddingBottom: 150}}>
         <View style={styles.header}>
           <Image source={Images.iconHome} />
           <Text style={styles.logoText}>Dotbig</Text>
@@ -57,14 +57,13 @@ const Burger = () => {
             </View>
           </TouchableOpacity>
         </View>
-        <View style={styles.underLine} />
         <View style={styles.mainText}>
           <View style={styles.mainTitle}>
             <Text style={styles.title}>Обучение</Text>
-            <Text style={styles.title}>1</Text>
+            <Text style={styles.title}>1/4</Text>
           </View>
 
-          <TouchableOpacity>
+          <TouchableOpacity style={{marginTop: 30}}>
             <LinearGradient
               colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
               start={{x: 0.0, y: 1.0}}
@@ -92,88 +91,92 @@ const Burger = () => {
             </LinearGradient>
           </TouchableOpacity>
 
-          <TouchableOpacity>
-            <LinearGradient
-              colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
-              start={{x: 0.0, y: 1.0}}
-              end={{x: 1.0, y: 1.0}}
-              style={styles.linearGradient}>
-              <View style={styles.lessonBtn}>
-                <View style={styles.mainTitle}>
-                  <Text style={styles.title}>Урок 2</Text>
-                  <Text style={styles.title}>40 мин</Text>
-                </View>
-                <View style={styles.underLine} />
-                <View style={styles.descriptionBlock}>
-                  <Text style={styles.mainTextDescription}>
-                    {message.Lesson_2.title} {message.Lesson_2.description}
-                  </Text>
-                  <Image
-                    source={Images.diagonalArrow}
-                    style={{
-                      tintColor: '#0B1633',
-                      transform: [{rotate: '45deg'}],
-                    }}
-                  />
-                </View>
+          <TouchableOpacity
+            style={{marginTop: 20}}
+            onPress={() => {
+              navigation.navigate('Lessons', {screen: 'Lesson_2'});
+            }}>
+            {/*<LinearGradient*/}
+            {/*  colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}*/}
+            {/*  start={{x: 0.0, y: 1.0}}*/}
+            {/*  end={{x: 1.0, y: 1.0}}*/}
+            {/*  style={styles.linearGradient}>*/}
+            <View style={styles.lessonBtn}>
+              <View style={styles.mainTitle}>
+                <Text style={styles.title}>Урок 2</Text>
+                <Text style={styles.title}>40 мин</Text>
               </View>
-            </LinearGradient>
+              <View style={styles.underLine} />
+              <View style={styles.descriptionBlock}>
+                <Text style={styles.mainTextDescription}>
+                  {message.Lesson_2.title} {message.Lesson_2.description}
+                </Text>
+                <Image
+                  source={Images.diagonalArrow}
+                  style={{
+                    tintColor: '#0B1633',
+                    transform: [{rotate: '45deg'}],
+                  }}
+                />
+              </View>
+            </View>
+            {/*</LinearGradient>*/}
           </TouchableOpacity>
 
-          <TouchableOpacity>
-            <LinearGradient
-              colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
-              start={{x: 0.0, y: 1.0}}
-              end={{x: 1.0, y: 1.0}}
-              style={styles.linearGradient}>
-              <View style={styles.lessonBtn}>
-                <View style={styles.mainTitle}>
-                  <Text style={styles.title}>Урок 3</Text>
-                  <Text style={styles.title}>57 мин</Text>
-                </View>
-                <View style={styles.underLine} />
-                <View style={styles.descriptionBlock}>
-                  <Text style={styles.mainTextDescription}>
-                    {message.Lesson_3.title} {message.Lesson_3.description}
-                  </Text>
-                  <Image
-                    source={Images.diagonalArrow}
-                    style={{
-                      tintColor: '#0B1633',
-                      transform: [{rotate: '45deg'}],
-                    }}
-                  />
-                </View>
+          <TouchableOpacity style={{marginTop: 20}}>
+            {/*<LinearGradient*/}
+            {/*  colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}*/}
+            {/*  start={{x: 0.0, y: 1.0}}*/}
+            {/*  end={{x: 1.0, y: 1.0}}*/}
+            {/*  style={styles.linearGradient}>*/}
+            <View style={styles.lessonBtn}>
+              <View style={styles.mainTitle}>
+                <Text style={styles.title}>Урок 3</Text>
+                <Text style={styles.title}>57 мин</Text>
               </View>
-            </LinearGradient>
+              <View style={styles.underLine} />
+              <View style={styles.descriptionBlock}>
+                <Text style={styles.mainTextDescription}>
+                  {message.Lesson_3.title} {message.Lesson_3.description}
+                </Text>
+                <Image
+                  source={Images.diagonalArrow}
+                  style={{
+                    tintColor: '#0B1633',
+                    transform: [{rotate: '45deg'}],
+                  }}
+                />
+              </View>
+            </View>
+            {/*</LinearGradient>*/}
           </TouchableOpacity>
 
-          <TouchableOpacity>
-            <LinearGradient
-              colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
-              start={{x: 0.0, y: 1.0}}
-              end={{x: 1.0, y: 1.0}}
-              style={styles.linearGradient}>
-              <View style={styles.lessonBtn}>
-                <View style={styles.mainTitle}>
-                  <Text style={styles.title}>Урок 4</Text>
-                  <Text style={styles.title}>59 мин</Text>
-                </View>
-                <View style={styles.underLine} />
-                <View style={styles.descriptionBlock}>
-                  <Text style={styles.mainTextDescription}>
-                    {message.Lesson_4.title} {message.Lesson_4.description}
-                  </Text>
-                  <Image
-                    source={Images.diagonalArrow}
-                    style={{
-                      tintColor: '#0B1633',
-                      transform: [{rotate: '45deg'}],
-                    }}
-                  />
-                </View>
+          <TouchableOpacity style={{marginTop: 20}}>
+            {/*<LinearGradient*/}
+            {/*  colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}*/}
+            {/*  start={{x: 0.0, y: 1.0}}*/}
+            {/*  end={{x: 1.0, y: 1.0}}*/}
+            {/*  style={styles.linearGradient}>*/}
+            <View style={styles.lessonBtn}>
+              <View style={styles.mainTitle}>
+                <Text style={styles.title}>Урок 4</Text>
+                <Text style={styles.title}>59 мин</Text>
               </View>
-            </LinearGradient>
+              <View style={styles.underLine} />
+              <View style={styles.descriptionBlock}>
+                <Text style={styles.mainTextDescription}>
+                  {message.Lesson_4.title} {message.Lesson_4.description}
+                </Text>
+                <Image
+                  source={Images.diagonalArrow}
+                  style={{
+                    tintColor: '#0B1633',
+                    transform: [{rotate: '45deg'}],
+                  }}
+                />
+              </View>
+            </View>
+            {/*</LinearGradient>*/}
           </TouchableOpacity>
         </View>
 
@@ -229,8 +232,8 @@ const styles = StyleSheet.create({
     margin: 2,
   },
   linearGradient: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     borderRadius: 6,
   },
   startRegisterText: {
@@ -371,9 +374,10 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   underLine: {
-    width: '100%',
     alignSelf: 'center',
-    marginTop: 25,
+    // marginTop: 2,
+    marginVertical: 10,
+    paddingHorizontal: 115,
     borderWidth: 1,
     borderColor: '#dfe0e1',
   },

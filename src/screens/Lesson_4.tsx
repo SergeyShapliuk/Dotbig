@@ -35,7 +35,7 @@ const wait = (timeout: any) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
 
-const Lesson_2 = () => {
+const Lesson_4 = () => {
   const navigation = useAppNavigation();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -98,65 +98,46 @@ const Lesson_2 = () => {
           {/*// )}*/}
         </View>
         <View style={styles.mainText}>
-          <GradientText text={'Урок 2'} style={styles.mainTextTitleMasked} />
-          <Text style={styles.mainTextTitle}>{message.Lesson_2.title}</Text>
+          <GradientText text={'Урок 4'} style={styles.mainTextTitleMasked} />
+          <Text style={styles.mainTextTitle}>{message.Lesson_4.title}</Text>
           <Text style={styles.mainTextDescription}>
-            {message.Lesson_2.description}
+            {message.Lesson_4.description}
           </Text>
         </View>
         <View style={styles.main}>
-          <VideoPlayer videoId={'744085304'} />
+          <VideoPlayer videoId={'744079947'} />
           <View style={styles.mainBonus}>
             <Text style={styles.mainBonusTitle}>
-              {message.Lesson_2.bonusTitle}
+              {message.Lesson_4.bonusTitle}
             </Text>
             <TouchableOpacity
               style={styles.btnBonus}
               onPress={() =>
                 Linking.openURL(
-                  'https://ru.dotbig.study/files/dotbig/lesson2/bonus.pdf',
+                  'https://ru.dotbig.study/files/dotbig/lesson4/bonus.pdf',
                 )
               }>
               <Image source={Images.btnBonus} style={styles.imgBonus} />
-              <Text style={styles.mainBonusLink}>{message.Lesson_2.bonus}</Text>
+              <Text style={styles.mainBonusLink}>{message.Lesson_4.bonus}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.mainLesson}>
             <Text style={styles.mainLessonText}>
-              {message.Lesson_2.taskTitle}
+              {message.Lesson_4.taskTitle}
             </Text>
-            <Image
-              source={Images.imgProgressBar1}
-              style={{width: 290, margin: 20}}
-            />
             <View style={styles.underLine} />
             <Text style={styles.mainLesson_step}>
-              {message.Lesson_2.step_1}
+              {message.Lesson_4.step_1}
             </Text>
             <CheckBoxTxt />
             <View style={styles.underLine} />
             <View>
               <Text style={styles.mainLesson_step}>
-                {message.Lesson_2.step_2}
+                {message.Lesson_4.step_2}
               </Text>
               <View style={{height: 200, marginTop: 10, alignSelf: 'center'}}>
-                <VideoPlayer videoId={'744085304'} />
+                <VideoPlayer videoId={'744079947'} />
               </View>
-              <CheckBoxTxt />
-              <View style={styles.underLine} />
-            </View>
-            <View>
-              <Text style={styles.mainLesson_step}>
-                {message.Lesson_2.step_3}
-              </Text>
-              <Text style={styles.taskText}>{message.Lesson_2.task}</Text>
-              <TextInput
-                placeholder={'$100 000'}
-                placeholderTextColor="#8A8C95"
-                style={styles.textInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
               <CheckBoxTxt />
             </View>
           </View>
@@ -175,7 +156,7 @@ const Lesson_2 = () => {
     </SafeAreaView>
   );
 };
-export default Lesson_2;
+export default Lesson_4;
 
 const styles = StyleSheet.create({
   container: {

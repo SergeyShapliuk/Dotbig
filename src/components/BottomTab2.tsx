@@ -47,7 +47,7 @@ const BottomTab = () => {
   };
 
   const next = () => {
-    navigation.navigate('Lessons', {screen: 'Lesson_2'});
+    navigation.navigate('Lessons', {screen: 'Lesson_4'});
   };
   return (
     // <SafeAreaView style={styles.container}>

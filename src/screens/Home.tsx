@@ -18,6 +18,13 @@ import {useAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
 import VideoPlayers from '../components/VideoPlayers';
+import GradientText from '../common/utils/GradientText';
+import SvgComponent from '../components/svg/HeadphonesSvg';
+import GroupBonus from '../components/svg/GroupBonus';
+import EllipseBonus from '../components/svg/EllipseBonus';
+import EllipseBonus2 from '../components/svg/EllipseBonus2';
+import Vector from '../components/svg/Vector';
+import Vector1 from '../components/svg/Vector1';
 
 const wait = (timeout: any) => {
   // @ts-ignore
@@ -82,18 +89,40 @@ const Home = () => {
               {message.home.overview.description}
             </Text>
             <Text style={styles.mainTextTitle}>
-              Как выйти на
-              <Text style={{color: '#D58EA4'}}>
-                {' пассивный доход с 0 до 10.000$ '}
-              </Text>
-              за 30 дней
-              {/*<GradientText*/}
-              {/*  text={'10.000$'}*/}
-              {/*  style={styles.mainTextTitleMasked}*/}
-              {/*/>*/}
+              {message.home.overview.title}
             </Text>
+            <GradientText
+              text={message.home.overview.titleMasked}
+              style={styles.mainTextTitleMasked}
+            />
           </View>
           <VideoPlayers videoId={'741155263'} />
+          <View style={styles.bonusTitle}>
+            <GradientText text={'БОНУС'} style={styles.textBonusMasked} />
+            <Text style={styles.textBonus}>{message.home.overview.bonus}</Text>
+          </View>
+          <TouchableOpacity onPress={() => {}}>
+            <View style={styles.bonusContent}>
+              <View style={styles.imgBonus}>
+                <SvgComponent style={{borderRadius: 3, overflow: 'hidden'}} />
+                <GroupBonus style={{position: 'absolute', top: 17}} />
+                <Vector style={{position: 'absolute', left: 12.5, top: 17}} />
+                <Vector1
+                  style={{position: 'absolute', right: 3.5, top: 23.5}}
+                />
+                <EllipseBonus
+                  style={{position: 'absolute', right: 0, top: 11}}
+                />
+                <EllipseBonus2
+                  style={{position: 'absolute', left: 8, top: 7}}
+                />
+              </View>
+              <Text style={styles.textBonusDescription}>
+                {message.home.overview.bonusText}
+              </Text>
+            </View>
+          </TouchableOpacity>
+
           <LinearGradient
             colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
             start={{x: 0, y: 0.5}}
@@ -232,7 +261,8 @@ const styles = StyleSheet.create({
     // marginHorizontal: 5,
   },
   textContent: {
-    marginTop: 45,
+    marginTop: 25,
+    marginVertical: 15,
     marginHorizontal: 32,
   },
   mainTextDescription: {
@@ -252,8 +282,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 34,
     textAlign: 'center',
-    // padding: 50,
-    marginBottom: 25,
+    marginTop: 10,
     color: '#FFFFFF',
   },
   mainTextTitleMasked: {
@@ -261,18 +290,63 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '800',
     fontSize: 24,
-    lineHeight: 24,
-    // margin: 2,
+    lineHeight: 34,
+    // padding: 50,
     textAlign: 'center',
     // left: 10,
-    // padding: 60,
-    marginTop: 27,
+    // margin: 20,
+    // marginBottom: -35,
     color: 'black',
   },
+  bonusTitle: {
+    marginVertical: 14,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textBonusMasked: {
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: '800',
+    fontSize: 15,
+    lineHeight: 22,
+    color: 'black',
+  },
+  textBonus: {
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: '800',
+    fontSize: 15,
+    lineHeight: 22,
+    color: '#FFFFFF',
+  },
+  bonusContent: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imgBonus: {
+    width: 57,
+    height: 59,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 3,
+    marginHorizontal: 12,
+    overflow: 'hidden',
+  },
+  textBonusDescription: {
+    width: 207,
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: '400',
+    fontSize: 13,
+    lineHeight: 21,
+    color: '#FFFFFF',
+  },
   buttonStart: {
-    width: DEVICE_WIDTH - 50,
-    marginHorizontal: 32,
-    marginTop: 30,
+    width: DEVICE_WIDTH - 60,
+    // marginHorizontal: 32,
+    marginTop: 25,
     borderRadius: 6,
     padding: 15,
     backgroundColor: 'blue',
@@ -296,7 +370,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     // top: 140,
-    marginTop: 35,
+    marginTop: 15,
     // backgroundColor: 'red',
   },
   footerText: {

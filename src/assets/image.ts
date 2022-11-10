@@ -67,10 +67,10 @@ const btnBonus = require('./img/pdf-btn-download.png');
 const imgProgressBar1 = require('./img/progressBar_1.png');
 const imgProgressBar2 = require('./img/image-progressBar.png');
 const imgProgressBar3 = require('./img/progressBar_3.png');
-
 const iconCheckBox = require('./img/icon-tab/icon-checkBox.png');
 const iconChecked = require('./img/icon/icon-arrow_down.png');
 const iconScreen = require('./img/icon-tab/icon-screen.png');
+const imgVideoPreview = require('./img/preview.png');
 
 const Images = {
   iconScreen,
@@ -131,6 +131,7 @@ const Images = {
   imgProgressBar3,
   imgProgressBar2,
   imgProgressBar1,
+  imgVideoPreview,
 };
 export const logo = [D, o, t, b, i, g];
 

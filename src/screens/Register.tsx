@@ -12,6 +12,8 @@ import {
   Text,
   KeyboardAvoidingView,
   Platform,
+  Alert,
+  Keyboard,
 } from 'react-native';
 import {useAppNavigation} from '../types/types';
 import {Images} from '../assets/image';
@@ -19,13 +21,20 @@ import {message} from '../config/translations/resources/en';
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal/dist/modal';
-// import {BlurView} from '@react-native-community/blur';
+import PhoneInput from 'react-native-phone-number-input';
+import {useAppDispatch} from '../store/store';
+import {getRegister} from '../store/mainReducer';
+import {validateEmail} from '../common/utils/validate';
 
 const Register = () => {
   const navigation = useAppNavigation();
+  const dispatch = useAppDispatch();
   const [userName, setUserName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
+  const [formattedValue, setFormattedValue] = useState('');
+  // const phoneInput = useRef<PhoneInput>(null);
+
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
     return () => {
@@ -39,67 +48,75 @@ const Register = () => {
   // const onRegister = () => {
   //   navigation.navigate('RegisterScreen');
   // };
-  // const validate = () => {
-  //   if (!userName || userName.length === 0) {
-  //     Alert.alert('', message.loginScreen.usernameEmpty);
-  //     return false;
-  //   }
-  //   if (!password || password.length === 0) {
-  //     Alert.alert('', message.loginScreen.passwordEmpty);
-  //     return false;
-  //   }
-  //   return true;
-  // };
-  const onLogin = () => {
-    navigation.goBack();
-    navigation.navigate('LoginScreen');
+  const validate = () => {
+    validateEmail(email);
+    if (!userName || userName.length === 0) {
+      Alert.alert('', message.loginScreen.usernameEmpty);
+      return false;
+    }
+    if (!email || email.length === 0) {
+      Alert.alert('', message.loginScreen.userEmailEmpty);
+
+      return false;
+    }
+    if (!phone || phone.length === 0) {
+      Alert.alert('', message.loginScreen.passwordEmpty);
+      return false;
+    }
+    return true;
   };
-  // const onLogin = async () => {
-  //   Keyboard.dismiss();
-  //   const {dispatch} = this.props;
-  //   if (!validate()) {
-  //     return;
-  //   }
-  //   dispatch(setLoading(true));
-  //   const {username, password} = this.state;
-  //   const params = {
-  //     username,
-  //     password,
-  //   };
-  //   const response = await Client.login(params);
-  //   dispatch(setLoading(false));
-  //
-  //   if (response && response?.token) {
-  //     dispatch(saveUserToken(response.token));
-  //     dispatch(setUser(response));
-  //     setToken(response.token);
-  //
-  //     const {navigation} = this.props;
-  //
-  //     if (navigation.state.params?.screen) {
-  //       const responseUser = await Client.getUser(response.user_id);
-  //       dispatch(setUser(responseUser));
-  //       if (
-  //         navigation.state.params?.screen === 'CoursesDetailsScreen' &&
-  //         navigation.state.params?.id
-  //       ) {
-  //         navigation.navigate('CoursesDetailsScreen', {
-  //           id: navigation.state.params.id,
-  //         });
-  //       } else {
-  //         navigation.navigate(navigation.state.params.screen);
-  //       }
-  //     } else {
-  //       dispatch(reset(['HomeTabScreen']));
-  //     }
-  //   } else if (response.code.includes('incorrect_password')) {
-  //     Alert.alert('', t('loginScreen.passwordNotCorrect'));
-  //   } else if (response.code.includes('invalid_username')) {
-  //     Alert.alert('', t('loginScreen.usernameNotCorrect'));
-  //   } else {
-  //     Alert.alert('', t('loginScreen.notFound'));
-  //   }
+  // const onLogin = () => {
+  //   navigation.goBack();
+  //   navigation.navigate('LoginScreen');
   // };
+  const onLogin = async () => {
+    console.log('reg');
+    Keyboard.dismiss();
+    if (!validate()) {
+      return;
+    }
+
+    const params = {
+      userName,
+      email,
+      formattedValue,
+    };
+    console.log('reg', params);
+    dispatch(getRegister(params));
+    //   const response = await Client.login(params);
+    //   dispatch(setLoading(false));
+    //
+    //   if (response && response?.token) {
+    //     dispatch(saveUserToken(response.token));
+    //     dispatch(setUser(response));
+    //     setToken(response.token);
+    //
+    //     const {navigation} = this.props;
+    //
+    //     if (navigation.state.params?.screen) {
+    //       const responseUser = await Client.getUser(response.user_id);
+    //       dispatch(setUser(responseUser));
+    //       if (
+    //         navigation.state.params?.screen === 'CoursesDetailsScreen' &&
+    //         navigation.state.params?.id
+    //       ) {
+    //         navigation.navigate('CoursesDetailsScreen', {
+    //           id: navigation.state.params.id,
+    //         });
+    //       } else {
+    //         navigation.navigate(navigation.state.params.screen);
+    //       }
+    //     } else {
+    //       dispatch(reset(['HomeTabScreen']));
+    //     }
+    //   } else if (response.code.includes('incorrect_password')) {
+    //     Alert.alert('', t('loginScreen.passwordNotCorrect'));
+    //   } else if (response.code.includes('invalid_username')) {
+    //     Alert.alert('', t('loginScreen.usernameNotCorrect'));
+    //   } else {
+    //     Alert.alert('', t('loginScreen.notFound'));
+    //   }
+  };
   const onBack = () => {
     navigation.goBack();
   };
@@ -204,19 +221,46 @@ const Register = () => {
                     ? {borderWidth: 2, borderColor: '#000'}
                     : {},
                 ]}>
-                <TextInput
-                  // ref={ref => {
-                  //   this.username = ref;
-                  // }}
-                  value={phone}
+                <PhoneInput
+                  // ref={phoneInput}
+                  defaultValue={phone}
+                  defaultCode="IT"
+                  layout="first"
                   placeholder={message.registerScreen.phonePlaceholder}
-                  placeholderTextColor="#9E9E9E"
-                  style={styles.textInput}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  onChangeText={value => setPhone(value)}
+                  onChangeText={text => {
+                    setPhone(text);
+                  }}
+                  onChangeFormattedText={text => {
+                    setFormattedValue(text);
+                  }}
+                  withDarkTheme
+                  withShadow
+                  autoFocus
+                  codeTextStyle={{
+                    fontSize: 14,
+                    marginRight: 12,
+                    marginLeft: -15,
+                  }}
+                  textInputStyle={{
+                    fontSize: 14,
+                    margin: -10,
+                    marginBottom: -11,
+                  }}
+                  containerStyle={styles.textInputPhone}
                 />
-                {phone.length > 0 && (
+                {/*<TextInput*/}
+                {/*  // ref={ref => {*/}
+                {/*  //   this.username = ref;*/}
+                {/*  // }}*/}
+                {/*  value={phone}*/}
+                {/*  placeholder={message.registerScreen.phonePlaceholder}*/}
+                {/*  placeholderTextColor="#9E9E9E"*/}
+                {/*  style={styles.textInput}*/}
+                {/*  autoCapitalize="none"*/}
+                {/*  autoCorrect={false}*/}
+                {/*  onChangeText={value => setPhone(value)}*/}
+                {/*/>*/}
+                {formattedValue.length > 0 && (
                   <Image source={Images.iconPhone} style={styles.icEnter} />
                 )}
               </View>
@@ -357,13 +401,24 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 45,
     color: '#000',
-    fontFamily: 'Poppins',
+    fontFamily: 'Inter',
+    fontWeight: '400',
     fontSize: 14,
+    backgroundColor: '#FCFCFD',
+  },
+  textInputPhone: {
+    height: 55,
+    // marginTop: -20,
+    fontFamily: 'Inter',
+    fontSize: 14,
+    marginHorizontal: -10,
+    backgroundColor: '#FCFCFD',
   },
   icEnter: {
     width: 17,
     height: 17,
     resizeMode: 'contain',
+    backgroundColor: '#FCFCFD',
   },
   button: {
     position: 'absolute',
@@ -470,10 +525,10 @@ const styles = StyleSheet.create({
   },
   viewInput: {
     color: '#000',
-    backgroundColor: '#F3F3F3',
+    backgroundColor: '#FCFCFD',
     borderRadius: 6,
     marginBottom: 12,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 2,

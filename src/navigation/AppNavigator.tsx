@@ -30,7 +30,6 @@ const AppNavigator = () => {
           }}>
           {/*<Stack.Screen name={'HomeTabScreen'} component={BottomTabbar} />*/}
           <Stack.Screen name={'Home'} component={Home} />
-
           <Stack.Screen name={'RegisterScreen'} component={Register} />
           <Stack.Screen name={'LoginScreen'} component={Login} />
           <Stack.Screen name={'ForgotScreen'} component={Forgot} />

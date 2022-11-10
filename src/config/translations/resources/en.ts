@@ -35,14 +35,15 @@ export const message = {
     usernamePlaceholder: 'John Jonson',
     emailPlaceholder: 'john.jonson@gmail.com',
     phonePlaceholder: '201-455-7787',
-    passwordPlaceholder: '* * * * * * * *',
+    passwordPlaceholder: 'Password',
     btnLogin: 'Login',
     btnSubmit: 'Начать обучение',
     forgotPassword: 'Забыли пароль?',
     linkLogin: 'Восстановить доступ',
     registerText: "Don't have account?",
     register: 'Sign up',
-    usernameEmpty: 'Username is required',
+    userEmailEmpty: 'Email is required',
+    usernameEmpty: 'User name is required',
     passwordEmpty: 'Password is required',
     usernameNotCorrect: 'Username is not correct',
     passwordNotCorrect: 'Password is not correct',
@@ -70,8 +71,11 @@ export const message = {
   home: {
     overview: {
       description: '4-х дневный онлайн-курс «Первые деньги на инвестициях».',
-      title: ' в условиях нестабильной экономики',
-      titleMasked: ' зарабатывать от 10.000$',
+      title: 'Как выйти на пассивный ',
+      titleMasked: 'доход с 0 до 10000$ \n' + 'за 30 дней',
+      bonus: ' после регистрации',
+      bonusText:
+        'Запись беседы китов NASDAQ о типичных ошибках финансового мышления',
       footerText: 'Продолжая, Вы соглашаетесь с',
       footerTextAgree:
         ' Условиями использования и Политикой конфиденциальности',

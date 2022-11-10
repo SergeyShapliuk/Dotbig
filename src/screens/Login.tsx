@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-// import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   // Alert,
   BackHandler,
@@ -14,6 +13,7 @@ import {
   Platform,
   KeyboardAvoidingView,
   Keyboard,
+  Alert,
 } from 'react-native';
 import {useAppNavigation} from '../types/types';
 import {Images} from '../assets/image';
@@ -21,13 +21,15 @@ import {message} from '../config/translations/resources/en';
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal/dist/modal';
-// import {useAppDispatch} from '../store/store';
+import {useAppDispatch, useAppSelector} from '../store/store';
+import {getLesson, getLogin} from '../store/mainReducer';
 
 // import {getLogin} from '../store/mainReducer';
 
 const Login = () => {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
+  const login = useAppSelector(state => state.mainReducer.login);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -37,9 +39,9 @@ const Login = () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
   }, []);
-  useEffect(() => {
-    console.log('effect');
-  }, []);
+  console.log('loginComponent :', login);
+  console.log('loginComponent1 :', login.token);
+
   const handleBackPress = () => {
     onBack();
     return true;
@@ -48,37 +50,29 @@ const Login = () => {
     navigation.goBack();
     navigation.navigate('ForgotScreen');
   };
-  // const validate = () => {
-  //   if (!email || email.length === 0) {
-  //     Alert.alert('', message.loginScreen.usernameEmpty);
-  //     return false;
-  //   }
-  //   if (!password || password.length === 0) {
-  //     Alert.alert('', message.loginScreen.passwordEmpty);
-  //     return false;
-  //   }
-  //   return true;
-  // };
+  const validate = () => {
+    if (!email || email.length === 0) {
+      Alert.alert('', message.loginScreen.usernameEmpty);
+      return false;
+    }
+    if (!password || password.length === 0) {
+      Alert.alert('', message.loginScreen.passwordEmpty);
+      return false;
+    }
+    return true;
+  };
   const onLogin = () => {
-    console.log('onlogin');
     Keyboard.dismiss();
-    console.log('onlogin1');
-    navigation.navigate('Lessons', {screen: 'Lesson_1'});
-    // if (!validate()) {
-    //   return;
-    // }
-    // dispatch(setLoading(true));
-
+    if (!validate()) {
+      return;
+    }
     const params = {
       email,
       password,
     };
+    // {username: 'aliosha.valenok@gmail.com', password: '12345678Aa'}
     console.log('params', params);
-    // const response = await api.login(params);
-
-    // dispatch(
-    //   getLogin({username: 'aliosha.valenok@gmail.com', password: '12345678Aa'}),
-    // );
+    dispatch(getLogin({params}));
     // dispatch(getLesson());
     //
     // if (response && response?.token) {
@@ -175,9 +169,7 @@ const Login = () => {
                     : {},
                 ]}>
                 <TextInput
-                  // ref={ref => {
-                  //   this.username = ref;
-                  // }}
+                  // ref={password}
                   secureTextEntry={!showPassword}
                   value={password}
                   placeholder={message.loginScreen.passwordPlaceholder}
@@ -233,12 +225,6 @@ const Login = () => {
 
 export default Login;
 
-export type ResponseLoginType = {
-  token: string;
-  user_email: string;
-  user_nicename: string;
-  user_display_name: string;
-};
 
 const styles = StyleSheet.create({
   container: {
@@ -291,7 +277,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   textBottom: {
-    marginTop: 5,
+    marginTop: 2,
     fontSize: 13,
     lineHeight: 22,
     color: '#A363A1',

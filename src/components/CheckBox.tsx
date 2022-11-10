@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-// import {Images} from '../assets/image';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {Images} from '../assets/image';
-// import CheckBox from '@react-native-community/checkbox';
+import Checked from './svg/Checked';
 
 const CheckBoxTxt = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -22,22 +20,11 @@ const CheckBoxTxt = () => {
             <View style={styles.unChecked} />
           ) : (
             <View style={styles.checked}>
-              <Image source={Images.iconChecked} style={{}} />
+              <Checked />
             </View>
           )}
         </LinearGradient>
       </TouchableOpacity>
-      {/*<CheckBox*/}
-      {/*  disabled={false}*/}
-      {/*  onTintColor={'pink'}*/}
-      {/*  onFillColor={'green'}*/}
-      {/*  tintColor={'red'}*/}
-      {/*  onCheckColor={'black'}*/}
-      {/*  tintColors={{true: 'red', false: 'blue'}}*/}
-      {/*  value={toggleCheckBox}*/}
-      {/*  onValueChange={newValue => setToggleCheckBox(newValue)}*/}
-      {/*  style={styles.checkBox}*/}
-      {/*/>*/}
       <Text
         style={
           !toggleCheckBox

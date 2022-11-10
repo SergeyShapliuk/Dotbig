@@ -22,3 +22,4 @@ export type NestedStack = {
 export type UseNavigationType = NavigationProp<RootStackParamList>;
 
 export const useAppNavigation = () => useNavigation<UseNavigationType>();
+

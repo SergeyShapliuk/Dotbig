@@ -42,9 +42,9 @@ export const message = {
     linkLogin: 'Восстановить доступ',
     registerText: "Don't have account?",
     register: 'Sign up',
-    userEmailEmpty: 'Email is required',
-    usernameEmpty: 'User name is required',
-    passwordEmpty: 'Password is required',
+    userEmailEmpty: 'Введите ваш электронный адрес',
+    inputEmpty: 'Поле не заполнено',
+    passwordEmpty: 'Введите пароль',
     usernameNotCorrect: 'Username is not correct',
     passwordNotCorrect: 'Password is not correct',
     notFound: 'Not found',
@@ -60,13 +60,26 @@ export const message = {
     btnSubmit: 'Зарегистрироваться на курс',
     question: 'Ранее регистрировались?',
     linkLogin: 'Перейти на вход',
-    usernameEmpty: 'Username is required',
-    emailEmpty: 'Email is required',
-    validEmail: 'Email is not valid',
+    usernameEmpty: 'Введите имя и фамилию',
+    emailEmpty: 'Введите ваш электронный адрес',
+    phoneEmpty: 'Введите ваш номер телефона',
+    validUserName: 'Введите правильно имя и фамилию',
+    validEmail: 'Введите правильно электронную почту',
+    validPhone: 'Введите правильно номер телефона',
     passwordEmpty: 'Password is required',
     confirmPasswordEmpty: 'Confirm password is required',
     incorrectPassword: 'Confirmation password incorrect!',
     termAndConditionEmpty: 'You must agree to the terms and conditions',
+  },
+  forgotScreen: {
+    message:
+      'Ссылка на сброс пароля отправлена. Проверьте пожалуйста вашу почту.',
+    title: 'Восстановить доступ',
+    description:
+      'Please enter your email address. You will receive a code to create a new password via email',
+    emailPlaceholder: 'Your email address',
+    btnSubmit: 'Сброс пароля',
+    emailEmpty: 'Введите ваш электронный адрес',
   },
   home: {
     overview: {
@@ -92,8 +105,11 @@ export const message = {
     title: 'Как определить свой уровень финансовой грамотности',
     description:
       'Пять шагов к пассивному доходу. Что такое инвестиции и как они влияют на Ваши финансы',
-    bonusTitle: 'Заберите бонус к Уроку 2',
-    bonus:
+    bonusTitle1: 'Ваш регистрационный бонус',
+    bonusTitle2: 'Заберите бонус к Уроку 1',
+    bonus1:
+      'Запись беседы китов NASDAQ о типичных ошибках финансового мышления',
+    bonus2:
       'Список международных компаний, акции которых сейчас выгодно покупать',
     taskTitle: 'Чтобы перейти к Уроку 2, выполните 4 простых шага:',
     step_1: 'Шаг 1: Просмотрел видео к Уроку 1',
@@ -246,13 +262,6 @@ export const message = {
     purchaseNotCompleted:
       'Your purchase has not been completed, please try again later',
     restoreCourseNotPurchase: 'You can not restore this course',
-  },
-  forgot: {
-    title: 'Восстановить доступ',
-    description:
-      'Please enter your email address. You will receive a code to create a new password via email',
-    emailPlaceholder: 'Your email address',
-    btnSubmit: 'Сброс пароля',
   },
   learningScreen: {
     finishCourse: 'Finish course',

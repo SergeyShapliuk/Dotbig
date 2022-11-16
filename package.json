@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-community/blur": "^4.2.0",
     "@react-native-community/checkbox": "^0.5.13",
     "@react-native-community/slider": "^4.3.2",
@@ -22,12 +23,15 @@
     "@types/react-native-vector-icons": "^6.4.12",
     "@types/react-native-video": "^5.0.14",
     "@types/react-native-video-player": "^0.10.3",
+    "add": "^2.0.6",
     "axios": "^0.27.2",
     "native": "^0.3.3",
     "react": "^18.2.0",
     "react-native": "0.70.4",
+    "react-native-asset": "^2.0.1",
     "react-native-gesture-handler": "^2.8.0",
     "react-native-gradient-texts": "^0.1.0",
+    "react-native-hamburger": "^0.0.2",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-media-controls": "^2.3.0",
@@ -36,6 +40,7 @@
     "react-native-reanimated": "^2.12.0",
     "react-native-safe-area-context": "^4.4.1",
     "react-native-screens": "^3.18.2",
+    "react-native-simple-audio-player": "^1.0.2",
     "react-native-slider": "^0.11.0",
     "react-native-svg": "^13.5.0",
     "react-native-vector-icons": "^9.2.0",
@@ -46,7 +51,8 @@
     "react-native-webview": "^11.23.1",
     "react-redux": "^8.0.5",
     "redux-thunk": "^2.4.2",
-    "svg": "^0.1.0"
+    "svg": "^0.1.0",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -75,13 +81,6 @@
       "jsx",
       "json",
       "node"
-    ]
-  },
-  "rnpm": {
-    "assets": [
-      "./src/assets/fonts/Bruno Ace Regular",
-      "./src/assets/fonts/Poppins",
-      "./src/assets/fonts/Sniglet"
     ]
   }
 }

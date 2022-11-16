@@ -1,10 +1,10 @@
 import * as React from 'react';
-import Svg, {Path, Defs, Pattern, Use, Image, SvgProps} from 'react-native-svg';
+import Svg, {SvgProps, Path, Defs, Pattern, Use, Image} from 'react-native-svg';
 import {memo} from 'react';
 
-const HeadphonesSvg = (props: SvgProps) => (
-  <Svg width={85} height={59} fill="none" {...props}>
-    <Path fill="url(#a)" d="M-14.041.791h85.45v59.084h-85.45z" />
+const HeadphonesSvg2 = (props: SvgProps) => (
+  <Svg width={112} height={76} fill="none" {...props}>
+    <Path fill="url(#a)" d="M-19.549 0H93.393v78.094H-19.549z" />
     <Defs>
       <Pattern
         id="a"
@@ -22,5 +22,6 @@ const HeadphonesSvg = (props: SvgProps) => (
     </Defs>
   </Svg>
 );
-const MemoHeadphonesSvg = memo(HeadphonesSvg);
-export default MemoHeadphonesSvg;
+
+const MemoHeadphonesSvg2 = memo(HeadphonesSvg2);
+export default MemoHeadphonesSvg2;

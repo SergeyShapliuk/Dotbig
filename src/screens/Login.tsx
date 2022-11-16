@@ -22,9 +22,10 @@ import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal/dist/modal';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {getLesson, getLogin} from '../store/mainReducer';
-
-// import {getLogin} from '../store/mainReducer';
+import {validateEmail} from '../common/utils/validate';
+// import {getLesson, getLogin} from '../store/mainReducer';
+import {getLogin} from '../store/mainReducer';
+import {LoginType} from '../api/api';
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -33,26 +34,33 @@ const Login = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [modal, setModal] = useState<boolean>(false);
+  const token = useAppSelector(state => state.mainReducer.login.token);
+  console.log('token:', token);
+
   useEffect(() => {
+    navigation.addListener('focus', () => {
+      setModal(true);
+    });
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
-  }, []);
+  }, [token]);
   console.log('loginComponent :', login);
-  console.log('loginComponent1 :', login.token);
+  console.log('loginComponent1 :', login);
 
   const handleBackPress = () => {
     onBack();
     return true;
   };
   const onForgot = () => {
-    navigation.goBack();
     navigation.navigate('ForgotScreen');
+    setModal(false);
   };
   const validate = () => {
     if (!email || email.length === 0) {
-      Alert.alert('', message.loginScreen.usernameEmpty);
+      Alert.alert('', message.loginScreen.userEmailEmpty);
       return false;
     }
     if (!password || password.length === 0) {
@@ -61,56 +69,31 @@ const Login = () => {
     }
     return true;
   };
-  const onLogin = () => {
+  const onLogin = async () => {
     Keyboard.dismiss();
     if (!validate()) {
       return;
     }
-    const params = {
-      email,
-      password,
+    if (!validateEmail(email)) {
+      return;
+    }
+    const params: LoginType = {
+      username: email,
+      password: '12345678Aa',
     };
-    // {username: 'aliosha.valenok@gmail.com', password: '12345678Aa'}
     console.log('params', params);
-    dispatch(getLogin({params}));
-    // dispatch(getLesson());
-    //
-    // if (response && response?.token) {
-    //   dispatch(saveUserToken(response.token));
-    //   dispatch(setUser(response));
-    //   setToken(response.token);
-
-    // if (navigation.state.params.screen) {
-    //   const responseUser = await Client.getUser(response.user_id);
-    //   dispatch(setUser(responseUser));
-    //   if (
-    // navigation.state.params?.screen === 'CoursesDetailsScreen' &&
-    // navigation.state.params?.id)
-    // {
-    // navigation.navigate('CoursesDetailsScreen', {
-    //   id: navigation.state.params.id,
-    // });
-    //     } else {
-    //       // navigation.navigate(navigation.state.params.screen);
-    //     }
-    //   } else {
-    //     // dispatch(reset(['HomeTabScreen']));
-    //   }
-    // } else if (response.code.includes('incorrect_password')) {
-    //   Alert.alert('', message.loginScreen.passwordNotCorrect);
-    // } else if (response.code.includes('invalid_username')) {
-    //   Alert.alert('', message.loginScreen.usernameNotCorrect);
-    // } else {
-    //   Alert.alert('', message.loginScreen.notFound);
-    // }
+    dispatch(getLogin(params));
   };
+  // if (token) {
+  //   // dispatch(getLesson());
+  // }
   const onBack = () => {
     navigation.goBack();
   };
 
   return (
     <Modal
-      isVisible={true}
+      isVisible={modal}
       // deviceWidth={DEVICE_WIDTH}
       deviceHeight={DEVICE_HEIGHT + 50}
       backdropOpacity={0.7}
@@ -224,7 +207,6 @@ const Login = () => {
 };
 
 export default Login;
-
 
 const styles = StyleSheet.create({
   container: {

@@ -1,5 +1,5 @@
-import React, {useCallback, useState} from 'react';
-import LinearGradient from 'react-native-linear-gradient';
+import React, {useCallback, useEffect, useState} from 'react';
+
 import {
   Image,
   Platform,
@@ -11,24 +11,23 @@ import {
   View,
   Text,
   StatusBar,
-  TextInput,
   Linking,
+  BackHandler,
 } from 'react-native';
 import {DEVICE_WIDTH} from '../constans/constants';
 import {Images} from '../assets/image';
-import {useAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
 import VideoPlayer from '../components/VideoPlayers';
-// import MaskedView from '@react-native-masked-view/masked-view';
 import GradientText from '../common/utils/GradientText';
-// import CheckBox from '@react-native-community/checkbox';
 import CheckBoxTxt from '../components/CheckBox';
+import LessonTextInput from '../components/LessonTextInput';
+import BonusContentWithAudio from '../components/BonusContentWithAudio';
+import Header from '../components/Header';
+import {useAppDispatch, useAppSelector} from '../store/store';
+import {setLessonProgress, setLessonStep} from '../store/mainReducer';
+import {useLessonAppNavigation} from '../types/types';
 import BottomTab from '../components/BottomTab';
-// import {LinearGradientText} from 'react-native-linear-gradient-text';
-// import {useFocusEffect} from '@react-navigation/native';
-
-// import {home} from '../assets/img/uri';
 
 const wait = (timeout: any) => {
   // @ts-ignore
@@ -36,28 +35,56 @@ const wait = (timeout: any) => {
 };
 
 const Lesson_1 = () => {
-  const navigation = useAppNavigation();
+  const lessonNumber = 'Lesson1';
+  const dispatch = useAppDispatch();
+  const navigation = useLessonAppNavigation();
+  const lessonStep = useAppSelector(state => state.mainReducer.lesson_step);
+  const coures = useAppSelector(state => state.mainReducer.course);
+  console.log('lessonStep', lessonStep);
+  console.log(
+    'coures',
+    coures.lessons.map(m => m.acf.steps.map(f => f.status)),
+  );
+  const [step1, setStep1] = useState<boolean>(false);
+  const [step2, setStep2] = useState<boolean>(false);
+  const [step3, setStep3] = useState<boolean>(false);
+  const [step4, setStep4] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [progressBar, setProgressBar] = useState<number>(0);
+  const [input1, setInput1] = useState<string>('');
+  const [input2, setInput2] = useState<string>('');
+  const [input3, setInput3] = useState<string>('');
+  const [disabledChecked, setDisabledChecked] = useState<boolean>(false);
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => true);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', () => true);
+    };
+  }, []);
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     StatusBar.setBarStyle('dark-content'); // 'light-content' is also available
-  //     StatusBar.setBackgroundColor('#FFFFFF'); //add color code
-  //     // StatusBar.setTranslucent(true);
-  //   }, []),
-  // );
-  // const play = useRef<any>();
-  // const onRefresh = async () => {
-  //   setRefreshing({
-  //     refreshing: true,
-  //     loading1: true,
-  //     loading2: true,
-  //     loading3: true,
-  //     loading4: true,
-  //   });
-  //   await this.onGetData();
-  //   this.setState({refreshing: false});
-  // };
+  const onProgress = useCallback(
+    (isDone: boolean, taskNum: number) => {
+      if (isDone) {
+        setProgressBar(prevState => prevState + 73.5);
+      }
+      if (!isDone) {
+        setProgressBar(prevState => prevState - 73.5);
+      }
+      const params = {
+        lesson: lessonNumber,
+        step: taskNum,
+      };
+      dispatch(setLessonProgress(params));
+      // const step = {
+      //   lesson: lessonNumber,
+      //   step: taskNum,
+      //   isDone: taskNum === 4 ? isDone : false,
+      // };
+      // dispatch(setLessonStep(step));
+    },
+    [setProgressBar, dispatch],
+  );
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
@@ -76,29 +103,7 @@ const Lesson_1 = () => {
         }
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 60}}>
-        <View style={styles.header}>
-          <Image source={Images.iconHome} />
-          <Text style={styles.logoText}>Dotbig</Text>
-          {/*{!user?.token && (*/}
-          <LinearGradient
-            colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
-            start={{x: 0.0, y: 0.25}}
-            end={{x: 1.0, y: 1.0}}
-            style={styles.linearGradient}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('RegisterScreen')}>
-              <Text style={styles.startRegisterText}>Кабинет</Text>
-            </TouchableOpacity>
-          </LinearGradient>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Lessons', {screen: 'Burger'})}>
-            <View style={styles.burger}>
-              <View style={styles.burgerLine} />
-              <View style={styles.burgerLine} />
-              <View style={styles.burgerLine} />
-            </View>
-          </TouchableOpacity>
-        </View>
+        <Header />
         <View style={styles.mainText}>
           <GradientText text={'Урок 1'} style={styles.mainTextTitleMasked} />
           <Text style={styles.mainTextTitle}>{message.Lesson_1.title}</Text>
@@ -110,7 +115,16 @@ const Lesson_1 = () => {
           <VideoPlayer videoId={'741155263'} />
           <View style={styles.mainBonus}>
             <Text style={styles.mainBonusTitle}>
-              {message.Lesson_1.bonusTitle}
+              {message.Lesson_1.bonusTitle1}
+            </Text>
+            <BonusContentWithAudio />
+            <Text style={styles.mainBonusDescription}>
+              {message.Lesson_1.bonus1}
+            </Text>
+          </View>
+          <View style={styles.mainBonus}>
+            <Text style={styles.mainBonusTitle}>
+              {message.Lesson_1.bonusTitle2}
             </Text>
             <TouchableOpacity
               style={styles.btnBonus}
@@ -119,72 +133,112 @@ const Lesson_1 = () => {
                   'https://ru.dotbig.study/files/dotbig/lesson1/bonus.pdf',
                 )
               }>
-              <Image source={Images.btnBonus} style={styles.imgBonus} />
-              <Text style={styles.mainBonusLink}>{message.Lesson_1.bonus}</Text>
+              <Image source={Images.btnBonus} style={styles.imgBonus2} />
+              <Text style={styles.mainBonusLink}>
+                {message.Lesson_1.bonus2}
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.mainLesson}>
             <Text style={styles.mainLessonText}>
               {message.Lesson_1.taskTitle}
             </Text>
-            <Image
-              source={Images.imgProgressBar1}
-              style={{width: 290, margin: 20}}
-            />
+            <View style={styles.progressBar}>
+              <View
+                style={{
+                  width: progressBar,
+                  backgroundColor: '#8046A2',
+                  borderRadius: 6,
+                }}
+              />
+            </View>
             <View style={styles.underLine} />
             <Text style={styles.mainLesson_step}>
               {message.Lesson_1.step_1}
             </Text>
-            <CheckBoxTxt />
+            <CheckBoxTxt
+              lessonNumber={lessonNumber}
+              taskNum={1}
+              item={step1}
+              onChange={setStep1}
+              onProgress={onProgress}
+            />
             <View style={styles.underLine} />
-            <View>
-              <Text style={styles.mainLesson_step}>
-                {message.Lesson_1.step_2}
-              </Text>
-              <View style={{height: 200, marginTop: 10, alignSelf: 'center'}}>
-                <VideoPlayer videoId={'741155263'} />
+
+            {step1 && (
+              <View>
+                <Text style={styles.mainLesson_step}>
+                  {message.Lesson_1.step_2}
+                </Text>
+                <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
+                  <VideoPlayer videoId={'741155263'} />
+                </View>
+                <CheckBoxTxt
+                  lessonNumber={lessonNumber}
+                  taskNum={2}
+                  item={step2}
+                  onChange={setStep2}
+                  onProgress={onProgress}
+                />
+                <View style={styles.underLine} />
               </View>
-              <CheckBoxTxt />
-              <View style={styles.underLine} />
-            </View>
-            <View>
-              <Text style={styles.mainLesson_step}>
-                {message.Lesson_1.step_3}
-              </Text>
-              <Text style={styles.taskText}>{message.Lesson_1.task_1}</Text>
-              <TextInput
-                placeholder={'$18 000'}
-                placeholderTextColor="#8A8C95"
-                style={styles.textInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <Text style={styles.taskText}>{message.Lesson_1.task_2}</Text>
-              <TextInput
-                placeholder={'$450 000'}
-                placeholderTextColor="#8A8C95"
-                style={styles.textInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <Text style={styles.taskText}>{message.Lesson_1.task_3}</Text>
-              <TextInput
-                placeholder={'$15 000 000'}
-                placeholderTextColor="#8A8C95"
-                style={styles.textInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <CheckBoxTxt />
-              <View style={styles.underLine} />
+            )}
+            {step2 && (
+              <View>
+                <Text style={styles.mainLesson_step}>
+                  {message.Lesson_1.step_3}
+                </Text>
+                <Text style={styles.taskText}>{message.Lesson_1.task_1}</Text>
+                <LessonTextInput
+                  input={input1}
+                  placeholder={'$18 000'}
+                  setInput={setInput1}
+                  disabledChecked={disabledChecked}
+                />
+
+                <Text style={styles.taskText}>{message.Lesson_1.task_2}</Text>
+                <LessonTextInput
+                  input={input2}
+                  placeholder={'$450 000'}
+                  setInput={setInput2}
+                  disabledChecked={disabledChecked}
+                />
+                <Text style={styles.taskText}>{message.Lesson_1.task_3}</Text>
+                <LessonTextInput
+                  input={input3}
+                  placeholder={'$15 000 000'}
+                  setInput={setInput3}
+                  disabledChecked={disabledChecked}
+                />
+                <CheckBoxTxt
+                  lessonNumber={lessonNumber}
+                  taskNum={3}
+                  item={step3}
+                  onChange={setStep3}
+                  onProgress={onProgress}
+                  input1={input1}
+                  input2={input2}
+                  input3={input3}
+                  setDisabledChecked={setDisabledChecked}
+                />
+                <View style={styles.underLine} />
+              </View>
+            )}
+            {step3 && (
               <View>
                 <Text style={styles.mainLesson_step}>
                   {message.Lesson_1.step_4}
                 </Text>
-                <CheckBoxTxt />
+                <CheckBoxTxt
+                  lessonNumber={lessonNumber}
+                  taskNum={4}
+                  item={step4}
+                  onChange={setStep4}
+                  onProgress={onProgress}
+                />
               </View>
-            </View>
-            <Text style={styles.notAuthText}>{message.alert.notAuth}</Text>
+            )}
+            {/*<Text style={styles.notAuthText}>{message.alert.notAuth}</Text>*/}
           </View>
         </View>
 
@@ -197,7 +251,7 @@ const Lesson_1 = () => {
         {/*  </Text>*/}
         {/*</View>*/}
       </ScrollView>
-      <BottomTab />
+      <BottomTab step={step4} screen={'Lesson_2'} />
     </SafeAreaView>
   );
 };
@@ -218,71 +272,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  header: {
-    // width: DEVICE_WIDTH,
-    height: 66,
-    paddingTop: Platform.OS === 'ios' ? getStatusBarHeight(0) : 0,
-    // marginTop: 10,
-    // paddingHorizontal: 80,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#0B1633',
-  },
-  logoText: {
-    fontSize: 25,
-    fontWeight: '900',
-    letterSpacing: -2,
-    marginRight: 70,
-    bottom: 2,
-    left: 5,
-    resizeMode: 'contain',
-    color: '#FFFFFF',
-    // position: "absolute",
-  },
-  loginRegister: {
-    // flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 6,
-    backgroundColor: 'white',
-    margin: 2,
-  },
-  linearGradient: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 7,
-  },
-  startRegisterText: {
-    paddingHorizontal: 8,
-    fontFamily: 'Inter',
-    fontWeight: '500',
-    fontSize: 13,
-    lineHeight: 25,
-    textAlign: 'center',
-    marginBottom: 2,
-    padding: 3,
-    color: '#FFFFFF',
-  },
-  burger: {
-    width: 45,
-    height: 30,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 30,
-    marginLeft: 15,
-    // marginHorizontal: 5,
-    backgroundColor: '#3C455C',
-    // zIndex: 1,
-  },
-  burgerLine: {
-    width: 18,
-    height: 1.5,
-    margin: 1.5,
-    backgroundColor: '#FFFFFF',
-    // zIndex: 3,
-  },
+
   imgBanner: {
     // width: DEVICE_WIDTH,
     // height: DEVICE_HEIGHT,
@@ -341,13 +331,13 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
   },
   mainBonus: {
-    width: DEVICE_WIDTH - 65,
+    width: DEVICE_WIDTH - 60,
     height: 250,
     justifyContent: 'center',
     alignItems: 'center',
     // height: 50,
     // padding: 0,
-    top: 40,
+    marginTop: 30,
     borderWidth: 2,
     borderStyle: 'dashed',
     borderColor: '#D9D9D9',
@@ -358,16 +348,21 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 16,
     lineHeight: 27,
-    bottom: 30,
+    marginBottom: 30,
   },
   btnBonus: {
     width: 200,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  imgBonus: {
-    bottom: 20,
+
+  imgBonus2: {
+    marginBottom: 20,
     borderRadius: 6,
+  },
+  mainBonusDescription: {
+    textAlign: 'center',
+    color: '#0B1633',
   },
   mainBonusLink: {
     textAlign: 'center',
@@ -377,7 +372,7 @@ const styles = StyleSheet.create({
   mainLesson: {
     justifyContent: 'center',
     alignItems: 'center',
-    top: 50,
+    marginTop: 10,
   },
   mainLessonText: {
     // width: DEVICE_WIDTH - 50,
@@ -385,48 +380,55 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '900',
     fontSize: 20,
-    letterSpacing: 0.3,
     lineHeight: 27,
     color: '#0B1633',
-    marginHorizontal: 32,
     marginTop: 25,
   },
+  progressBar: {
+    width: DEVICE_WIDTH - 60,
+    flexDirection: 'row',
+    marginTop: 15,
+    height: 6,
+    borderRadius: 4,
+    backgroundColor: '#D9D9D9',
+  },
   underLine: {
-    width: DEVICE_WIDTH - 65,
+    width: DEVICE_WIDTH - 60,
     alignSelf: 'center',
     marginTop: 25,
     borderWidth: 1,
     borderColor: '#dfe0e1',
   },
   mainLesson_step: {
-    marginHorizontal: 32,
+    width: DEVICE_WIDTH - 60,
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '700',
     fontSize: 16,
     lineHeight: 27,
-    alignSelf: 'flex-start',
+    textAlign: 'left',
     color: '#0B1633',
     marginTop: 30,
   },
   taskText: {
-    marginHorizontal: 32,
-    marginTop: 30,
+    width: DEVICE_WIDTH - 60,
+    marginTop: 20,
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '400',
     fontSize: 16,
     lineHeight: 27,
+    textAlign: 'left',
     color: '#61646F',
   },
   textInput: {
-    width: DEVICE_WIDTH - 65,
+    width: DEVICE_WIDTH - 60,
     // marginHorizontal: 132,
     // flexDirection: 'row',
     // justifyContent: 'space-between',
     // alignItems: 'flex-start',
     alignSelf: 'center',
-    marginTop: 30,
+    marginTop: 20,
     paddingHorizontal: 15,
     // height: 45,
     backgroundColor: '#FCFCFD',

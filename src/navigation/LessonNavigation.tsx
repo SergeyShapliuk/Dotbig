@@ -6,6 +6,10 @@ import Lesson_2 from '../screens/Lesson_2';
 import Lesson_3 from '../screens/Lesson_3';
 import Lesson_4 from '../screens/Lesson_4';
 import Burger from '../screens/Burger';
+import BottomTab from '../components/BottomTab';
+// import BottomTab from '../components/BottomTab';
+
+// import BottomTab from '../components/BottomTab';
 
 const Stack = createStackNavigator<NestedStack>();
 
@@ -13,19 +17,19 @@ const LessonNavigation = () => {
   return (
     <>
       <Stack.Navigator
-        initialRouteName={'Lesson_1'}
+        // initialRouteName={'Lesson_!'}
         screenOptions={{
           headerShown: false,
           animationEnabled: false,
           // cardStyle: {backgroundColor: 'transparent'},
           // presentation: 'card',
         }}>
-        {/*<Stack.Screen name={'HomeTabScreen'} component={BottomTabbar} />*/}
         <Stack.Screen name={'Lesson_1'} component={Lesson_1} />
         <Stack.Screen name={'Lesson_2'} component={Lesson_2} />
         <Stack.Screen name={'Lesson_3'} component={Lesson_3} />
         <Stack.Screen name={'Lesson_4'} component={Lesson_4} />
         <Stack.Screen name={'Burger'} component={Burger} />
+        {/*<Stack.Screen name={'tabBar'} component={BottomTabNavigation} />*/}
       </Stack.Navigator>
       {/*<BottomTab />*/}
     </>

@@ -1,26 +1,21 @@
 import React from 'react';
 import {
-  Image,
   Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
-import {Images} from '../assets/image';
-import LinearGradient from 'react-native-linear-gradient';
-// import GradientText from '../common/utils/GradientText';
 import {message} from '../config/translations/resources/en';
 
 import {getStatusBarHeight} from '../common/deviceInfo';
 import {DEVICE_WIDTH} from '../constans/constants';
-import {useAppNavigation} from '../types/types';
+import Header from '../components/Header';
+import LessonList from '../components/LessonList';
 
 const Burger = () => {
-  const navigation = useAppNavigation();
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -35,149 +30,38 @@ const Burger = () => {
         // }
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 150}}>
-        <View style={styles.header}>
-          <Image source={Images.iconHome} />
-          <Text style={styles.logoText}>Dotbig</Text>
-          {/*{!user?.token && (*/}
-          <LinearGradient
-            colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
-            start={{x: 0.0, y: 0.25}}
-            end={{x: 1.0, y: 1.0}}
-            style={styles.linearGradient}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('RegisterScreen')}>
-              <Text style={styles.startRegisterText}>Кабинет</Text>
-            </TouchableOpacity>
-          </LinearGradient>
-          <TouchableOpacity>
-            <View style={styles.burger}>
-              <View style={styles.burgerLine} />
-              <View style={styles.burgerLine} />
-              <View style={styles.burgerLine} />
-            </View>
-          </TouchableOpacity>
-        </View>
+        <Header />
         <View style={styles.mainText}>
           <View style={styles.mainTitle}>
             <Text style={styles.title}>Обучение</Text>
             <Text style={styles.title}>1/4</Text>
           </View>
+          <LessonList
+            numberLesson={'Урок 1'}
+            minutes={'38 минут'}
+            title={message.Lesson_1.title}
+            description={message.Lesson_1.description}
+            lesson={'Lesson_1'}
+          />
 
-          <TouchableOpacity style={{marginTop: 30}}>
-            <LinearGradient
-              colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
-              start={{x: 0.0, y: 1.0}}
-              end={{x: 1.0, y: 1.0}}
-              style={styles.linearGradient}>
-              <View style={styles.lessonBtn}>
-                <View style={styles.mainTitle}>
-                  <Text style={styles.title}>Урок 1</Text>
-                  <Text style={styles.title}>38 мин</Text>
-                </View>
-                <View style={styles.underLine} />
-                <View style={styles.descriptionBlock}>
-                  <Text style={styles.mainTextDescription}>
-                    {message.Lesson_1.title} {message.Lesson_1.description}
-                  </Text>
-                  <Image
-                    source={Images.diagonalArrow}
-                    style={{
-                      tintColor: '#0B1633',
-                      transform: [{rotate: '45deg'}],
-                    }}
-                  />
-                </View>
-              </View>
-            </LinearGradient>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={{marginTop: 20}}
-            onPress={() => {
-              navigation.navigate('Lessons', {screen: 'Lesson_2'});
-            }}>
-            {/*<LinearGradient*/}
-            {/*  colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}*/}
-            {/*  start={{x: 0.0, y: 1.0}}*/}
-            {/*  end={{x: 1.0, y: 1.0}}*/}
-            {/*  style={styles.linearGradient}>*/}
-            <View style={styles.lessonBtn}>
-              <View style={styles.mainTitle}>
-                <Text style={styles.title}>Урок 2</Text>
-                <Text style={styles.title}>40 мин</Text>
-              </View>
-              <View style={styles.underLine} />
-              <View style={styles.descriptionBlock}>
-                <Text style={styles.mainTextDescription}>
-                  {message.Lesson_2.title} {message.Lesson_2.description}
-                </Text>
-                <Image
-                  source={Images.diagonalArrow}
-                  style={{
-                    tintColor: '#0B1633',
-                    transform: [{rotate: '45deg'}],
-                  }}
-                />
-              </View>
-            </View>
-            {/*</LinearGradient>*/}
-          </TouchableOpacity>
-
-          <TouchableOpacity style={{marginTop: 20}}>
-            {/*<LinearGradient*/}
-            {/*  colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}*/}
-            {/*  start={{x: 0.0, y: 1.0}}*/}
-            {/*  end={{x: 1.0, y: 1.0}}*/}
-            {/*  style={styles.linearGradient}>*/}
-            <View style={styles.lessonBtn}>
-              <View style={styles.mainTitle}>
-                <Text style={styles.title}>Урок 3</Text>
-                <Text style={styles.title}>57 мин</Text>
-              </View>
-              <View style={styles.underLine} />
-              <View style={styles.descriptionBlock}>
-                <Text style={styles.mainTextDescription}>
-                  {message.Lesson_3.title} {message.Lesson_3.description}
-                </Text>
-                <Image
-                  source={Images.diagonalArrow}
-                  style={{
-                    tintColor: '#0B1633',
-                    transform: [{rotate: '45deg'}],
-                  }}
-                />
-              </View>
-            </View>
-            {/*</LinearGradient>*/}
-          </TouchableOpacity>
-
-          <TouchableOpacity style={{marginTop: 20}}>
-            {/*<LinearGradient*/}
-            {/*  colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}*/}
-            {/*  start={{x: 0.0, y: 1.0}}*/}
-            {/*  end={{x: 1.0, y: 1.0}}*/}
-            {/*  style={styles.linearGradient}>*/}
-            <View style={styles.lessonBtn}>
-              <View style={styles.mainTitle}>
-                <Text style={styles.title}>Урок 4</Text>
-                <Text style={styles.title}>59 мин</Text>
-              </View>
-              <View style={styles.underLine} />
-              <View style={styles.descriptionBlock}>
-                <Text style={styles.mainTextDescription}>
-                  {message.Lesson_4.title} {message.Lesson_4.description}
-                </Text>
-                <Image
-                  source={Images.diagonalArrow}
-                  style={{
-                    tintColor: '#0B1633',
-                    transform: [{rotate: '45deg'}],
-                  }}
-                />
-              </View>
-            </View>
-            {/*</LinearGradient>*/}
-          </TouchableOpacity>
+          <LessonList
+            numberLesson={'Урок 2'}
+            minutes={'40 мин'}
+            title={message.Lesson_2.title}
+            description={message.Lesson_2.description}
+          />
+          <LessonList
+            numberLesson={'Урок 3'}
+            minutes={'57 мин'}
+            title={message.Lesson_3.title}
+            description={message.Lesson_3.description}
+          />
+          <LessonList
+            numberLesson={'Урок 4'}
+            minutes={'59 мин'}
+            title={message.Lesson_4.title}
+            description={message.Lesson_4.description}
+          />
         </View>
 
         {/*<View style={styles.footer}>*/}
@@ -201,71 +85,6 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
 
-  header: {
-    // width: DEVICE_WIDTH,
-    height: 66,
-    paddingTop: Platform.OS === 'ios' ? getStatusBarHeight(0) : 0,
-    // marginTop: 10,
-    // paddingHorizontal: 80,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#0B1633',
-  },
-  logoText: {
-    fontSize: 25,
-    fontWeight: '900',
-    letterSpacing: -2,
-    marginRight: 70,
-    bottom: 2,
-    left: 5,
-    resizeMode: 'contain',
-    color: '#FFFFFF',
-    // position: "absolute",
-  },
-  loginRegister: {
-    // flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 6,
-    backgroundColor: 'white',
-    margin: 2,
-  },
-  linearGradient: {
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    borderRadius: 6,
-  },
-  startRegisterText: {
-    paddingHorizontal: 8,
-    fontFamily: 'Inter',
-    fontWeight: '500',
-    fontSize: 13,
-    lineHeight: 25,
-    textAlign: 'center',
-    marginBottom: 2,
-    padding: 3,
-    color: '#FFFFFF',
-  },
-  burger: {
-    width: 45,
-    height: 30,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 30,
-    marginLeft: 15,
-    // marginHorizontal: 5,
-    backgroundColor: '#3C455C',
-    // zIndex: 1,
-  },
-  burgerLine: {
-    width: 18,
-    height: 1.5,
-    margin: 1.5,
-    backgroundColor: '#FFFFFF',
-    // zIndex: 3,
-  },
   mainText: {
     paddingHorizontal: 30,
     paddingVertical: 30,

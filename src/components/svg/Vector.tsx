@@ -11,4 +11,5 @@ const Vector = (props: SvgProps) => (
   </Svg>
 );
 
-export default memo(Vector);
+const MemoVector = memo(Vector);
+export default MemoVector;

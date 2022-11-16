@@ -4,18 +4,43 @@ import {
   createSlice,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import {api, LoginResponseType, RegisterResponseType} from '../api/api';
+import {api, ForgotType, LessonStepType, LoginResponseType} from '../api/api';
+import {Alert} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {message} from '../config/translations/resources/en';
+import {CourseType} from '../types/types';
 
-export const initializeApp = createAsyncThunk<any, any>(
+export const initializeApp = createAsyncThunk<any, void>(
   'mainReducer/initializeApp',
-  async (url, {dispatch}) => {
+  async (_, {dispatch}) => {
     try {
-      const res = await api.autoLogin(url);
-      if (res.status === 200 || res.status === 201) {
-        dispatch(setIsLoggedIn({value: true}));
-      }
+      dispatch(setIsLoggedIn({value: true}));
     } catch (error) {
       return console.log('error', error);
+    }
+  },
+);
+export const getRegister = createAsyncThunk<any, any>(
+  'mainReducer/getRegister',
+  async (registerParams, {dispatch}) => {
+    console.log('getReg:', registerParams);
+    dispatch(setAppStatus({status: 'loading'}));
+    try {
+      const response = await api.register(registerParams);
+      if (response.status === 200 || response.status === 201) {
+        dispatch(setAppStatus({status: 'succeeded'}));
+        console.log('autologinREducer', response.data.student_id);
+        await AsyncStorage.setItem(
+          'student_id',
+          response.data.student_id.toString(),
+        );
+        Alert.alert('', response.data.message);
+
+        return response.data.student_id;
+      }
+    } catch (e) {
+      Alert.alert('', 'Попробуйте ещё раз');
+      return console.log('error', e);
     }
   },
 );
@@ -27,38 +52,67 @@ export const getLogin = createAsyncThunk<any, any>(
       const response = await api.login(loginParams);
       if (response.status === 200 || response.status === 201) {
         dispatch(setAppStatus({status: 'succeeded'}));
+        await AsyncStorage.setItem('dotbig_token', response.data.token);
+        dispatch(setIsLoggedIn({value: true}));
         return response.data;
       }
     } catch (e) {
+      Alert.alert('', 'Попробуйте ещё раз');
       return console.log('error', e);
     }
   },
 );
-export const getRegister = createAsyncThunk<any, any>(
-  'mainReducer/getRegister',
-  async (registerParams, {dispatch}) => {
-    console.log('getReg:', registerParams);
+export const getForgot = createAsyncThunk<any, ForgotType>(
+  'mainReducer/getForgot',
+  async (email, {dispatch}) => {
+    console.log('redicerFogot:', email);
     dispatch(setAppStatus({status: 'loading'}));
     try {
-      const response = await api.login(registerParams);
+      const response = await api.forgot(email);
       if (response.status === 200 || response.status === 201) {
         dispatch(setAppStatus({status: 'succeeded'}));
-        return response.data;
+        Alert.alert('', message.forgotScreen.message);
       }
     } catch (e) {
       return console.log('error', e);
     }
   },
 );
-export const getLesson = createAsyncThunk<any, string>(
+export const getLesson = createAsyncThunk<any>(
   'mainReducer/getLesson',
-  async (id, {dispatch}) => {
-    dispatch(setAppStatus({status: 'loading'}));
+  async (_, {dispatch}) => {
     try {
-      const response = await api.lesson(id);
-      if (response.status === 200 || response.status === 201) {
-        dispatch(setAppStatus({status: 'succeeded'}));
-        return response.data;
+      const localToken = await AsyncStorage.getItem('dotbig_token');
+      const localId = await AsyncStorage.getItem('student_id');
+      if (localToken && localId) {
+        console.log('token', localToken);
+        console.log('id', localId);
+        const response = await api.lesson(localToken);
+        if (response.status === 200 || response.status === 201) {
+          dispatch(initializeApp());
+          return response.data;
+        }
+      }
+    } catch (e) {
+      return console.log('error', e);
+    }
+  },
+);
+export const setLessonProgress = createAsyncThunk<any, any>(
+  'mainReducer/getLesson',
+  async (params, {dispatch}) => {
+    console.log('setLesssonProgressReducer:', params);
+    try {
+      const localToken = await AsyncStorage.getItem('dotbig_token');
+      const localId = await AsyncStorage.getItem('student_id');
+      if (localToken && localId) {
+        console.log('token', localToken);
+        console.log('id', localId);
+        const response = await api.lesson(localToken);
+        if (response.status === 200 || response.status === 201) {
+          dispatch(initializeApp());
+          return response.data;
+        }
       }
     } catch (e) {
       return console.log('error', e);
@@ -74,7 +128,9 @@ const mainSlice = createSlice({
     isInitialized: false as boolean,
     status: 'idle' as RequestStatusType,
     login: {} as LoginResponseType,
-    register: {} as RegisterResponseType,
+    student_id: '' as string,
+    lesson_step: {} as LessonStepType,
+    course: {} as CourseType,
   },
   reducers: {
     setIsLoggedIn(state, action: PayloadAction<{value: boolean}>) {
@@ -83,6 +139,9 @@ const mainSlice = createSlice({
     setAppStatus(state, action: PayloadAction<RequestStatusType>) {
       state.status = action.payload;
     },
+    setLessonStep(state, action: PayloadAction<LessonStepType>) {
+      state.lesson_step = {...state, ...action.payload};
+    },
   },
   extraReducers: builder => {
     builder
@@ -90,19 +149,19 @@ const mainSlice = createSlice({
       .addCase(initializeApp.fulfilled, (state, action) => {
         state.isInitialized = true;
       })
-      // .addCase(setAppStatus.fulfilled, (state, action) => {
-      //   state.status = action.payload.status;
-      // })
+      .addCase(getRegister.fulfilled, (state, action) => {
+        state.student_id = action.payload ? action.payload : '';
+      })
+      .addCase(getLesson.fulfilled, (state, action) => {
+        state.course = action.payload ? action.payload : {};
+      })
       .addCase(getLogin.fulfilled, (state, action) => {
         state.login = action.payload ? action.payload : {};
-      })
-      .addCase(getRegister.fulfilled, (state, action) => {
-        state.register = action.payload ? action.payload : {};
       });
   },
 });
 export const mainReducer = mainSlice.reducer;
-export const {setIsLoggedIn} = mainSlice.actions;
+export const {setIsLoggedIn, setLessonStep} = mainSlice.actions;
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
 export type InitialStateType = {
@@ -113,6 +172,10 @@ export type InitialStateType = {
   // true когда приложение проинициализировалось (проверили юзера, настройки получили и т.д.)
   isInitialized: boolean;
 };
+
 const setAppStatus = createAction<{status: RequestStatusType}>(
   'mainReducer/setAppStatus',
 );
+// const setLessonsStep = createAction<{lesson_step: LessonStepType}>(
+//   'mainReducer/setAppStatus',
+// );

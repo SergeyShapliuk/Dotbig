@@ -27,5 +27,5 @@ const EllipseBonus = (props: SvgProps) => (
     </Defs>
   </Svg>
 );
-
-export default memo(EllipseBonus);
+const MemoEllipseBonus = memo(EllipseBonus);
+export default MemoEllipseBonus;

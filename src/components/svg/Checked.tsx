@@ -10,5 +10,5 @@ const Checked = (props: SvgProps) => (
     />
   </Svg>
 );
-
-export default memo(Checked);
+const MemoChecked = memo(Checked);
+export default MemoChecked;

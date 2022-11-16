@@ -41,5 +41,5 @@ const GroupBonus = (props: SvgProps) => (
     </G>
   </Svg>
 );
-
-export default memo(GroupBonus);
+const MemoGroupBonus = memo(GroupBonus);
+export default MemoGroupBonus;

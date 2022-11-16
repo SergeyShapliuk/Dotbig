@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   Image,
@@ -11,12 +11,11 @@ import {
   View,
   Text,
   StatusBar,
-  TextInput,
   Linking,
 } from 'react-native';
 import {DEVICE_WIDTH} from '../constans/constants';
 import {Images} from '../assets/image';
-import {useAppNavigation} from '../types/types';
+import {useLessonAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
 import VideoPlayer from '../components/VideoPlayers';
@@ -24,7 +23,11 @@ import VideoPlayer from '../components/VideoPlayers';
 import GradientText from '../common/utils/GradientText';
 // import CheckBox from '@react-native-community/checkbox';
 import CheckBoxTxt from '../components/CheckBox';
-import BottomTab1 from '../components/BottomTab1';
+import LessonTextInput from '../components/LessonTextInput';
+import {setLessonProgress, setLessonStep} from '../store/mainReducer';
+import {useAppDispatch, useAppSelector} from '../store/store';
+import BottomTab from '../components/BottomTab';
+
 // import {LinearGradientText} from 'react-native-linear-gradient-text';
 // import {useFocusEffect} from '@react-navigation/native';
 
@@ -36,32 +39,59 @@ const wait = (timeout: any) => {
 };
 
 const Lesson_2 = () => {
-  const navigation = useAppNavigation();
-  const [refreshing, setRefreshing] = useState(false);
+  const lessonNumber = 'Lesson2';
+  const dispatch = useAppDispatch();
+  const navigation = useLessonAppNavigation();
+  const [step1, setStep1] = useState<boolean>(false);
+  const [step2, setStep2] = useState<boolean>(false);
+  const [step3, setStep3] = useState<boolean>(false);
+  const [input, setInput] = useState<string>('');
+  const [progressBar, setProgressBar] = useState<number>(0);
+  const [disabledChecked, setDisabledChecked] = useState<boolean>(false);
+  const lessonStep = useAppSelector(state => state.mainReducer.lesson_step);
+  useEffect(() => {
+    const step = {
+      lesson: lessonNumber,
+      step: lessonStep.step,
+      isDone: false,
+    };
+    dispatch(setLessonStep(step));
+  }, []);
+  const onProgress = useCallback(
+    (isDone: boolean, taskNum: number) => {
+      if (isDone) {
+        setProgressBar(prevState => prevState + 100);
+      }
+      if (!isDone) {
+        setProgressBar(prevState => prevState - 100);
+      }
+      const params = {
+        lesson: lessonNumber,
+        step: taskNum,
+      };
+      dispatch(setLessonProgress(params));
+      // const step = {
+      //   lesson: lessonNumber,
+      //   step: taskNum,
+      //   isDone: taskNum === 3 ? isDone : false,
+      // };
+      // dispatch(setLessonStep(step));
+    },
+    [setProgressBar, dispatch],
+  );
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     StatusBar.setBarStyle('dark-content'); // 'light-content' is also available
-  //     StatusBar.setBackgroundColor('#FFFFFF'); //add color code
-  //     // StatusBar.setTranslucent(true);
-  //   }, []),
-  // );
-  // const play = useRef<any>();
-  // const onRefresh = async () => {
-  //   setRefreshing({
-  //     refreshing: true,
-  //     loading1: true,
-  //     loading2: true,
-  //     loading3: true,
-  //     loading4: true,
-  //   });
-  //   await this.onGetData();
-  //   this.setState({refreshing: false});
-  // };
+  console.log('props', navigation);
+  const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
+  // if (true) {
+  //   navigation.navigate({
+  //     key: 'Lesson_2-F8BBLOuKJCnjYvqdryicj',
+  //     params: 'Lesson_3',
+  //   });
+  // }
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -85,16 +115,18 @@ const Lesson_2 = () => {
             start={{x: 0.0, y: 0.25}}
             end={{x: 1.0, y: 1.0}}
             style={styles.linearGradient}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('RegisterScreen')}>
+            <TouchableOpacity>
               <Text style={styles.startRegisterText}>Кабинет</Text>
             </TouchableOpacity>
           </LinearGradient>
-          <View style={styles.burger}>
-            <View style={styles.burgerLine} />
-            <View style={styles.burgerLine} />
-            <View style={styles.burgerLine} />
-          </View>
+          <TouchableOpacity>
+            <View style={styles.burger}>
+              <View style={styles.burgerLine} />
+              <View style={styles.burgerLine} />
+              <View style={styles.burgerLine} />
+            </View>
+          </TouchableOpacity>
+
           {/*// )}*/}
         </View>
         <View style={styles.mainText}>
@@ -125,40 +157,68 @@ const Lesson_2 = () => {
             <Text style={styles.mainLessonText}>
               {message.Lesson_2.taskTitle}
             </Text>
-            <Image
-              source={Images.imgProgressBar1}
-              style={{width: 290, margin: 20}}
-            />
+            <View style={styles.progressBar}>
+              <View
+                style={{
+                  width: progressBar,
+                  backgroundColor: '#8046A2',
+                  borderRadius: 6,
+                }}
+              />
+            </View>
             <View style={styles.underLine} />
             <Text style={styles.mainLesson_step}>
               {message.Lesson_2.step_1}
             </Text>
-            <CheckBoxTxt />
+            <CheckBoxTxt
+              lessonNumber={lessonNumber}
+              taskNum={1}
+              item={step1}
+              onChange={setStep1}
+              onProgress={onProgress}
+            />
             <View style={styles.underLine} />
-            <View>
-              <Text style={styles.mainLesson_step}>
-                {message.Lesson_2.step_2}
-              </Text>
-              <View style={{height: 200, marginTop: 10, alignSelf: 'center'}}>
-                <VideoPlayer videoId={'744085304'} />
+            {step1 && (
+              <View>
+                <Text style={styles.mainLesson_step}>
+                  {message.Lesson_2.step_2}
+                </Text>
+                <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
+                  <VideoPlayer videoId={'744085304'} />
+                </View>
+                <CheckBoxTxt
+                  lessonNumber={lessonNumber}
+                  taskNum={2}
+                  item={step2}
+                  onChange={setStep2}
+                  onProgress={onProgress}
+                />
+                <View style={styles.underLine} />
               </View>
-              <CheckBoxTxt />
-              <View style={styles.underLine} />
-            </View>
-            <View>
-              <Text style={styles.mainLesson_step}>
-                {message.Lesson_2.step_3}
-              </Text>
-              <Text style={styles.taskText}>{message.Lesson_2.task}</Text>
-              <TextInput
-                placeholder={'$100 000'}
-                placeholderTextColor="#8A8C95"
-                style={styles.textInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              <CheckBoxTxt />
-            </View>
+            )}
+            {step2 && (
+              <View>
+                <Text style={styles.mainLesson_step}>
+                  {message.Lesson_2.step_3}
+                </Text>
+                <Text style={styles.taskText}>{message.Lesson_2.task}</Text>
+                <LessonTextInput
+                  input={input}
+                  placeholder={'$100 000'}
+                  setInput={setInput}
+                  disabledChecked={disabledChecked}
+                />
+                <CheckBoxTxt
+                  lessonNumber={lessonNumber}
+                  taskNum={3}
+                  item={step3}
+                  onChange={setStep3}
+                  onProgress={onProgress}
+                  input1={input}
+                  setDisabledChecked={setDisabledChecked}
+                />
+              </View>
+            )}
           </View>
         </View>
 
@@ -171,7 +231,7 @@ const Lesson_2 = () => {
         {/*  </Text>*/}
         {/*</View>*/}
       </ScrollView>
-      <BottomTab1 />
+      <BottomTab step={step3} screen={'Lesson_3'} />
     </SafeAreaView>
   );
 };
@@ -238,14 +298,6 @@ const styles = StyleSheet.create({
     padding: 3,
     color: '#FFFFFF',
   },
-  imgBanner: {
-    // width: DEVICE_WIDTH,
-    // height: DEVICE_HEIGHT,
-    // resizeMode: 'contain',
-    // position: 'absolute',
-    // top: 120,
-    // zIndex: -1,
-  },
   burger: {
     width: 45,
     height: 30,
@@ -265,6 +317,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     // zIndex: 3,
   },
+  imgBanner: {
+    // width: DEVICE_WIDTH,
+    // height: DEVICE_HEIGHT,
+    // resizeMode: 'contain',
+    // position: 'absolute',
+    // top: 120,
+    // zIndex: -1,
+  },
 
   mainText: {
     paddingHorizontal: 32,
@@ -280,10 +340,10 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     fontSize: 24,
     lineHeight: 34,
-    color: 'red',
+    color: 'black',
   },
   mainTextTitle: {
-    // fontFamily: 'Inter',
+    // fontFamily: 'Sniglet',
     // fontStyle: 'normal',
     fontWeight: '900',
     marginTop: 15,
@@ -315,13 +375,13 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
   },
   mainBonus: {
-    width: DEVICE_WIDTH - 65,
+    width: DEVICE_WIDTH - 60,
     height: 250,
     justifyContent: 'center',
     alignItems: 'center',
     // height: 50,
     // padding: 0,
-    top: 40,
+    marginTop: 30,
     borderWidth: 2,
     borderStyle: 'dashed',
     borderColor: '#D9D9D9',
@@ -332,7 +392,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 16,
     lineHeight: 27,
-    bottom: 30,
+    marginBottom: 30,
   },
   btnBonus: {
     width: 200,
@@ -340,8 +400,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imgBonus: {
-    bottom: 20,
+    marginBottom: 20,
     borderRadius: 6,
+  },
+  mainBonusDescription: {
+    textAlign: 'center',
+    color: '#0B1633',
   },
   mainBonusLink: {
     textAlign: 'center',
@@ -351,7 +415,7 @@ const styles = StyleSheet.create({
   mainLesson: {
     justifyContent: 'center',
     alignItems: 'center',
-    top: 50,
+    marginTop: 10,
   },
   mainLessonText: {
     // width: DEVICE_WIDTH - 50,
@@ -359,57 +423,48 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '900',
     fontSize: 20,
-    letterSpacing: 0.3,
     lineHeight: 27,
     color: '#0B1633',
-    marginHorizontal: 32,
     marginTop: 25,
   },
+  progressBar: {
+    width: DEVICE_WIDTH - 60,
+    flexDirection: 'row',
+    marginTop: 15,
+    height: 6,
+    borderRadius: 4,
+    backgroundColor: '#D9D9D9',
+  },
   underLine: {
-    width: DEVICE_WIDTH - 65,
+    width: DEVICE_WIDTH - 60,
     alignSelf: 'center',
     marginTop: 25,
     borderWidth: 1,
     borderColor: '#dfe0e1',
   },
   mainLesson_step: {
-    marginHorizontal: 32,
+    width: DEVICE_WIDTH - 60,
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '700',
     fontSize: 16,
     lineHeight: 27,
-    alignSelf: 'flex-start',
+    textAlign: 'left',
     color: '#0B1633',
     marginTop: 30,
   },
   taskText: {
-    marginHorizontal: 32,
-    marginTop: 30,
+    width: DEVICE_WIDTH - 60,
+    marginTop: 20,
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '400',
     fontSize: 16,
     lineHeight: 27,
+    textAlign: 'justify',
     color: '#61646F',
   },
-  textInput: {
-    width: DEVICE_WIDTH - 65,
-    // marginHorizontal: 132,
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // alignItems: 'flex-start',
-    alignSelf: 'center',
-    marginTop: 30,
-    paddingHorizontal: 15,
-    // height: 45,
-    backgroundColor: '#FCFCFD',
-    color: '#8A8C95',
-    fontFamily: 'Inter',
-    fontSize: 14,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-  },
+
   buttonStart: {
     width: DEVICE_WIDTH - 50,
     top: 110,
@@ -457,5 +512,15 @@ const styles = StyleSheet.create({
     color: '#A363A1',
     // flexWrap: 'wrap',
     textDecorationLine: 'underline',
+  },
+  notAuthText: {
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: '400',
+    fontSize: 16,
+    lineHeight: 27,
+    marginTop: 20,
+    textAlign: 'center',
+    color: '#E24D36',
   },
 });

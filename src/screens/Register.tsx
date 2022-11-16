@@ -18,13 +18,18 @@ import {
 import {useAppNavigation} from '../types/types';
 import {Images} from '../assets/image';
 import {message} from '../config/translations/resources/en';
-import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
+import {DEVICE_HEIGHT, DEVICE_WIDTH, HEIGHT} from '../constans/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal/dist/modal';
 import PhoneInput from 'react-native-phone-number-input';
-import {useAppDispatch} from '../store/store';
+import {useAppDispatch, useAppSelector} from '../store/store';
 import {getRegister} from '../store/mainReducer';
-import {validateEmail} from '../common/utils/validate';
+import {RegisterType} from '../api/api';
+import {
+  validateEmail,
+  validatePhone,
+  validateUserName,
+} from '../common/utils/validate';
 
 const Register = () => {
   const navigation = useAppNavigation();
@@ -32,98 +37,89 @@ const Register = () => {
   const [userName, setUserName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
-  const [formattedValue, setFormattedValue] = useState('');
+  const [formattedValue, setFormattedValue] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [modal, setModal] = useState<boolean>(false);
+  console.log('modal', modal);
+  console.log('modalOff', modal);
   // const phoneInput = useRef<PhoneInput>(null);
+  const student_id = useAppSelector(state => state.mainReducer.student_id);
 
   useEffect(() => {
+    if (student_id) {
+      console.log('stdisd:', student_id);
+      navigation.navigate('LoginScreen');
+      setModal(false);
+    }
+    navigation.addListener('focus', () => {
+      setModal(true);
+    });
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
-  }, []);
+  }, [student_id]);
   const handleBackPress = () => {
     onBack();
     return true;
   };
-  // const onRegister = () => {
-  //   navigation.navigate('RegisterScreen');
-  // };
+  const onLoginForm = () => {
+    navigation.navigate('LoginScreen');
+    setModal(false);
+  };
   const validate = () => {
-    validateEmail(email);
     if (!userName || userName.length === 0) {
-      Alert.alert('', message.loginScreen.usernameEmpty);
+      Alert.alert('', message.registerScreen.usernameEmpty);
       return false;
     }
     if (!email || email.length === 0) {
-      Alert.alert('', message.loginScreen.userEmailEmpty);
+      Alert.alert('', message.registerScreen.emailEmpty);
 
       return false;
     }
     if (!phone || phone.length === 0) {
-      Alert.alert('', message.loginScreen.passwordEmpty);
+      Alert.alert('', message.registerScreen.phoneEmpty);
       return false;
     }
     return true;
   };
-  // const onLogin = () => {
-  //   navigation.goBack();
-  //   navigation.navigate('LoginScreen');
-  // };
+
   const onLogin = async () => {
     console.log('reg');
     Keyboard.dismiss();
     if (!validate()) {
       return;
     }
-
-    const params = {
-      userName,
-      email,
-      formattedValue,
+    console.log('valireg2');
+    if (
+      !validateUserName(userName) ||
+      !validateEmail(email) ||
+      !validatePhone(phone)
+    ) {
+      return;
+    }
+    const userNames = userName.replace(/^ +| +$|( ) +/g, '$1').split(' ');
+    console.log('username', userNames);
+    const params: RegisterType = {
+      first_name: userNames[0],
+      last_name: userNames[1],
+      username: email,
+      email: email,
+      phone: formattedValue,
+      password: password,
     };
+
     console.log('reg', params);
     dispatch(getRegister(params));
-    //   const response = await Client.login(params);
-    //   dispatch(setLoading(false));
-    //
-    //   if (response && response?.token) {
-    //     dispatch(saveUserToken(response.token));
-    //     dispatch(setUser(response));
-    //     setToken(response.token);
-    //
-    //     const {navigation} = this.props;
-    //
-    //     if (navigation.state.params?.screen) {
-    //       const responseUser = await Client.getUser(response.user_id);
-    //       dispatch(setUser(responseUser));
-    //       if (
-    //         navigation.state.params?.screen === 'CoursesDetailsScreen' &&
-    //         navigation.state.params?.id
-    //       ) {
-    //         navigation.navigate('CoursesDetailsScreen', {
-    //           id: navigation.state.params.id,
-    //         });
-    //       } else {
-    //         navigation.navigate(navigation.state.params.screen);
-    //       }
-    //     } else {
-    //       dispatch(reset(['HomeTabScreen']));
-    //     }
-    //   } else if (response.code.includes('incorrect_password')) {
-    //     Alert.alert('', t('loginScreen.passwordNotCorrect'));
-    //   } else if (response.code.includes('invalid_username')) {
-    //     Alert.alert('', t('loginScreen.usernameNotCorrect'));
-    //   } else {
-    //     Alert.alert('', t('loginScreen.notFound'));
-    //   }
+    navigation.navigate('LoginScreen');
   };
   const onBack = () => {
     navigation.goBack();
   };
-
   return (
     <Modal
-      isVisible={true}
+      isVisible={modal}
       // animationIn={'fadeInDown'}
       // animationOut={'fadeOutDown'}
       // animationInTiming={700}
@@ -137,7 +133,7 @@ const Register = () => {
       // coverScreen={false}
       style={styles.modal}>
       <KeyboardAvoidingView
-        keyboardVerticalOffset={-270}
+        keyboardVerticalOffset={-110}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         contentContainerStyle={styles.container}>
         <View style={styles.headerModal}>
@@ -155,7 +151,7 @@ const Register = () => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{paddingBottom: 0}}>
+          contentContainerStyle={{paddingTop: 0}}>
           <View style={styles.modalContainer}>
             {/*<BlurView*/}
             {/*  style={styles.absolute}*/}
@@ -213,6 +209,36 @@ const Register = () => {
                   <Image source={Images.icEnterEmail} style={styles.icEnter} />
                 )}
               </View>
+              <Text style={styles.label}>Пароль</Text>
+              <View
+                style={[
+                  styles.viewInput,
+                  password.length > 0
+                    ? {borderWidth: 2, borderColor: '#000'}
+                    : {},
+                ]}>
+                <TextInput
+                  // ref={password}
+                  secureTextEntry={!showPassword}
+                  value={password}
+                  placeholder={message.loginScreen.passwordPlaceholder}
+                  placeholderTextColor="#9E9E9E"
+                  maxLength={15}
+                  style={styles.textInput}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onChangeText={value => setPassword(value)}
+                />
+                {password.length > 0 && (
+                  <TouchableOpacity
+                    onPress={() => setShowPassword(!showPassword)}>
+                    <Image
+                      source={Images.icEnterPassword}
+                      style={styles.icEnter}
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
               <Text style={styles.label}>Телефон</Text>
               <View
                 style={[
@@ -235,7 +261,7 @@ const Register = () => {
                   }}
                   withDarkTheme
                   withShadow
-                  autoFocus
+                  // autoFocus
                   codeTextStyle={{
                     fontSize: 14,
                     marginRight: 12,
@@ -264,6 +290,7 @@ const Register = () => {
                   <Image source={Images.iconPhone} style={styles.icEnter} />
                 )}
               </View>
+
               <LinearGradient
                 colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
                 start={{x: 0, y: 0.5}}
@@ -280,7 +307,7 @@ const Register = () => {
               <Text style={styles.txtQuestion}>
                 {message.registerScreen.question}
               </Text>
-              <TouchableOpacity onPress={onLogin}>
+              <TouchableOpacity onPress={onLoginForm}>
                 <Text
                   style={[
                     styles.textBottom,
@@ -303,7 +330,7 @@ export default Register;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // height: 200,
+    minHeight: '100%',
     // width: DEVICE_WIDTH,
     // justifyContent: 'center',
     // alignSelf: 'center',

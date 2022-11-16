@@ -1,9 +1,13 @@
 import {instance} from './instance';
 import {AxiosResponse} from 'axios';
+import {LessonsType} from '../types/types';
 
 export const api = {
-  autoLogin(url: string) {
-    return instance.get(`${url}`);
+  register(body: RegisterType) {
+    return instance.post<RegisterType, AxiosResponse<RegisterResponseType>>(
+      'wp-json/wp/v2/users/register',
+      body,
+    );
   },
   login(body: LoginType) {
     return instance.post<LoginType, AxiosResponse<LoginResponseType>>(
@@ -11,19 +15,25 @@ export const api = {
       body,
     );
   },
-  register(body: RegisterType) {
-    console.log('apiRegistr:', body);
-    return instance.post<RegisterType, AxiosResponse<RegisterResponseType>>(
-      'wp-json/wp/v2/users/register',
-      body,
+  forgot(email: ForgotType) {
+    console.log('forgot', email);
+    return instance.post<ForgotType, AxiosResponse<ForgotResponseType>>(
+      'wp-json/wp/v2/users/forgot-password',
+      email,
     );
   },
-  lesson(id: string) {
-    return instance.get(`wp-json/wp/v2/lp_course/${id}`);
+  lesson(token: string) {
+    console.log('token', token);
+    return instance.get('wp-json/wp/v2/lp_course/13203', {
+      withCredentials: false,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   },
 };
 export type LoginType = {
-  email: string;
+  username: string;
   password: string;
 };
 export type RegisterType = {
@@ -46,4 +56,17 @@ export type LoginResponseType = {
   user_email: string;
   user_nicename: string;
   user_display_name: string;
+};
+export type ForgotType = {
+  email: string;
+};
+export type ForgotResponseType = {
+  code: number;
+  success: boolean;
+  message: string;
+};
+export type LessonStepType = {
+  lesson: string;
+  step: number;
+  isDone: boolean;
 };

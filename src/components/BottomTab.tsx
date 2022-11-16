@@ -1,6 +1,5 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  BackHandler,
   Image,
   Platform,
   StyleSheet,
@@ -9,46 +8,74 @@ import {
   View,
 } from 'react-native';
 import {getStatusBarHeight} from '../common/deviceInfo';
-import {useAppNavigation} from '../types/types';
+
 // import {DEVICE_WIDTH} from '../constans/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import {Images} from '../assets/image';
+
+// import {useNavigationState} from '@react-navigation/native';
+import {useAppSelector} from '../store/store';
+import {useLessonAppNavigation} from '../types/types';
+// import {useLessonAppNavigation} from '../types/types';
 
 // const wait = (timeout: any) => {
 //   // @ts-ignore
 //   return new Promise(resolve => setTimeout(resolve, timeout));
 // };
-const BottomTab = () => {
-  const navigation = useAppNavigation();
-  const ref = useRef<any>(null);
+
+type BottomTabPropsType = {
+  step?: boolean;
+  screen?: string;
+};
+const BottomTab = ({step, screen}: BottomTabPropsType) => {
+  const lessonStep = useAppSelector(state => state.mainReducer.lesson_step);
+  const [disabled, setDisabled] = useState<boolean>(false);
+  const [falses, setfalses] = useState<boolean>(true);
+  const navigation = useLessonAppNavigation();
+  console.log('boooorrrwm', disabled);
+  // const {state, navigation, descriptors, NavigationContent} =
+  //   useNavigationBuilder(TabRouter, {
+  //     children: 'tab',
+  //     screenOptions: {},
+  //     initialRouteName: 'Lesson_1',
+  //   });
+  // const ref = useRef<any>(null);
   // const [refreshing, setRefreshing] = useState(false);
   // const onRefresh = useCallback(() => {
   //   setRefreshing(true);
   //   wait(2000).then(() => setRefreshing(false));
   // }, []);
   useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
-    };
-  }, []);
-  const handleBackPress = () => {
-    if (ref.current) {
-      ref.current.navigation.goBack();
-      return true;
-    } else {
-      return false;
-    }
-    // onBack();
-    // return true;
-  };
+    const disabledBtn = navigation.addListener('blur', () => {
+      setDisabled(true);
+    });
+    return disabledBtn;
+    // BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+    // return () => {
+    //   BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+    // };
+  }, [disabled, navigation]);
+  // const handleBackPress = () => {
+  //   if (ref.current) {
+  //     ref.current.navigation.goBack();
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  //   // onBack();
+  //   // return true;
+  // };
   const onBack = () => {
     navigation.goBack();
   };
 
   const next = () => {
-    navigation.navigate('Lessons', {screen: 'Lesson_2'});
+    if (step) {
+      // @ts-ignore
+      navigation.navigate(screen);
+    }
   };
+
   return (
     // <SafeAreaView style={styles.container}>
     //   <ScrollView
@@ -60,19 +87,40 @@ const BottomTab = () => {
     //     <View />
     //   </ScrollView>
     <View style={styles.tabContainer}>
-      <TouchableOpacity onPress={onBack}>
-        <LinearGradient
-          colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
-          start={{x: 0.0, y: 1.0}}
-          end={{x: 1.0, y: 1.0}}
-          style={styles.linearGradient}>
-          <View style={styles.button}>
-            <Image source={Images.diagonalArrow} style={styles.imgArrow} />
-            <Text style={[styles.btnText, {textAlign: 'left'}]}>
-              Предыдущий урок
-            </Text>
-          </View>
-        </LinearGradient>
+      <TouchableOpacity
+        onPress={onBack}
+        disabled={false}
+        activeOpacity={falses ? 0.2 : 0.1}>
+        {
+          <LinearGradient
+            colors={
+              falses
+                ? ['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']
+                : ['#909CA9', '#909CA9']
+            }
+            start={{x: 0.0, y: 1.0}}
+            end={{x: 1.0, y: 1.0}}
+            style={styles.linearGradient}>
+            <View style={styles.button}>
+              <Image
+                source={Images.diagonalArrow}
+                style={
+                  falses
+                    ? styles.imgArrow
+                    : [styles.imgArrow, {tintColor: '#909CA9'}]
+                }
+              />
+              <Text
+                style={
+                  falses
+                    ? [styles.btnText, {textAlign: 'left'}]
+                    : [styles.btnText, {textAlign: 'left', color: '#909CA9'}]
+                }>
+                Предыдущий урок
+              </Text>
+            </View>
+          </LinearGradient>
+        }
       </TouchableOpacity>
       <TouchableOpacity>
         <View style={styles.btnBroker}>
@@ -80,17 +128,29 @@ const BottomTab = () => {
           <Text style={styles.btnBrokerText}>Кабинет брокера</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={next}>
+      <TouchableOpacity onPress={next} disabled={!step}>
         <LinearGradient
-          colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
+          colors={
+            step
+              ? ['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']
+              : ['#909CA9', '#909CA9']
+          }
           start={{x: 0.0, y: 1.0}}
           end={{x: 1.0, y: 1.0}}
           style={styles.linearGradient}>
           <View style={styles.button}>
-            <Text style={[styles.btnText, {textAlign: 'right'}]}>
+            <Text
+              style={
+                step
+                  ? [styles.btnText, {textAlign: 'right'}]
+                  : [styles.btnText, {textAlign: 'right', color: '#909CA9'}]
+              }>
               Следующий урок
             </Text>
-            <Image source={Images.diagonalArrow} />
+            <Image
+              source={Images.diagonalArrow}
+              style={!step && {tintColor: '#909CA9'}}
+            />
           </View>
         </LinearGradient>
       </TouchableOpacity>
@@ -106,6 +166,7 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     // position: 'absolute',
+    // margin: 0,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',

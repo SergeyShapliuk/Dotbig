@@ -19,12 +19,12 @@ import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
 import VideoPlayers from '../components/VideoPlayers';
 import GradientText from '../common/utils/GradientText';
-import SvgComponent from '../components/svg/HeadphonesSvg';
-import GroupBonus from '../components/svg/GroupBonus';
-import EllipseBonus from '../components/svg/EllipseBonus';
-import EllipseBonus2 from '../components/svg/EllipseBonus2';
-import Vector from '../components/svg/Vector';
-import Vector1 from '../components/svg/Vector1';
+import MemoHeadphonesSvg from '../components/svg/HeadphonesSvg';
+import MemoEllipseBonus2 from '../components/svg/EllipseBonus2';
+import MemoEllipseBonus from '../components/svg/EllipseBonus';
+import MemoVector1 from '../components/svg/Vector1';
+import MemoVector from '../components/svg/Vector';
+import MemoGroupBonus from '../components/svg/GroupBonus';
 
 const wait = (timeout: any) => {
   // @ts-ignore
@@ -101,27 +101,27 @@ const Home = () => {
             <GradientText text={'БОНУС'} style={styles.textBonusMasked} />
             <Text style={styles.textBonus}>{message.home.overview.bonus}</Text>
           </View>
-          <TouchableOpacity onPress={() => {}}>
-            <View style={styles.bonusContent}>
-              <View style={styles.imgBonus}>
-                <SvgComponent style={{borderRadius: 3, overflow: 'hidden'}} />
-                <GroupBonus style={{position: 'absolute', top: 17}} />
-                <Vector style={{position: 'absolute', left: 12.5, top: 17}} />
-                <Vector1
-                  style={{position: 'absolute', right: 3.5, top: 23.5}}
-                />
-                <EllipseBonus
-                  style={{position: 'absolute', right: 0, top: 11}}
-                />
-                <EllipseBonus2
-                  style={{position: 'absolute', left: 8, top: 7}}
-                />
-              </View>
-              <Text style={styles.textBonusDescription}>
-                {message.home.overview.bonusText}
-              </Text>
+          <View style={styles.bonusContent}>
+            <View style={styles.imgBonus}>
+              <MemoHeadphonesSvg
+                style={{borderRadius: 3, overflow: 'hidden'}}
+              />
+              <MemoGroupBonus style={{position: 'absolute', top: 17}} />
+              <MemoVector style={{position: 'absolute', left: 12.5, top: 17}} />
+              <MemoVector1
+                style={{position: 'absolute', right: 3.5, top: 23.5}}
+              />
+              <MemoEllipseBonus
+                style={{position: 'absolute', right: 0, top: 11}}
+              />
+              <MemoEllipseBonus2
+                style={{position: 'absolute', left: 8, top: 7}}
+              />
             </View>
-          </TouchableOpacity>
+            <Text style={styles.textBonusDescription}>
+              {message.home.overview.bonusText}
+            </Text>
+          </View>
 
           <LinearGradient
             colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}

@@ -10,7 +10,7 @@ import Svg, {
 import {memo} from 'react';
 /* SVGR has dropped some elements not supported by react-native-svg: filter */
 
-const Rastangle = (props: SvgProps) => (
+const Rectangle = (props: SvgProps) => (
   <Svg width={63} height={64} fill="none" {...props}>
     <G filter="url(#a)">
       <Rect
@@ -47,5 +47,5 @@ const Rastangle = (props: SvgProps) => (
     </Defs>
   </Svg>
 );
-
-export default memo(Rastangle);
+const MemoRectangle = memo(Rectangle);
+export default MemoRectangle;

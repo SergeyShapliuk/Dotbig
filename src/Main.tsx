@@ -1,17 +1,33 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AppNavigator from './navigation/AppNavigator';
+import {useAppDispatch, useAppSelector} from './store/store';
+import {getLesson} from './store/mainReducer';
+import {HEIGHT, WIDTH} from './constans/constants';
+
+import LessonNavigation from './navigation/LessonNavigation';
 
 const Main = () => {
+  const dispatch = useAppDispatch();
+  const isLoggedIn = useAppSelector(state => state.mainReducer.isLoggedIn);
+  const isInitialized = useAppSelector(
+    state => state.mainReducer.isInitialized,
+  );
+
+  useEffect(() => {
+    dispatch(getLesson());
+  }, [dispatch]);
+
+  if (!isInitialized) {
+    return (
+      <View style={styles.overlay}>
+        <ActivityIndicator size="large" color="red" />
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
-      <AppNavigator />
-
-      {/*{common.loading && (*/}
-      {/*<View style={styles.overlay}>*/}
-      {/*<ActivityIndicator size="large" color="white" />*/}
-      {/*</View>*/}
-      {/*)}*/}
+      {!isLoggedIn ? <AppNavigator /> : <LessonNavigation />}
     </View>
   );
 };
@@ -22,12 +38,12 @@ const styles = StyleSheet.create({
     // backgroundColor: '#fff',
   },
   overlay: {
-    //   WIDTH,
-    //   HEIGHT,
-    //   backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    //   alignItems: 'center',
-    //   justifyContent: 'center',
-    //   zIndex: 0,
-    //   ...StyleSheet.absoluteFillObject,
+    width: WIDTH,
+    height: HEIGHT,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 0,
+    ...StyleSheet.absoluteFillObject,
   },
 });

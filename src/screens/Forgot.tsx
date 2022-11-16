@@ -11,6 +11,7 @@ import {
   TextInput,
   Platform,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import {useAppNavigation} from '../types/types';
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
@@ -18,9 +19,14 @@ import {Images} from '../assets/image';
 import Modal from 'react-native-modal/dist/modal';
 import {message} from '../config/translations/resources/en';
 import LinearGradient from 'react-native-linear-gradient';
+import {validateEmail} from '../common/utils/validate';
+import {ForgotType} from '../api/api';
+import {getForgot} from '../store/mainReducer';
+import {useAppDispatch} from '../store/store';
 
 const Forgot = () => {
   const navigation = useAppNavigation();
+  const dispatch = useAppDispatch();
   const [email, setEmail] = useState<string>('');
   const [hidden, setHidden] = useState<boolean>(false);
   useEffect(() => {
@@ -56,22 +62,25 @@ const Forgot = () => {
   const onBack = () => {
     navigation.goBack();
   };
-
+  const validate = () => {
+    if (!email || email.length === 0) {
+      Alert.alert('', message.forgotScreen.emailEmpty);
+      return false;
+    }
+    return true;
+  };
   const onSend = async () => {
-    //   if (!ValidateEmail(email)) {
-    //     Alert.alert('Please enter a valid email address');
-    //     return;
-    //   }
-    //   try {
-    //     const response = await Client.resetEmail({ user_login: email });
-    //     if (response.code === 'success') {
-    //       Alert.alert(response.message);
-    //     } else {
-    //       Alert.alert(response?.message);
-    //     }
-    //   } catch (e:string) {
-    //     Alert.alert(e);
-    //   }
+    Keyboard.dismiss();
+    if (!validate()) {
+      return;
+    }
+    if (!validateEmail(email)) {
+      return;
+    }
+    const params: ForgotType = {
+      email: email,
+    };
+    dispatch(getForgot(params));
   };
 
   return (
@@ -88,7 +97,7 @@ const Forgot = () => {
         contentContainerStyle={styles.container}>
         <View style={styles.headerModal}>
           <View style={styles.viewLogo}>
-            <Text style={styles.title}>{message.forgot.title}</Text>
+            <Text style={styles.title}>{message.forgotScreen.title}</Text>
           </View>
           <TouchableOpacity
             style={styles.imgButton}
@@ -132,7 +141,7 @@ const Forgot = () => {
                 style={styles.linearGradient}>
                 <TouchableOpacity onPress={onSend} style={styles.btnSubmit}>
                   <Text style={styles.txtSubmit}>
-                    {message.forgot.btnSubmit}
+                    {message.forgotScreen.btnSubmit}
                   </Text>
                   <Image source={Images.diagonalArrow} style={styles.arrow} />
                 </TouchableOpacity>

@@ -1,27 +1,23 @@
 import * as React from 'react';
 import Svg, {
-  Path,
+  SvgProps,
+  Ellipse,
   Defs,
   LinearGradient,
   Stop,
-  SvgProps,
 } from 'react-native-svg';
 import {memo} from 'react';
 
 const EllipseBonus2 = (props: SvgProps) => (
-  <Svg width={7} height={7} fill="none" {...props}>
-    <Path
-      opacity={0.6}
-      d="M6.338 3.382a2.86 2.86 0 1 1-5.721 0 2.86 2.86 0 0 1 5.721 0Z"
-      fill="url(#a)"
-    />
+  <Svg width={7} height={16} fill="none" {...props}>
+    <Ellipse cx={7.378} cy={8.012} rx={7.184} ry={7.105} fill="url(#a)" />
     <Defs>
       <LinearGradient
         id="a"
-        x1={0.617}
-        y1={0.521}
-        x2={7.523}
-        y2={3.424}
+        x1={0.194}
+        y1={0.907}
+        x2={17.479}
+        y2={8.253}
         gradientUnits="userSpaceOnUse">
         <Stop stopColor="#EAB9AC" />
         <Stop offset={0.297} stopColor="#D58EA4" />
@@ -32,4 +28,5 @@ const EllipseBonus2 = (props: SvgProps) => (
   </Svg>
 );
 
-export default memo(EllipseBonus2);
+const MemoEllipseBonus2 = memo(EllipseBonus2);
+export default MemoEllipseBonus2;

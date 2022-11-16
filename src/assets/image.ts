@@ -71,6 +71,7 @@ const iconCheckBox = require('./img/icon-tab/icon-checkBox.png');
 const iconChecked = require('./img/icon/icon-arrow_down.png');
 const iconScreen = require('./img/icon-tab/icon-screen.png');
 const imgVideoPreview = require('./img/preview.png');
+const imgRectangle = require('./img/icon-tab/Rectangle 251.jpg');
 
 const Images = {
   iconScreen,
@@ -132,6 +133,7 @@ const Images = {
   imgProgressBar2,
   imgProgressBar1,
   imgVideoPreview,
+  imgRectangle,
 };
 export const logo = [D, o, t, b, i, g];
 

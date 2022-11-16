@@ -10,5 +10,5 @@ const Button = (props: SvgProps) => (
     />
   </Svg>
 );
-
-export default memo(Button);
+const MemoButton = memo(Button);
+export default MemoButton;

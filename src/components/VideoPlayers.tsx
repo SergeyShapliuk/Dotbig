@@ -11,7 +11,7 @@ type VideoType = {
   videoId: string;
 };
 
-const VideoPlayers = ({videoId}: VideoType) => {
+const VideoPlayers = React.memo(({videoId}: VideoType) => {
   const [preview, setPreview] = useState<boolean>(false);
   console.log('preview', preview);
   const videoCallbacks = {
@@ -53,7 +53,7 @@ const VideoPlayers = ({videoId}: VideoType) => {
       />
     </>
   );
-};
+});
 export default VideoPlayers;
 const styles = StyleSheet.create({
   backgroundVideo: {

@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   Image,
@@ -11,12 +11,10 @@ import {
   View,
   Text,
   StatusBar,
-  TextInput,
   Linking,
 } from 'react-native';
 import {DEVICE_WIDTH} from '../constans/constants';
 import {Images} from '../assets/image';
-import {useAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
 import VideoPlayer from '../components/VideoPlayers';
@@ -24,7 +22,10 @@ import VideoPlayer from '../components/VideoPlayers';
 import GradientText from '../common/utils/GradientText';
 // import CheckBox from '@react-native-community/checkbox';
 import CheckBoxTxt from '../components/CheckBox';
-import BottomTab1 from '../components/BottomTab1';
+import {useAppDispatch, useAppSelector} from '../store/store';
+import {setLessonProgress, setLessonStep} from '../store/mainReducer';
+import BottomTab from '../components/BottomTab';
+
 // import {LinearGradientText} from 'react-native-linear-gradient-text';
 // import {useFocusEffect} from '@react-navigation/native';
 
@@ -36,9 +37,37 @@ const wait = (timeout: any) => {
 };
 
 const Lesson_4 = () => {
-  const navigation = useAppNavigation();
-  const [refreshing, setRefreshing] = useState(false);
+  const lessonNumber = 'Lesson4';
+  const dispatch = useAppDispatch();
 
+  const [refreshing, setRefreshing] = useState(false);
+  const [step1, setStep1] = useState<boolean>(false);
+  const [step2, setStep2] = useState<boolean>(false);
+  const lessonStep = useAppSelector(state => state.mainReducer.lesson_step);
+  useEffect(() => {
+    const step = {
+      lesson: lessonNumber,
+      step: lessonStep.step,
+      isDone: false,
+    };
+    dispatch(setLessonStep(step));
+  }, []);
+  const onProgress = useCallback(
+    (isDone: boolean, taskNum: number) => {
+      const params = {
+        lesson: lessonNumber,
+        step: taskNum,
+      };
+      dispatch(setLessonProgress(params));
+      // const step = {
+      //   lesson: lessonNumber,
+      //   step: taskNum,
+      //   isDone: true,
+      // };
+      // dispatch(setLessonStep(step));
+    },
+    [dispatch],
+  );
   // useFocusEffect(
   //   React.useCallback(() => {
   //     StatusBar.setBarStyle('dark-content'); // 'light-content' is also available
@@ -86,7 +115,8 @@ const Lesson_4 = () => {
             end={{x: 1.0, y: 1.0}}
             style={styles.linearGradient}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('RegisterScreen')}>
+            // onPress={() => navigation.navigate('RegisterScreen')}
+            >
               <Text style={styles.startRegisterText}>Кабинет</Text>
             </TouchableOpacity>
           </LinearGradient>
@@ -129,17 +159,29 @@ const Lesson_4 = () => {
             <Text style={styles.mainLesson_step}>
               {message.Lesson_4.step_1}
             </Text>
-            <CheckBoxTxt />
+            <CheckBoxTxt
+              taskNum={1}
+              item={step1}
+              onChange={setStep1}
+              onProgress={onProgress}
+            />
             <View style={styles.underLine} />
-            <View>
-              <Text style={styles.mainLesson_step}>
-                {message.Lesson_4.step_2}
-              </Text>
-              <View style={{height: 200, marginTop: 10, alignSelf: 'center'}}>
-                <VideoPlayer videoId={'744079947'} />
+            {step1 && (
+              <View>
+                <Text style={styles.mainLesson_step}>
+                  {message.Lesson_4.step_2}
+                </Text>
+                <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
+                  <VideoPlayer videoId={'744079947'} />
+                </View>
+                <CheckBoxTxt
+                  taskNum={2}
+                  item={step2}
+                  onChange={setStep2}
+                  onProgress={onProgress}
+                />
               </View>
-              <CheckBoxTxt />
-            </View>
+            )}
           </View>
         </View>
 
@@ -152,7 +194,7 @@ const Lesson_4 = () => {
         {/*  </Text>*/}
         {/*</View>*/}
       </ScrollView>
-      <BottomTab1 />
+      <BottomTab />
     </SafeAreaView>
   );
 };
@@ -296,13 +338,13 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
   },
   mainBonus: {
-    width: DEVICE_WIDTH - 65,
+    width: DEVICE_WIDTH - 60,
     height: 250,
     justifyContent: 'center',
     alignItems: 'center',
     // height: 50,
     // padding: 0,
-    top: 40,
+    marginTop: 30,
     borderWidth: 2,
     borderStyle: 'dashed',
     borderColor: '#D9D9D9',
@@ -313,7 +355,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 16,
     lineHeight: 27,
-    bottom: 30,
+    marginBottom: 30,
   },
   btnBonus: {
     width: 200,
@@ -321,7 +363,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imgBonus: {
-    bottom: 20,
+    marginBottom: 20,
     borderRadius: 6,
   },
   mainBonusLink: {
@@ -330,66 +372,48 @@ const styles = StyleSheet.create({
     color: '#9356A1',
   },
   mainLesson: {
+    marginHorizontal: 32,
     justifyContent: 'center',
     alignItems: 'center',
-    top: 50,
+    marginTop: 10,
   },
   mainLessonText: {
-    // width: DEVICE_WIDTH - 50,
+    // width: DEVICE_WIDTH - 60,
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '900',
     fontSize: 20,
-    letterSpacing: 0.3,
     lineHeight: 27,
     color: '#0B1633',
-    marginHorizontal: 32,
     marginTop: 25,
   },
   underLine: {
-    width: DEVICE_WIDTH - 65,
+    width: DEVICE_WIDTH - 60,
     alignSelf: 'center',
     marginTop: 25,
     borderWidth: 1,
     borderColor: '#dfe0e1',
   },
   mainLesson_step: {
-    marginHorizontal: 32,
+    width: DEVICE_WIDTH - 60,
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '700',
     fontSize: 16,
     lineHeight: 27,
-    alignSelf: 'flex-start',
+    textAlign: 'left',
     color: '#0B1633',
     marginTop: 30,
   },
   taskText: {
-    marginHorizontal: 32,
-    marginTop: 30,
+    width: DEVICE_WIDTH - 60,
+    marginTop: 20,
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '400',
     fontSize: 16,
     lineHeight: 27,
     color: '#61646F',
-  },
-  textInput: {
-    width: DEVICE_WIDTH - 65,
-    // marginHorizontal: 132,
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // alignItems: 'flex-start',
-    alignSelf: 'center',
-    marginTop: 30,
-    paddingHorizontal: 15,
-    // height: 45,
-    backgroundColor: '#FCFCFD',
-    color: '#8A8C95',
-    fontFamily: 'Inter',
-    fontSize: 14,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
   },
   buttonStart: {
     width: DEVICE_WIDTH - 50,

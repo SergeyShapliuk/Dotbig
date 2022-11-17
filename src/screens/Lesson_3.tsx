@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   Image,
@@ -22,9 +22,14 @@ import VideoPlayer from '../components/VideoPlayers';
 import GradientText from '../common/utils/GradientText';
 // import CheckBox from '@react-native-community/checkbox';
 import CheckBoxTxt from '../components/CheckBox';
-import {setLessonProgress, setLessonStep} from '../store/mainReducer';
+import {
+  setDisabled,
+  setLesson3Step,
+  setLessonProgress,
+  setRoute,
+} from '../store/mainReducer';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import BottomTab from '../components/BottomTab';
+import {useFocusEffect} from '@react-navigation/native';
 // import {LinearGradientText} from 'react-native-linear-gradient-text';
 // import {useFocusEffect} from '@react-navigation/native';
 
@@ -40,34 +45,35 @@ const Lesson_3 = () => {
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
   const [refreshing, setRefreshing] = useState(false);
-  const [step1, setStep1] = useState<boolean>(false);
-  const [step2, setStep2] = useState<boolean>(false);
-  const [step3, setStep3] = useState<boolean>(false);
   const [progressBar, setProgressBar] = useState<number>(0);
-  const lessonStep = useAppSelector(state => state.mainReducer.lesson_step);
-  useEffect(() => {
-    const step = {
-      lesson: lessonNumber,
-      step: lessonStep.step,
-      isDone: false,
-    };
-    dispatch(setLessonStep(step));
-  }, []);
+  const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
+
+  useFocusEffect(() => {
+    if (lesson3[2].isDone) {
+      dispatch(setDisabled({value: true}));
+      dispatch(setRoute({value: 'Lesson4'}));
+    }
+  });
   const onProgress = useCallback(
-    (isDone: boolean, taskNum: number) => {
+    (taskNum: number, isDone: boolean) => {
       if (isDone) {
         setProgressBar(prevState => prevState + 100);
       }
       if (!isDone) {
         setProgressBar(prevState => prevState - 100);
       }
+
+      const result = lesson3.map(m =>
+        m.step === taskNum ? {...m, isDone: isDone} : m,
+      );
+      dispatch(setLesson3Step(result));
       const params = {
         lesson: lessonNumber,
         step: taskNum,
       };
       dispatch(setLessonProgress(params));
     },
-    [setProgressBar, dispatch],
+    [lesson3, dispatch],
   );
 
   // useFocusEffect(
@@ -154,14 +160,9 @@ const Lesson_3 = () => {
             <Text style={styles.mainLesson_step}>
               {message.Lesson_3.step_1}
             </Text>
-            <CheckBoxTxt
-              taskNum={1}
-              item={step1}
-              onChange={setStep1}
-              onProgress={onProgress}
-            />
+            <CheckBoxTxt step={lesson3[0].step} onProgress={onProgress} />
             <View style={styles.underLine} />
-            {step1 && (
+            {lesson3[0].isDone && (
               <View>
                 <Text style={styles.mainLesson_step}>
                   {message.Lesson_3.step_2}
@@ -169,16 +170,11 @@ const Lesson_3 = () => {
                 <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
                   <VideoPlayer videoId={'758763314'} />
                 </View>
-                <CheckBoxTxt
-                  taskNum={2}
-                  item={step2}
-                  onChange={setStep2}
-                  onProgress={onProgress}
-                />
+                <CheckBoxTxt step={lesson3[1].step} onProgress={onProgress} />
                 <View style={styles.underLine} />
               </View>
             )}
-            {step2 && (
+            {lesson3[1].isDone && (
               <View>
                 <Text style={styles.mainLesson_step}>
                   {message.Lesson_3.step_3}
@@ -186,12 +182,7 @@ const Lesson_3 = () => {
                 <Text style={styles.taskText}>{message.Lesson_3.task_1}</Text>
                 <Text style={styles.taskText}>{message.Lesson_3.task_2}</Text>
                 <Text style={styles.taskText}>{message.Lesson_3.task_3}</Text>
-                <CheckBoxTxt
-                  taskNum={3}
-                  item={step3}
-                  onChange={setStep3}
-                  onProgress={onProgress}
-                />
+                <CheckBoxTxt step={lesson3[2].step} onProgress={onProgress} />
                 {/*<View style={styles.underLine} />*/}
               </View>
             )}
@@ -207,7 +198,6 @@ const Lesson_3 = () => {
         {/*  </Text>*/}
         {/*</View>*/}
       </ScrollView>
-      <BottomTab step={step3} screen={'Lesson_4'} />
     </SafeAreaView>
   );
 };

@@ -4,7 +4,6 @@ import MemoHeadphonesSvg2 from './svg/HeadphonesSvg2';
 import MemoGroupBonus from './svg/GroupBonus';
 import MemoVector from './svg/Vector';
 import MemoVector1 from './svg/Vector1';
-import MemoEllipseBonus from './svg/EllipseBonus';
 import MemoEllipseBonus2 from './svg/EllipseBonus2';
 import MemoRectangle251 from './svg/Rectangle251';
 import MemoEllipseButton from './svg/EllipseButton';
@@ -12,21 +11,29 @@ import MemoButton from './svg/Button';
 import MemoPause from './svg/Pause';
 import MemoEllipseBonus100 from './svg/EllipseBonus100';
 import MemoVector2 from './svg/Vector2';
+import Sound from 'react-native-sound';
+import {useFocusEffect} from '@react-navigation/native';
+
+Sound.setCategory('Playback');
+const music = new Sound(
+  'https://ru.dotbig.study/wp-content/uploads/2022/09/file_example_MP3_700KB.mp3',
+  Sound.MAIN_BUNDLE,
+);
 
 const BonusContentWithAudio = () => {
   const [play, setPlay] = useState<boolean>(false);
-  const music = [
-    {
-      title: 'death bed',
-      artist: 'Powfu',
-      artwork:
-        'https://images-na.ssl-images-amazon.com/images/I/A1LVEJikmZL._AC_SX425_.jpg',
-      url: 'https://ru.dotbig.study/wp-content/uploads/2022/09/file_example_MP3_700KB.mp3',
-      duration: 2 * 60 + 53,
-      id: '1',
-    },
-  ];
 
+  useFocusEffect(() => {
+    console.log('useefeeeeeeeeeeeee');
+    if (play) {
+      music.play();
+    } else {
+      music.pause();
+    }
+    return () => {
+      music.pause();
+    };
+  });
   const onPlay = () => {
     setPlay(!play);
   };
@@ -48,7 +55,7 @@ const BonusContentWithAudio = () => {
 
         {play && <MemoPause style={{position: 'absolute', zIndex: 1}} />}
         <TouchableOpacity
-          hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
+          hitSlop={{left: 15, right: 15, top: 15, bottom: 15}}
           onPress={onPlay}
           style={styles.button}>
           <MemoEllipseButton style={{left: 0.5}} />

@@ -15,17 +15,17 @@ export type RootStackParamList = {
 };
 export type tabBars = {
   Burger: undefined;
-  Lesson_1: undefined;
-  Lesson_2: undefined;
-  Lesson_3: undefined;
-  Lesson_4: undefined;
+  Lesson1: undefined;
+  Lesson2: undefined;
+  Lesson3: undefined;
+  Lesson4: undefined;
   // Lesson: NavigatorScreenParams<NestedStack>;
 };
 export type NestedStack = {
-  Lesson_1: undefined;
-  Lesson_2: undefined;
-  Lesson_3: undefined;
-  Lesson_4: undefined;
+  Lesson1: undefined;
+  Lesson2: undefined;
+  Lesson3: undefined;
+  Lesson4: undefined;
   Burger: undefined;
 };
 export type UseNavigationType = NavigationProp<RootStackParamList>;

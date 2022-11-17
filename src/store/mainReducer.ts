@@ -129,7 +129,29 @@ const mainSlice = createSlice({
     status: 'idle' as RequestStatusType,
     login: {} as LoginResponseType,
     student_id: '' as string,
-    lesson_step: {} as LessonStepType,
+    disabled: false as boolean,
+    route: '' as string,
+    lesson_1: [
+      {step: 1, isDone: false},
+      {step: 2, isDone: false},
+      {step: 3, isDone: false},
+      {step: 4, isDone: false},
+    ] as LessonStepType[],
+    lesson_2: [
+      {step: 1, isDone: false},
+      {step: 2, isDone: false},
+      {step: 3, isDone: false},
+    ] as LessonStepType[],
+    lesson_3: [
+      {step: 1, isDone: false},
+      {step: 2, isDone: false},
+      {step: 3, isDone: false},
+    ] as LessonStepType[],
+    lesson_4: [
+      {step: 1, isDone: false},
+      {step: 2, isDone: false},
+    ] as LessonStepType[],
+    // lesson_step: [] as LessonStepType[],
     course: {} as CourseType,
   },
   reducers: {
@@ -139,8 +161,23 @@ const mainSlice = createSlice({
     setAppStatus(state, action: PayloadAction<RequestStatusType>) {
       state.status = action.payload;
     },
-    setLessonStep(state, action: PayloadAction<LessonStepType>) {
-      state.lesson_step = {...state, ...action.payload};
+    setDisabled(state, action: PayloadAction<{value: boolean}>) {
+      state.disabled = action.payload.value;
+    },
+    setRoute(state, action: PayloadAction<{value: string}>) {
+      state.route = action.payload.value;
+    },
+    setLesson1Step(state, action: PayloadAction<LessonStepType[]>) {
+      state.lesson_1 = action.payload;
+    },
+    setLesson2Step(state, action: PayloadAction<LessonStepType[]>) {
+      state.lesson_2 = action.payload;
+    },
+    setLesson3Step(state, action: PayloadAction<LessonStepType[]>) {
+      state.lesson_3 = action.payload;
+    },
+    setLesson4Step(state, action: PayloadAction<LessonStepType[]>) {
+      state.lesson_4 = action.payload;
     },
   },
   extraReducers: builder => {
@@ -161,7 +198,15 @@ const mainSlice = createSlice({
   },
 });
 export const mainReducer = mainSlice.reducer;
-export const {setIsLoggedIn, setLessonStep} = mainSlice.actions;
+export const {
+  setIsLoggedIn,
+  setDisabled,
+  setRoute,
+  setLesson1Step,
+  setLesson2Step,
+  setLesson3Step,
+  setLesson4Step,
+} = mainSlice.actions;
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
 export type InitialStateType = {

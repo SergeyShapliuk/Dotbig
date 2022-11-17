@@ -6,6 +6,7 @@ import {Images} from '../assets/image';
 import EllipseButton from './svg/EllipseButton';
 import Rastangle from './svg/Rastangle';
 import Button from './svg/Button';
+// import {useFocusEffect} from '@react-navigation/native';
 
 type VideoType = {
   videoId: string;
@@ -13,6 +14,16 @@ type VideoType = {
 
 const VideoPlayers = React.memo(({videoId}: VideoType) => {
   const [preview, setPreview] = useState<boolean>(false);
+  // useFocusEffect(() => {
+  //   if (play) {
+  //     music.play();
+  //   } else {
+  //     music.pause();
+  //   }
+  //   return () => {
+  //     music.pause();
+  //   };
+  // });
   console.log('preview', preview);
   const videoCallbacks = {
     timeupdate: (data: any) => console.log('timeupdate: ', data),

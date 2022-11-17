@@ -1,6 +1,5 @@
 import {instance} from './instance';
 import {AxiosResponse} from 'axios';
-import {LessonsType} from '../types/types';
 
 export const api = {
   register(body: RegisterType) {
@@ -66,7 +65,9 @@ export type ForgotResponseType = {
   message: string;
 };
 export type LessonStepType = {
-  lesson: string;
   step: number;
   isDone: boolean;
 };
+// export type LessonStepType = {
+//   [key: string]: StepType[];
+// };

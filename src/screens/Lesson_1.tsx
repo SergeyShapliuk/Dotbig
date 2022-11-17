@@ -25,9 +25,13 @@ import LessonTextInput from '../components/LessonTextInput';
 import BonusContentWithAudio from '../components/BonusContentWithAudio';
 import Header from '../components/Header';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {setLessonProgress, setLessonStep} from '../store/mainReducer';
-import {useLessonAppNavigation} from '../types/types';
-import BottomTab from '../components/BottomTab';
+import {
+  setDisabled,
+  setLesson1Step,
+  setLessonProgress,
+  setRoute,
+} from '../store/mainReducer';
+import {useFocusEffect} from '@react-navigation/native';
 
 const wait = (timeout: any) => {
   // @ts-ignore
@@ -37,18 +41,13 @@ const wait = (timeout: any) => {
 const Lesson_1 = () => {
   const lessonNumber = 'Lesson1';
   const dispatch = useAppDispatch();
-  const navigation = useLessonAppNavigation();
-  const lessonStep = useAppSelector(state => state.mainReducer.lesson_step);
-  const coures = useAppSelector(state => state.mainReducer.course);
-  console.log('lessonStep', lessonStep);
-  console.log(
-    'coures',
-    coures.lessons.map(m => m.acf.steps.map(f => f.status)),
-  );
-  const [step1, setStep1] = useState<boolean>(false);
-  const [step2, setStep2] = useState<boolean>(false);
-  const [step3, setStep3] = useState<boolean>(false);
-  const [step4, setStep4] = useState<boolean>(false);
+  const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
+  const des = useAppSelector(state => state.mainReducer.disabled);
+  console.log('reduserLesson1', des);
+
+  // const [steps1, setSteps1] = useState<boolean>(false);
+  // const [step2, setStep2] = useState<boolean>(false);
+  // const [step3, setStep3] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState(false);
   const [progressBar, setProgressBar] = useState<number>(0);
   const [input1, setInput1] = useState<string>('');
@@ -61,28 +60,33 @@ const Lesson_1 = () => {
       BackHandler.removeEventListener('hardwareBackPress', () => true);
     };
   }, []);
-
+  useFocusEffect(() => {
+    if (lesson1[3].isDone) {
+      console.log('lesson1useeffect');
+      dispatch(setDisabled({value: true}));
+      dispatch(setRoute({value: 'Lesson2'}));
+    }
+  });
   const onProgress = useCallback(
-    (isDone: boolean, taskNum: number) => {
+    (taskNum: number, isDone: boolean) => {
       if (isDone) {
-        setProgressBar(prevState => prevState + 73.5);
+        setProgressBar(prevState => prevState + 75);
       }
       if (!isDone) {
-        setProgressBar(prevState => prevState - 73.5);
+        setProgressBar(prevState => prevState - 75);
       }
+
+      const result = lesson1.map(m =>
+        m.step === taskNum ? {...m, isDone: isDone} : m,
+      );
+      dispatch(setLesson1Step(result));
       const params = {
         lesson: lessonNumber,
         step: taskNum,
       };
       dispatch(setLessonProgress(params));
-      // const step = {
-      //   lesson: lessonNumber,
-      //   step: taskNum,
-      //   isDone: taskNum === 4 ? isDone : false,
-      // };
-      // dispatch(setLessonStep(step));
     },
-    [setProgressBar, dispatch],
+    [lesson1, dispatch],
   );
 
   const onRefresh = useCallback(() => {
@@ -156,16 +160,10 @@ const Lesson_1 = () => {
             <Text style={styles.mainLesson_step}>
               {message.Lesson_1.step_1}
             </Text>
-            <CheckBoxTxt
-              lessonNumber={lessonNumber}
-              taskNum={1}
-              item={step1}
-              onChange={setStep1}
-              onProgress={onProgress}
-            />
+            <CheckBoxTxt step={lesson1[0].step} onProgress={onProgress} />
             <View style={styles.underLine} />
 
-            {step1 && (
+            {lesson1[0].isDone && (
               <View>
                 <Text style={styles.mainLesson_step}>
                   {message.Lesson_1.step_2}
@@ -173,17 +171,11 @@ const Lesson_1 = () => {
                 <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
                   <VideoPlayer videoId={'741155263'} />
                 </View>
-                <CheckBoxTxt
-                  lessonNumber={lessonNumber}
-                  taskNum={2}
-                  item={step2}
-                  onChange={setStep2}
-                  onProgress={onProgress}
-                />
+                <CheckBoxTxt step={lesson1[1].step} onProgress={onProgress} />
                 <View style={styles.underLine} />
               </View>
             )}
-            {step2 && (
+            {lesson1[1].isDone && (
               <View>
                 <Text style={styles.mainLesson_step}>
                   {message.Lesson_1.step_3}
@@ -211,10 +203,7 @@ const Lesson_1 = () => {
                   disabledChecked={disabledChecked}
                 />
                 <CheckBoxTxt
-                  lessonNumber={lessonNumber}
-                  taskNum={3}
-                  item={step3}
-                  onChange={setStep3}
+                  step={lesson1[2].step}
                   onProgress={onProgress}
                   input1={input1}
                   input2={input2}
@@ -224,18 +213,12 @@ const Lesson_1 = () => {
                 <View style={styles.underLine} />
               </View>
             )}
-            {step3 && (
+            {lesson1[2].isDone && (
               <View>
                 <Text style={styles.mainLesson_step}>
                   {message.Lesson_1.step_4}
                 </Text>
-                <CheckBoxTxt
-                  lessonNumber={lessonNumber}
-                  taskNum={4}
-                  item={step4}
-                  onChange={setStep4}
-                  onProgress={onProgress}
-                />
+                <CheckBoxTxt step={lesson1[3].step} onProgress={onProgress} />
               </View>
             )}
             {/*<Text style={styles.notAuthText}>{message.alert.notAuth}</Text>*/}
@@ -251,7 +234,7 @@ const Lesson_1 = () => {
         {/*  </Text>*/}
         {/*</View>*/}
       </ScrollView>
-      <BottomTab step={step4} screen={'Lesson_2'} />
+      {/*<BottomTab step={false} screen={'Lesson_2'} />*/}
     </SafeAreaView>
   );
 };

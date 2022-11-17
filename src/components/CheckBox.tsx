@@ -4,35 +4,32 @@ import LinearGradient from 'react-native-linear-gradient';
 import Checked from './svg/Checked';
 
 type CheckBoxTxtType = {
-  lessonNumber?: string;
-  taskNum: number;
-  item: boolean;
-  onChange: (item: boolean) => void;
-  onProgress: (item: boolean, taskNum: number) => void;
+  stepNumber?: any;
+  step: number;
+  isDone?: boolean;
+  onChange?: (item: boolean) => void;
+  onProgress: (taskNum: number, value: boolean) => void;
   input1?: string;
   input2?: string;
   input3?: string;
   setDisabledChecked?: (item: boolean) => void;
 };
 const CheckBoxTxt = ({
-  lessonNumber,
-  taskNum,
-  item,
-  onChange,
-  onProgress,
+  step,
   input1,
   input2,
   input3,
+  onProgress,
   setDisabledChecked,
 }: CheckBoxTxtType) => {
+  console.log('cheeebhcbj', step);
+  const [checked, setChecked] = useState<boolean>(false);
   const [disabledBtn, setDisabledBtn] = useState<boolean>(false);
 
   const validate = () => {
-    if (lessonNumber || lessonNumber) {
-      if (taskNum === 3 && !input1 && !input2 && !input3) {
-        if (setDisabledChecked) {
-          setDisabledChecked(true);
-        }
+    if (step === 3 && !input1 && !input2 && !input3) {
+      if (setDisabledChecked) {
+        setDisabledChecked(true);
         return false;
       }
     }
@@ -42,8 +39,8 @@ const CheckBoxTxt = ({
     if (!validate()) {
       return;
     }
-    onChange(true);
-    onProgress(!item, taskNum);
+    setChecked(!checked);
+    onProgress(step, !checked);
     setDisabledBtn(true);
   };
   return (
@@ -69,7 +66,7 @@ const CheckBoxTxt = ({
       </TouchableOpacity>
       <Text
         style={
-          !item ? styles.checkText : [styles.checkText, {color: '#61646F'}]
+          !checked ? styles.checkText : [styles.checkText, {color: '#61646F'}]
         }>
         Готово
       </Text>

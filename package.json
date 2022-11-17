@@ -42,6 +42,7 @@
     "react-native-screens": "^3.18.2",
     "react-native-simple-audio-player": "^1.0.2",
     "react-native-slider": "^0.11.0",
+    "react-native-sound": "^0.11.2",
     "react-native-svg": "^13.5.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-video": "^5.2.1",

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   Image,
@@ -23,7 +23,7 @@ import GradientText from '../common/utils/GradientText';
 // import CheckBox from '@react-native-community/checkbox';
 import CheckBoxTxt from '../components/CheckBox';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {setLessonProgress, setLessonStep} from '../store/mainReducer';
+import {setLesson4Step, setLessonProgress} from '../store/mainReducer';
 import BottomTab from '../components/BottomTab';
 
 // import {LinearGradientText} from 'react-native-linear-gradient-text';
@@ -41,33 +41,24 @@ const Lesson_4 = () => {
   const dispatch = useAppDispatch();
 
   const [refreshing, setRefreshing] = useState(false);
-  const [step1, setStep1] = useState<boolean>(false);
-  const [step2, setStep2] = useState<boolean>(false);
-  const lessonStep = useAppSelector(state => state.mainReducer.lesson_step);
-  useEffect(() => {
-    const step = {
-      lesson: lessonNumber,
-      step: lessonStep.step,
-      isDone: false,
-    };
-    dispatch(setLessonStep(step));
-  }, []);
+
+  const lesson4 = useAppSelector(state => state.mainReducer.lesson_4);
+
   const onProgress = useCallback(
-    (isDone: boolean, taskNum: number) => {
+    (taskNum: number, isDone: boolean) => {
+      const result = lesson4.map(m =>
+        m.step === taskNum ? {...m, isDone: isDone} : m,
+      );
+      dispatch(setLesson4Step(result));
       const params = {
         lesson: lessonNumber,
         step: taskNum,
       };
       dispatch(setLessonProgress(params));
-      // const step = {
-      //   lesson: lessonNumber,
-      //   step: taskNum,
-      //   isDone: true,
-      // };
-      // dispatch(setLessonStep(step));
     },
-    [dispatch],
+    [lesson4, dispatch],
   );
+
   // useFocusEffect(
   //   React.useCallback(() => {
   //     StatusBar.setBarStyle('dark-content'); // 'light-content' is also available
@@ -159,14 +150,9 @@ const Lesson_4 = () => {
             <Text style={styles.mainLesson_step}>
               {message.Lesson_4.step_1}
             </Text>
-            <CheckBoxTxt
-              taskNum={1}
-              item={step1}
-              onChange={setStep1}
-              onProgress={onProgress}
-            />
+            <CheckBoxTxt step={lesson4[0].step} onProgress={onProgress} />
             <View style={styles.underLine} />
-            {step1 && (
+            {lesson4[0].isDone && (
               <View>
                 <Text style={styles.mainLesson_step}>
                   {message.Lesson_4.step_2}
@@ -174,12 +160,7 @@ const Lesson_4 = () => {
                 <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
                   <VideoPlayer videoId={'744079947'} />
                 </View>
-                <CheckBoxTxt
-                  taskNum={2}
-                  item={step2}
-                  onChange={setStep2}
-                  onProgress={onProgress}
-                />
+                <CheckBoxTxt step={lesson4[1].step} onProgress={onProgress} />
               </View>
             )}
           </View>
@@ -194,7 +175,6 @@ const Lesson_4 = () => {
         {/*  </Text>*/}
         {/*</View>*/}
       </ScrollView>
-      <BottomTab />
     </SafeAreaView>
   );
 };

@@ -4,10 +4,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import Checked from './svg/Checked';
 
 type CheckBoxTxtType = {
-  stepNumber?: any;
   step: number;
   isDone?: boolean;
-  onChange?: (item: boolean) => void;
   onProgress: (taskNum: number, value: boolean) => void;
   input1?: string;
   input2?: string;
@@ -16,6 +14,7 @@ type CheckBoxTxtType = {
 };
 const CheckBoxTxt = ({
   step,
+  isDone,
   input1,
   input2,
   input3,
@@ -24,7 +23,6 @@ const CheckBoxTxt = ({
 }: CheckBoxTxtType) => {
   console.log('cheeebhcbj', step);
   const [checked, setChecked] = useState<boolean>(false);
-  const [disabledBtn, setDisabledBtn] = useState<boolean>(false);
 
   const validate = () => {
     if (step === 3 && !input1 && !input2 && !input3) {
@@ -41,7 +39,6 @@ const CheckBoxTxt = ({
     }
     setChecked(!checked);
     onProgress(step, !checked);
-    setDisabledBtn(true);
   };
   return (
     <View style={styles.container}>
@@ -49,13 +46,13 @@ const CheckBoxTxt = ({
         hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
         style={styles.btn}
         onPress={onCheck}
-        disabled={disabledBtn}>
+        disabled={isDone}>
         <LinearGradient
           colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
           start={{x: 0.0, y: 0.5}}
           end={{x: 1, y: 1}}
           style={styles.linearGradient}>
-          {!disabledBtn ? (
+          {!isDone ? (
             <View style={styles.unChecked} />
           ) : (
             <View style={styles.checked}>

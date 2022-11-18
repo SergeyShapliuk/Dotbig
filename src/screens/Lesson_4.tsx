@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import LinearGradient from 'react-native-linear-gradient';
+// import LinearGradient from 'react-native-linear-gradient';
 import {
   Image,
   Platform,
@@ -24,7 +24,8 @@ import GradientText from '../common/utils/GradientText';
 import CheckBoxTxt from '../components/CheckBox';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {setLesson4Step, setLessonProgress} from '../store/mainReducer';
-import BottomTab from '../components/BottomTab';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import Header from '../components/Header';
 
 // import {LinearGradientText} from 'react-native-linear-gradient-text';
 // import {useFocusEffect} from '@react-navigation/native';
@@ -37,7 +38,7 @@ const wait = (timeout: any) => {
 };
 
 const Lesson_4 = () => {
-  const lessonNumber = 'Lesson4';
+  const lessonNumber = 'lesson4';
   const dispatch = useAppDispatch();
 
   const [refreshing, setRefreshing] = useState(false);
@@ -45,12 +46,14 @@ const Lesson_4 = () => {
   const lesson4 = useAppSelector(state => state.mainReducer.lesson_4);
 
   const onProgress = useCallback(
-    (taskNum: number, isDone: boolean) => {
+    async (taskNum: number, isDone: boolean) => {
       const result = lesson4.map(m =>
         m.step === taskNum ? {...m, isDone: isDone} : m,
       );
       dispatch(setLesson4Step(result));
+      const email = await AsyncStorage.getItem('dotbig_email');
       const params = {
+        email: email,
         lesson: lessonNumber,
         step: taskNum,
       };
@@ -59,25 +62,6 @@ const Lesson_4 = () => {
     [lesson4, dispatch],
   );
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     StatusBar.setBarStyle('dark-content'); // 'light-content' is also available
-  //     StatusBar.setBackgroundColor('#FFFFFF'); //add color code
-  //     // StatusBar.setTranslucent(true);
-  //   }, []),
-  // );
-  // const play = useRef<any>();
-  // const onRefresh = async () => {
-  //   setRefreshing({
-  //     refreshing: true,
-  //     loading1: true,
-  //     loading2: true,
-  //     loading3: true,
-  //     loading4: true,
-  //   });
-  //   await this.onGetData();
-  //   this.setState({refreshing: false});
-  // };
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
@@ -96,28 +80,7 @@ const Lesson_4 = () => {
         }
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 70}}>
-        <View style={styles.header}>
-          <Image source={Images.iconHome} />
-          <Text style={styles.logoText}>Dotbig</Text>
-          {/*{!user?.token && (*/}
-          <LinearGradient
-            colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
-            start={{x: 0.0, y: 0.25}}
-            end={{x: 1.0, y: 1.0}}
-            style={styles.linearGradient}>
-            <TouchableOpacity
-            // onPress={() => navigation.navigate('RegisterScreen')}
-            >
-              <Text style={styles.startRegisterText}>Кабинет</Text>
-            </TouchableOpacity>
-          </LinearGradient>
-          <View style={styles.burger}>
-            <View style={styles.burgerLine} />
-            <View style={styles.burgerLine} />
-            <View style={styles.burgerLine} />
-          </View>
-          {/*// )}*/}
-        </View>
+        {/*<Header />*/}
         <View style={styles.mainText}>
           <GradientText text={'Урок 4'} style={styles.mainTextTitleMasked} />
           <Text style={styles.mainTextTitle}>{message.Lesson_4.title}</Text>
@@ -150,7 +113,11 @@ const Lesson_4 = () => {
             <Text style={styles.mainLesson_step}>
               {message.Lesson_4.step_1}
             </Text>
-            <CheckBoxTxt step={lesson4[0].step} onProgress={onProgress} />
+            <CheckBoxTxt
+              step={lesson4[0].step}
+              isDone={lesson4[0].isDone}
+              onProgress={onProgress}
+            />
             <View style={styles.underLine} />
             {lesson4[0].isDone && (
               <View>
@@ -160,7 +127,11 @@ const Lesson_4 = () => {
                 <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
                   <VideoPlayer videoId={'744079947'} />
                 </View>
-                <CheckBoxTxt step={lesson4[1].step} onProgress={onProgress} />
+                <CheckBoxTxt
+                  step={lesson4[1].step}
+                  isDone={lesson4[1].isDone}
+                  onProgress={onProgress}
+                />
               </View>
             )}
           </View>
@@ -184,7 +155,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
+    // paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
   play: {
     position: 'absolute',

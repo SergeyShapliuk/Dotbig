@@ -14,20 +14,25 @@ import BurgerButton from './BurgerButton';
 
 const Header = () => {
   return (
-    <View style={styles.header}>
-      <Image source={Images.iconHome} />
-      <Text style={styles.logoText}>Dotbig</Text>
-      {/*{!user?.token && (*/}
-      <LinearGradient
-        colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
-        start={{x: 0.0, y: 0.25}}
-        end={{x: 1.0, y: 1.0}}
-        style={styles.linearGradient}>
-        <TouchableOpacity>
-          <Text style={styles.startRegisterText}>Кабинет</Text>
-        </TouchableOpacity>
-      </LinearGradient>
-      <BurgerButton />
+    <View style={{marginTop: 40}}>
+      <View style={styles.header}>
+        <Image source={Images.iconHome} />
+        <Text style={styles.logoText}>Dotbig</Text>
+        {/*{!user?.token && (*/}
+        <LinearGradient
+          colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
+          start={{x: 0.0, y: 0.25}}
+          end={{x: 1.0, y: 1.0}}
+          style={styles.linearGradient}>
+          <TouchableOpacity>
+            <Text style={styles.startRegisterText}>Кабинет</Text>
+          </TouchableOpacity>
+        </LinearGradient>
+        <BurgerButton
+        // activated={activated}
+        // onHandlerActivated={onHandlerActivated}
+        />
+      </View>
     </View>
   );
 };

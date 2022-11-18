@@ -29,9 +29,11 @@ import {
   setDisabled,
   setLesson1Step,
   setLessonProgress,
+  setProgressBar1,
   setRoute,
 } from '../store/mainReducer';
 import {useFocusEffect} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const wait = (timeout: any) => {
   // @ts-ignore
@@ -39,11 +41,11 @@ const wait = (timeout: any) => {
 };
 
 const Lesson_1 = () => {
-  const lessonNumber = 'Lesson1';
+  const lessonNumber = 'lesson1';
   const dispatch = useAppDispatch();
   const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
-  const des = useAppSelector(state => state.mainReducer.disabled);
-  console.log('reduserLesson1', des);
+  const progressBar1 = useAppSelector(state => state.mainReducer.progressBar1);
+  console.log('reduserLesson1', lesson1);
 
   // const [steps1, setSteps1] = useState<boolean>(false);
   // const [step2, setStep2] = useState<boolean>(false);
@@ -60,6 +62,7 @@ const Lesson_1 = () => {
       BackHandler.removeEventListener('hardwareBackPress', () => true);
     };
   }, []);
+  console.log('progressbar', progressBar1);
   useFocusEffect(() => {
     if (lesson1[3].isDone) {
       console.log('lesson1useeffect');
@@ -68,25 +71,28 @@ const Lesson_1 = () => {
     }
   });
   const onProgress = useCallback(
-    (taskNum: number, isDone: boolean) => {
+    async (taskNum: number, isDone: boolean) => {
       if (isDone) {
         setProgressBar(prevState => prevState + 75);
+        dispatch(setProgressBar1({value: progressBar}));
       }
       if (!isDone) {
         setProgressBar(prevState => prevState - 75);
+        dispatch(setProgressBar1({value: progressBar}));
       }
-
       const result = lesson1.map(m =>
         m.step === taskNum ? {...m, isDone: isDone} : m,
       );
       dispatch(setLesson1Step(result));
+      const email = await AsyncStorage.getItem('dotbig_email');
       const params = {
+        email: email,
         lesson: lessonNumber,
         step: taskNum,
       };
       dispatch(setLessonProgress(params));
     },
-    [lesson1, dispatch],
+    [lesson1, dispatch, progressBar],
   );
 
   const onRefresh = useCallback(() => {
@@ -107,7 +113,7 @@ const Lesson_1 = () => {
         }
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 60}}>
-        <Header />
+        {/*<Header />*/}
         <View style={styles.mainText}>
           <GradientText text={'Урок 1'} style={styles.mainTextTitleMasked} />
           <Text style={styles.mainTextTitle}>{message.Lesson_1.title}</Text>
@@ -150,7 +156,7 @@ const Lesson_1 = () => {
             <View style={styles.progressBar}>
               <View
                 style={{
-                  width: progressBar,
+                  width: progressBar1,
                   backgroundColor: '#8046A2',
                   borderRadius: 6,
                 }}
@@ -160,7 +166,11 @@ const Lesson_1 = () => {
             <Text style={styles.mainLesson_step}>
               {message.Lesson_1.step_1}
             </Text>
-            <CheckBoxTxt step={lesson1[0].step} onProgress={onProgress} />
+            <CheckBoxTxt
+              step={lesson1[0].step}
+              isDone={lesson1[0].isDone}
+              onProgress={onProgress}
+            />
             <View style={styles.underLine} />
 
             {lesson1[0].isDone && (
@@ -171,7 +181,11 @@ const Lesson_1 = () => {
                 <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
                   <VideoPlayer videoId={'741155263'} />
                 </View>
-                <CheckBoxTxt step={lesson1[1].step} onProgress={onProgress} />
+                <CheckBoxTxt
+                  step={lesson1[1].step}
+                  isDone={lesson1[1].isDone}
+                  onProgress={onProgress}
+                />
                 <View style={styles.underLine} />
               </View>
             )}
@@ -204,6 +218,7 @@ const Lesson_1 = () => {
                 />
                 <CheckBoxTxt
                   step={lesson1[2].step}
+                  isDone={lesson1[2].isDone}
                   onProgress={onProgress}
                   input1={input1}
                   input2={input2}
@@ -218,7 +233,11 @@ const Lesson_1 = () => {
                 <Text style={styles.mainLesson_step}>
                   {message.Lesson_1.step_4}
                 </Text>
-                <CheckBoxTxt step={lesson1[3].step} onProgress={onProgress} />
+                <CheckBoxTxt
+                  step={lesson1[3].step}
+                  isDone={lesson1[3].isDone}
+                  onProgress={onProgress}
+                />
               </View>
             )}
             {/*<Text style={styles.notAuthText}>{message.alert.notAuth}</Text>*/}
@@ -244,7 +263,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
+    // paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
   play: {
     position: 'absolute',

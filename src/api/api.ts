@@ -30,6 +30,13 @@ export const api = {
       },
     });
   },
+  stepLesson(body: LessonProgressType) {
+    console.log('stepLessonApi', body);
+    return instance.post<
+      LessonProgressType,
+      AxiosResponse<LessonProgressResponseType>
+    >('wp-json/wp/v2/users/set-step-endpoint', body);
+  },
 };
 export type LoginType = {
   username: string;
@@ -68,6 +75,13 @@ export type LessonStepType = {
   step: number;
   isDone: boolean;
 };
-// export type LessonStepType = {
-//   [key: string]: StepType[];
-// };
+export type LessonProgressType = {
+  email: string;
+  lesson: string;
+  step: number;
+};
+export type LessonProgressResponseType = {
+  code: number;
+  success: boolean;
+  message: string;
+};

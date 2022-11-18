@@ -1,30 +1,47 @@
 import React, {useRef, useState} from 'react';
 import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useLessonAppNavigation} from '../types/types';
+import {useAppDispatch, useAppSelector} from '../store/store';
+import {setBurgerList} from '../store/mainReducer';
 
-const BurgerButton = () => {
+type BurgerButtonPropsType = {
+  activated?: boolean;
+  onHandlerActivated?: (value: boolean) => void;
+};
+const BurgerButton = ({}: // activated,
+// onHandlerActivated,
+BurgerButtonPropsType) => {
+  const dispatch = useAppDispatch();
   const navigation = useLessonAppNavigation();
   const [activated, setActivated] = useState(false);
+  const burgerList = useAppSelector(state => state.mainReducer.burgerList);
   const animation = useRef(new Animated.Value(0)).current;
   const rotation = useRef(new Animated.Value(0)).current;
+  console.log('burgerBUtton', burgerList);
 
   const startAnimation = () => {
     const toValue = activated ? 0 : 1;
     setActivated(!activated);
-
     Animated.parallel([
       Animated.timing(animation, {
         toValue,
-        duration: 300,
+        duration: 500,
         useNativeDriver: false,
       }),
       Animated.spring(rotation, {
         toValue,
-        friction: 2,
+        friction: 20,
         tension: 140,
         useNativeDriver: false,
       }),
-    ]).start();
+    ]).start(() => {
+      if (!activated) {
+        navigation.navigate('Burger', {screen: 'Burgers'});
+      }
+      if (activated) {
+        navigation.goBack();
+      }
+    });
   };
   const animatedStyles = {
     lower: {
@@ -72,12 +89,7 @@ const BurgerButton = () => {
       }),
     },
   };
-  if (activated) {
-    navigation.navigate('Burger');
-  }
-  if (!activated) {
-    // navigation.goBack();
-  }
+
   return (
     <View>
       <TouchableOpacity onPress={startAnimation}>

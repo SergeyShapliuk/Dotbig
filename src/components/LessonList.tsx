@@ -3,7 +3,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Images} from '../assets/image';
 import {DEVICE_WIDTH} from '../constans/constants';
-import { useLessonAppNavigation } from "../types/types";
+import {useLessonAppNavigation} from '../types/types';
+import CheckLesson from './svg/CheckLesson';
+import {useAppSelector} from '../store/store';
 
 type LessonListType = {
   numberLesson: string;
@@ -11,6 +13,7 @@ type LessonListType = {
   title: string;
   description: string;
   lesson: string;
+  currentRouteName?: string;
 };
 const LessonList = ({
   numberLesson,
@@ -18,23 +21,32 @@ const LessonList = ({
   title,
   description,
   lesson,
+  currentRouteName,
 }: LessonListType) => {
   const navigation = useLessonAppNavigation();
-  const onLessonHandler = () => {
+  const checkLesson = useAppSelector(state => state.mainReducer.disabled);
 
+  const onLessonHandler = () => {
+    // @ts-ignore
+    navigation.navigate(lesson);
   };
   return (
     <View>
       <TouchableOpacity onPress={onLessonHandler} style={{marginTop: 30}}>
         <LinearGradient
-          colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
+          colors={
+            currentRouteName === lesson
+              ? ['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']
+              : ['rgba(97,100,111,0)', 'rgba(97,100,111,0)']
+          }
           start={{x: 0.0, y: 1.0}}
           end={{x: 1.0, y: 1.0}}
           style={styles.linearGradient}>
           <View style={styles.lessonBtn}>
             <View style={styles.mainTitle}>
               <Text style={styles.title}>{numberLesson}</Text>
-              <Text style={styles.title}>{minutes}</Text>
+              <Text style={[styles.title, {marginLeft: 60}]}>{minutes}</Text>
+              {checkLesson && <CheckLesson style={{top: 20}} />}
             </View>
             <View style={styles.underLine} />
             <View style={styles.descriptionBlock}>
@@ -71,6 +83,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 16,
     lineHeight: 27,
+    marginTop: 20,
     color: '#0B1633',
   },
   lessonBtn: {

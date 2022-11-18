@@ -26,10 +26,13 @@ import {
   setDisabled,
   setLesson3Step,
   setLessonProgress,
+  setProgressBar3,
   setRoute,
 } from '../store/mainReducer';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {useFocusEffect} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import Header from '../components/Header';
 // import {LinearGradientText} from 'react-native-linear-gradient-text';
 // import {useFocusEffect} from '@react-navigation/native';
 
@@ -41,12 +44,13 @@ const wait = (timeout: any) => {
 };
 
 const Lesson_3 = () => {
-  const lessonNumber = 'Lesson3';
+  const lessonNumber = 'lesson3';
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
   const [refreshing, setRefreshing] = useState(false);
   const [progressBar, setProgressBar] = useState<number>(0);
   const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
+  const progressBar3 = useAppSelector(state => state.mainReducer.progressBar3);
 
   useFocusEffect(() => {
     if (lesson3[2].isDone) {
@@ -55,25 +59,29 @@ const Lesson_3 = () => {
     }
   });
   const onProgress = useCallback(
-    (taskNum: number, isDone: boolean) => {
+    async (taskNum: number, isDone: boolean) => {
       if (isDone) {
         setProgressBar(prevState => prevState + 100);
+        dispatch(setProgressBar3({value: progressBar}));
       }
       if (!isDone) {
         setProgressBar(prevState => prevState - 100);
+        dispatch(setProgressBar3({value: progressBar}));
       }
 
       const result = lesson3.map(m =>
         m.step === taskNum ? {...m, isDone: isDone} : m,
       );
       dispatch(setLesson3Step(result));
+      const email = await AsyncStorage.getItem('dotbig_email');
       const params = {
+        email: email,
         lesson: lessonNumber,
         step: taskNum,
       };
       dispatch(setLessonProgress(params));
     },
-    [lesson3, dispatch],
+    [lesson3, dispatch, progressBar],
   );
 
   // useFocusEffect(
@@ -113,27 +121,7 @@ const Lesson_3 = () => {
         }
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 70}}>
-        <View style={styles.header}>
-          <Image source={Images.iconHome} />
-          <Text style={styles.logoText}>Dotbig</Text>
-          {/*{!user?.token && (*/}
-          <LinearGradient
-            colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
-            start={{x: 0.0, y: 0.25}}
-            end={{x: 1.0, y: 1.0}}
-            style={styles.linearGradient}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('RegisterScreen')}>
-              <Text style={styles.startRegisterText}>Кабинет</Text>
-            </TouchableOpacity>
-          </LinearGradient>
-
-          <View style={styles.burger}>
-            <View style={styles.burgerLine} />
-            <View style={styles.burgerLine} />
-            <View style={styles.burgerLine} />
-          </View>
-        </View>
+        {/*<Header />*/}
         <View style={styles.mainText}>
           <GradientText text={'Урок 3'} style={styles.mainTextTitleMasked} />
           <Text style={styles.mainTextTitle}>{message.Lesson_3.title}</Text>
@@ -150,7 +138,7 @@ const Lesson_3 = () => {
             <View style={styles.progressBar}>
               <View
                 style={{
-                  width: progressBar,
+                  width: progressBar3,
                   backgroundColor: '#8046A2',
                   borderRadius: 6,
                 }}
@@ -160,7 +148,11 @@ const Lesson_3 = () => {
             <Text style={styles.mainLesson_step}>
               {message.Lesson_3.step_1}
             </Text>
-            <CheckBoxTxt step={lesson3[0].step} onProgress={onProgress} />
+            <CheckBoxTxt
+              step={lesson3[0].step}
+              isDone={lesson3[0].isDone}
+              onProgress={onProgress}
+            />
             <View style={styles.underLine} />
             {lesson3[0].isDone && (
               <View>
@@ -170,7 +162,11 @@ const Lesson_3 = () => {
                 <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
                   <VideoPlayer videoId={'758763314'} />
                 </View>
-                <CheckBoxTxt step={lesson3[1].step} onProgress={onProgress} />
+                <CheckBoxTxt
+                  step={lesson3[1].step}
+                  isDone={lesson3[1].isDone}
+                  onProgress={onProgress}
+                />
                 <View style={styles.underLine} />
               </View>
             )}
@@ -182,7 +178,11 @@ const Lesson_3 = () => {
                 <Text style={styles.taskText}>{message.Lesson_3.task_1}</Text>
                 <Text style={styles.taskText}>{message.Lesson_3.task_2}</Text>
                 <Text style={styles.taskText}>{message.Lesson_3.task_3}</Text>
-                <CheckBoxTxt step={lesson3[2].step} onProgress={onProgress} />
+                <CheckBoxTxt
+                  step={lesson3[2].step}
+                  isDone={lesson3[2].isDone}
+                  onProgress={onProgress}
+                />
                 {/*<View style={styles.underLine} />*/}
               </View>
             )}
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
+    // paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
   play: {
     position: 'absolute',

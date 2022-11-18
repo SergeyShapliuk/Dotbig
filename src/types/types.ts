@@ -1,6 +1,7 @@
 import {
   createNavigationContainerRef,
   NavigationProp,
+  NavigatorScreenParams,
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
@@ -13,31 +14,26 @@ export type RootStackParamList = {
   ForgotScreen: undefined;
   // Lessons: NavigatorScreenParams<NestedStack>;
 };
-export type tabBars = {
-  Burger: undefined;
+export type LessonStackList = {
   Lesson1: undefined;
   Lesson2: undefined;
   Lesson3: undefined;
   Lesson4: undefined;
+  Burger: NavigatorScreenParams<BurgerStack>;
   // Lesson: NavigatorScreenParams<NestedStack>;
 };
-export type NestedStack = {
-  Lesson1: undefined;
-  Lesson2: undefined;
-  Lesson3: undefined;
-  Lesson4: undefined;
-  Burger: undefined;
+export type BurgerStack = {
+  Burgers: undefined;
 };
+
 export type UseNavigationType = NavigationProp<RootStackParamList>;
-export type UseLessonNavigationType = NavigationProp<tabBars>;
-// export type UseLessonNavigationType = CompositeScreenProps<
-//   BottomTabScreenProps<tabBars, 'Lesson'>,
-//   StackScreenProps<NestedStack>
-// >;
+export type UseLessonNavigationType = NavigationProp<LessonStackList>;
+
 export const useAppNavigation = () => useNavigation<UseNavigationType>();
 export const useLessonAppNavigation = () =>
   useNavigation<UseLessonNavigationType>();
-export const useLessonAppRef = () => createNavigationContainerRef<tabBars>();
+export const useLessonAppRef = () =>
+  createNavigationContainerRef<LessonStackList>();
 export const useLessonAppRoute = () => useRoute();
 
 export type LessonBtn = {

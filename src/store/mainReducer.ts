@@ -30,10 +30,6 @@ export const getRegister = createAsyncThunk<any, any>(
       if (response.status === 200 || response.status === 201) {
         dispatch(setAppStatus({status: 'succeeded'}));
         console.log('autologinREducer', response.data.student_id);
-        await AsyncStorage.setItem(
-          'student_id',
-          response.data.student_id.toString(),
-        );
         Alert.alert('', response.data.message);
 
         return response.data.student_id;
@@ -53,6 +49,7 @@ export const getLogin = createAsyncThunk<any, any>(
       if (response.status === 200 || response.status === 201) {
         dispatch(setAppStatus({status: 'succeeded'}));
         await AsyncStorage.setItem('dotbig_token', response.data.token);
+        await AsyncStorage.setItem('dotbig_email', response.data.user_email);
         dispatch(setIsLoggedIn({value: true}));
         return response.data;
       }
@@ -83,10 +80,8 @@ export const getLesson = createAsyncThunk<any>(
   async (_, {dispatch}) => {
     try {
       const localToken = await AsyncStorage.getItem('dotbig_token');
-      const localId = await AsyncStorage.getItem('student_id');
-      if (localToken && localId) {
+      if (localToken) {
         console.log('token', localToken);
-        console.log('id', localId);
         const response = await api.lesson(localToken);
         if (response.status === 200 || response.status === 201) {
           dispatch(initializeApp());
@@ -100,19 +95,13 @@ export const getLesson = createAsyncThunk<any>(
 );
 export const setLessonProgress = createAsyncThunk<any, any>(
   'mainReducer/getLesson',
-  async (params, {dispatch}) => {
+  async params => {
     console.log('setLesssonProgressReducer:', params);
     try {
-      const localToken = await AsyncStorage.getItem('dotbig_token');
-      const localId = await AsyncStorage.getItem('student_id');
-      if (localToken && localId) {
-        console.log('token', localToken);
-        console.log('id', localId);
-        const response = await api.lesson(localToken);
-        if (response.status === 200 || response.status === 201) {
-          dispatch(initializeApp());
-          return response.data;
-        }
+      const response = await api.stepLesson(params);
+      if (response.status === 200 || response.status === 201) {
+        console.log('responseStep', response.data.message);
+        return response.data;
       }
     } catch (e) {
       return console.log('error', e);
@@ -131,6 +120,10 @@ const mainSlice = createSlice({
     student_id: '' as string,
     disabled: false as boolean,
     route: '' as string,
+    progressBar1: 0 as number,
+    progressBar2: 0 as number,
+    progressBar3: 0 as number,
+    burgerList: false,
     lesson_1: [
       {step: 1, isDone: false},
       {step: 2, isDone: false},
@@ -151,7 +144,6 @@ const mainSlice = createSlice({
       {step: 1, isDone: false},
       {step: 2, isDone: false},
     ] as LessonStepType[],
-    // lesson_step: [] as LessonStepType[],
     course: {} as CourseType,
   },
   reducers: {
@@ -166,6 +158,18 @@ const mainSlice = createSlice({
     },
     setRoute(state, action: PayloadAction<{value: string}>) {
       state.route = action.payload.value;
+    },
+    setBurgerList(state, action: PayloadAction<{value: boolean}>) {
+      state.burgerList = action.payload.value;
+    },
+    setProgressBar1(state, action: PayloadAction<{value: number}>) {
+      state.progressBar1 = action.payload.value;
+    },
+    setProgressBar2(state, action: PayloadAction<{value: number}>) {
+      state.progressBar1 = action.payload.value;
+    },
+    setProgressBar3(state, action: PayloadAction<{value: number}>) {
+      state.progressBar1 = action.payload.value;
     },
     setLesson1Step(state, action: PayloadAction<LessonStepType[]>) {
       state.lesson_1 = action.payload;
@@ -202,6 +206,10 @@ export const {
   setIsLoggedIn,
   setDisabled,
   setRoute,
+  setBurgerList,
+  setProgressBar1,
+  setProgressBar2,
+  setProgressBar3,
   setLesson1Step,
   setLesson2Step,
   setLesson3Step,

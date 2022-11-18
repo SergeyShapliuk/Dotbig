@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
   Platform,
   SafeAreaView,
@@ -14,8 +14,29 @@ import {getStatusBarHeight} from '../common/deviceInfo';
 import {DEVICE_WIDTH} from '../constans/constants';
 import Header from '../components/Header';
 import LessonList from '../components/LessonList';
+import {
+  useFocusEffect,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
+import {useLessonAppNavigation} from '../types/types';
+import {useAppDispatch} from '../store/store';
+import {setBurgerList} from '../store/mainReducer';
 
 const Burger = () => {
+  const dispatch = useAppDispatch();
+
+  const routeNameRef = useRef();
+  const navigation = useLessonAppNavigation();
+  const navigationRef = useNavigationContainerRef();
+  const routeName = navigation.getState().routes;
+  const currentRouteName = routeName[routeName.length - 2].name;
+  useFocusEffect(() => {
+    dispatch(setBurgerList({value: true}));
+    return () => {
+      dispatch(setBurgerList({value: false}));
+    };
+  });
+  console.log('routeName', currentRouteName);
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -30,7 +51,7 @@ const Burger = () => {
         // }
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 150}}>
-        <Header />
+        {/*<Header />*/}
         <View style={styles.mainText}>
           <View style={styles.mainTitle}>
             <Text style={styles.title}>Обучение</Text>
@@ -41,7 +62,8 @@ const Burger = () => {
             minutes={'38 минут'}
             title={message.Lesson_1.title}
             description={message.Lesson_1.description}
-            lesson={'Lesson_1'}
+            lesson={'Lesson1'}
+            currentRouteName={currentRouteName}
           />
 
           <LessonList
@@ -49,18 +71,24 @@ const Burger = () => {
             minutes={'40 мин'}
             title={message.Lesson_2.title}
             description={message.Lesson_2.description}
+            lesson={'Lesson2'}
+            currentRouteName={currentRouteName}
           />
           <LessonList
             numberLesson={'Урок 3'}
             minutes={'57 мин'}
             title={message.Lesson_3.title}
             description={message.Lesson_3.description}
+            lesson={'Lesson3'}
+            currentRouteName={currentRouteName}
           />
           <LessonList
             numberLesson={'Урок 4'}
             minutes={'59 мин'}
             title={message.Lesson_4.title}
             description={message.Lesson_4.description}
+            lesson={'Lesson4'}
+            currentRouteName={currentRouteName}
           />
         </View>
 
@@ -82,7 +110,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
+    // paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
 
   mainText: {

@@ -9,6 +9,9 @@ import BottomTab from '../components/BottomTab';
 import {LessonStackList} from '../types/types';
 import Header from '../components/Header';
 import {useAppSelector} from '../store/store';
+import PopUpCongrats from '../screens/PopUpCongrats';
+import PopUpActive from '../screens/PopUpActive';
+import PopUpNext from '../screens/PopUpNext';
 
 // import BottomTab from '../components/BottomTab';
 
@@ -27,14 +30,25 @@ const LessonNavigation = () => {
           headerShown: false,
           animationEnabled: false,
           // cardStyle: {backgroundColor: 'transparent'},
-          // presentation: 'card',
+          // presentation: 'transparentModal',
         }}>
         <Stack.Screen name={'Lesson1'} component={Lesson_1} />
         <Stack.Screen name={'Lesson2'} component={Lesson_2} />
         <Stack.Screen name={'Lesson3'} component={Lesson_3} />
         <Stack.Screen name={'Lesson4'} component={Lesson_4} />
-        <Stack.Screen name={'Burger'} component={Burger} />
-        {/*<Stack.Screen name={'tabBar'} component={BottomTabNavigation} />*/}
+        <Stack.Group
+          // navigationKey={burgerList ? 'user' : 'guest'}
+          screenOptions={{
+            headerShown: false,
+            animationEnabled: false,
+            cardStyle: {backgroundColor: 'transparent'},
+            presentation: 'transparentModal',
+          }}>
+          <Stack.Screen name={'PopUpNext'} component={PopUpNext} />
+          <Stack.Screen name={'PopUpActive'} component={PopUpActive} />
+          <Stack.Screen name={'PopUpCongrats'} component={PopUpCongrats} />
+          <Stack.Screen name={'Burger'} component={Burger} />
+        </Stack.Group>
       </Stack.Navigator>
       {!burgerList && <BottomTab />}
     </>

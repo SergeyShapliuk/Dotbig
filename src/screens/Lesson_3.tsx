@@ -1,20 +1,18 @@
 import React, {useCallback, useState} from 'react';
-import LinearGradient from 'react-native-linear-gradient';
+
 import {
-  Image,
   Platform,
   RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
   View,
   Text,
   StatusBar,
 } from 'react-native';
 import {DEVICE_WIDTH} from '../constans/constants';
-import {Images} from '../assets/image';
-import {useAppNavigation} from '../types/types';
+
+import {useLessonAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
 import VideoPlayer from '../components/VideoPlayers';
@@ -46,9 +44,8 @@ const wait = (timeout: any) => {
 const Lesson_3 = () => {
   const lessonNumber = 'lesson3';
   const dispatch = useAppDispatch();
-  const navigation = useAppNavigation();
+  const navigation = useLessonAppNavigation();
   const [refreshing, setRefreshing] = useState(false);
-  const [progressBar, setProgressBar] = useState<number>(0);
   const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
   const progressBar3 = useAppSelector(state => state.mainReducer.progressBar3);
 
@@ -61,27 +58,24 @@ const Lesson_3 = () => {
   const onProgress = useCallback(
     async (taskNum: number, isDone: boolean) => {
       if (isDone) {
-        setProgressBar(prevState => prevState + 100);
-        dispatch(setProgressBar3({value: progressBar}));
+        dispatch(setProgressBar3({value: 100}));
+        const result = lesson3.map(m =>
+          m.step === taskNum ? {...m, isDone: isDone} : m,
+        );
+        dispatch(setLesson3Step(result));
+        const email = await AsyncStorage.getItem('dotbig_email');
+        const params = {
+          email: email,
+          lesson: lessonNumber,
+          step: taskNum,
+        };
+        dispatch(setLessonProgress(params));
       }
-      if (!isDone) {
-        setProgressBar(prevState => prevState - 100);
-        dispatch(setProgressBar3({value: progressBar}));
+      if (lesson3[2].step === taskNum) {
+        navigation.navigate('PopUpNext');
       }
-
-      const result = lesson3.map(m =>
-        m.step === taskNum ? {...m, isDone: isDone} : m,
-      );
-      dispatch(setLesson3Step(result));
-      const email = await AsyncStorage.getItem('dotbig_email');
-      const params = {
-        email: email,
-        lesson: lessonNumber,
-        step: taskNum,
-      };
-      dispatch(setLessonProgress(params));
     },
-    [lesson3, dispatch, progressBar],
+    [dispatch, lesson3, navigation],
   );
 
   // useFocusEffect(

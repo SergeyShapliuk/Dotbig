@@ -14,7 +14,7 @@ import BurgerButton from './BurgerButton';
 
 const Header = () => {
   return (
-    <View style={{marginTop: 40}}>
+    <View style={{marginTop: 50}}>
       <View style={styles.header}>
         <Image source={Images.iconHome} />
         <Text style={styles.logoText}>Dotbig</Text>
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   logoText: {
     fontSize: 25,
     fontWeight: '900',
-    letterSpacing: -2,
+    letterSpacing: -1,
     marginRight: 70,
     bottom: 2,
     left: 5,

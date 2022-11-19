@@ -26,16 +26,21 @@ import {setDisabled} from '../store/mainReducer';
 
 const BottomTab = () => {
   const dispatch = useAppDispatch();
-  const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
-  const lesson2 = useAppSelector(state => state.mainReducer.lesson_2);
-  const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
-  const lesson4 = useAppSelector(state => state.mainReducer.lesson_4);
+
   const disabled = useAppSelector(state => state.mainReducer.disabled);
   const route = useAppSelector(state => state.mainReducer.route);
   // const [disabled, setDisabled] = useState<boolean>(true);
 
   const navigation = useLessonAppNavigation();
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', () => true);
+  //   return () => {
+  //     BackHandler.removeEventListener('hardwareBackPress', () => true);
+  //   };
+  // }, []);
+  const sdjasd=navigation
   console.log('boooorrrwm', disabled);
+  console.log('routeBottomtab', sdjasd);
   // const {state, navigation, descriptors, NavigationContent} =
   //   useNavigationBuilder(TabRouter, {
   //     children: 'tab',
@@ -68,8 +73,11 @@ const BottomTab = () => {
   //   // onBack();
   //   // return true;
   // };
+
   const onBack = () => {
-    navigation.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
   };
   const next = () => {
     console.log('nextBut', route);
@@ -103,7 +111,7 @@ const BottomTab = () => {
       <TouchableOpacity onPress={onBack} disabled={false}>
         {
           <LinearGradient
-            colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
+            colors={['#EAB9AC', '#D58EA4', '#A968A0', '#7070a2']}
             start={{x: 0.0, y: 1.0}}
             end={{x: 1.0, y: 1.0}}
             style={styles.linearGradient}>

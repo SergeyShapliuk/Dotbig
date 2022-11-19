@@ -1,7 +1,6 @@
 import {
   createNavigationContainerRef,
   NavigationProp,
-  NavigatorScreenParams,
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
@@ -19,18 +18,27 @@ export type LessonStackList = {
   Lesson2: undefined;
   Lesson3: undefined;
   Lesson4: undefined;
-  Burger: NavigatorScreenParams<BurgerStack>;
+  PopUpNext: undefined;
+  PopUpActive: undefined;
+  PopUpCongrats: undefined;
+  Burger: undefined;
   // Lesson: NavigatorScreenParams<NestedStack>;
 };
-export type BurgerStack = {
-  Burgers: undefined;
+export type GroupStack = {
+  PopUpNext: undefined;
+  PopUpActive: undefined;
+  PopUpCongrats: undefined;
+  Burger: undefined;
 };
 
 export type UseNavigationType = NavigationProp<RootStackParamList>;
 export type UseLessonNavigationType = NavigationProp<LessonStackList>;
+export type UseLessonGroupNavigationType = NavigationProp<GroupStack>;
 
 export const useAppNavigation = () => useNavigation<UseNavigationType>();
 export const useLessonAppNavigation = () =>
+  useNavigation<UseLessonNavigationType>();
+export const useLessonGroupNavigation = () =>
   useNavigation<UseLessonNavigationType>();
 export const useLessonAppRef = () =>
   createNavigationContainerRef<LessonStackList>();

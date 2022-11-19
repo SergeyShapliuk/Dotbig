@@ -23,8 +23,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal/dist/modal';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {validateEmail} from '../common/utils/validate';
-// import {getLesson, getLogin} from '../store/mainReducer';
-import {getLogin} from '../store/mainReducer';
+import {getLesson, getLogin} from '../store/mainReducer';
+
 import {LoginType} from '../api/api';
 
 const Login = () => {
@@ -46,7 +46,7 @@ const Login = () => {
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
-  }, [token]);
+  }, []);
   console.log('loginComponent :', login);
   console.log('loginComponent1 :', login);
 
@@ -79,14 +79,14 @@ const Login = () => {
     }
     const params: LoginType = {
       username: email,
-      password: '12345678Aa',
+      password: password,
     };
     console.log('params', params);
     dispatch(getLogin(params));
   };
-  // if (token) {
-  //   // dispatch(getLesson());
-  // }
+  if (token) {
+    dispatch(getLesson(token));
+  }
   const onBack = () => {
     navigation.goBack();
   };

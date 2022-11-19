@@ -52,7 +52,6 @@ const Lesson_2 = () => {
   const navigation = useLessonAppNavigation();
 
   const [input, setInput] = useState<string>('');
-  const [progressBar, setProgressBar] = useState<number>(0);
   const [disabledChecked, setDisabledChecked] = useState<boolean>(false);
   const lesson2 = useAppSelector(state => state.mainReducer.lesson_2);
   const progressBar2 = useAppSelector(state => state.mainReducer.progressBar2);
@@ -65,27 +64,24 @@ const Lesson_2 = () => {
   const onProgress = useCallback(
     async (taskNum: number, isDone: boolean) => {
       if (isDone) {
-        setProgressBar(prevState => prevState + 100);
-        dispatch(setProgressBar2({value: progressBar}));
+        dispatch(setProgressBar2({value: 100}));
+        const result = lesson2.map(m =>
+          m.step === taskNum ? {...m, isDone: isDone} : m,
+        );
+        dispatch(setLesson2Step(result));
+        const email = await AsyncStorage.getItem('dotbig_email');
+        const params = {
+          email: email,
+          lesson: lessonNumber,
+          step: taskNum,
+        };
+        dispatch(setLessonProgress(params));
       }
-      if (!isDone) {
-        setProgressBar(prevState => prevState - 100);
-        dispatch(setProgressBar2({value: progressBar}));
+      if (lesson2[2].step === taskNum) {
+        navigation.navigate('PopUpNext');
       }
-
-      const result = lesson2.map(m =>
-        m.step === taskNum ? {...m, isDone: isDone} : m,
-      );
-      dispatch(setLesson2Step(result));
-      const email = await AsyncStorage.getItem('dotbig_email');
-      const params = {
-        email: email,
-        lesson: lessonNumber,
-        step: taskNum,
-      };
-      dispatch(setLessonProgress(params));
     },
-    [lesson2, dispatch, progressBar],
+    [dispatch, lesson2, navigation],
   );
 
   console.log('props', navigation);

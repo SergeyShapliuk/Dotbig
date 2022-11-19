@@ -5,7 +5,6 @@ import {Images} from '../assets/image';
 import {DEVICE_WIDTH} from '../constans/constants';
 import {useLessonAppNavigation} from '../types/types';
 import CheckLesson from './svg/CheckLesson';
-import {useAppSelector} from '../store/store';
 
 type LessonListType = {
   numberLesson: string;
@@ -13,26 +12,30 @@ type LessonListType = {
   title: string;
   description: string;
   lesson: string;
+  success: boolean;
   currentRouteName?: string;
 };
+
 const LessonList = ({
   numberLesson,
   minutes,
   title,
   description,
   lesson,
+  success,
   currentRouteName,
 }: LessonListType) => {
   const navigation = useLessonAppNavigation();
-  const checkLesson = useAppSelector(state => state.mainReducer.disabled);
-
   const onLessonHandler = () => {
     // @ts-ignore
     navigation.navigate(lesson);
   };
   return (
     <View>
-      <TouchableOpacity onPress={onLessonHandler} style={{marginTop: 30}}>
+      <TouchableOpacity
+        onPress={onLessonHandler}
+        disabled={!success}
+        style={{marginTop: 30}}>
         <LinearGradient
           colors={
             currentRouteName === lesson
@@ -46,7 +49,7 @@ const LessonList = ({
             <View style={styles.mainTitle}>
               <Text style={styles.title}>{numberLesson}</Text>
               <Text style={[styles.title, {marginLeft: 60}]}>{minutes}</Text>
-              {checkLesson && <CheckLesson style={{top: 20}} />}
+              {lesson && success && <CheckLesson style={{top: 20}} />}
             </View>
             <View style={styles.underLine} />
             <View style={styles.descriptionBlock}>

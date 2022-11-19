@@ -19,6 +19,14 @@ export const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  blacklist: [
+    'isLoggedIn',
+    'isLoading',
+    'isInitialized',
+    'disabled',
+    'burgerList',
+    'course',
+  ],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

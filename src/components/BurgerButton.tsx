@@ -1,8 +1,7 @@
-import React, {useRef, useState} from 'react';
-import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useLessonAppNavigation} from '../types/types';
-import {useAppDispatch, useAppSelector} from '../store/store';
-import {setBurgerList} from '../store/mainReducer';
+import {useAppSelector} from '../store/store';
 
 type BurgerButtonPropsType = {
   activated?: boolean;
@@ -11,93 +10,65 @@ type BurgerButtonPropsType = {
 const BurgerButton = ({}: // activated,
 // onHandlerActivated,
 BurgerButtonPropsType) => {
-  const dispatch = useAppDispatch();
   const navigation = useLessonAppNavigation();
-  const [activated, setActivated] = useState(false);
   const burgerList = useAppSelector(state => state.mainReducer.burgerList);
-  const animation = useRef(new Animated.Value(0)).current;
-  const rotation = useRef(new Animated.Value(0)).current;
+  // const animation = useRef(new Animated.Value(0)).current;
+  // const rotation = useRef(new Animated.Value(0)).current;
   console.log('burgerBUtton', burgerList);
 
-  const startAnimation = () => {
-    const toValue = activated ? 0 : 1;
-    setActivated(!activated);
-    Animated.parallel([
-      Animated.timing(animation, {
-        toValue,
-        duration: 500,
-        useNativeDriver: false,
-      }),
-      Animated.spring(rotation, {
-        toValue,
-        friction: 20,
-        tension: 140,
-        useNativeDriver: false,
-      }),
-    ]).start(() => {
-      if (!activated) {
-        navigation.navigate('Burger', {screen: 'Burgers'});
-      }
-      if (activated) {
-        navigation.goBack();
-      }
-    });
-  };
-  const animatedStyles = {
-    lower: {
-      transform: [
-        {
-          translateY: animation.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, -4],
-          }),
-        },
-        {
-          rotate: rotation.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0deg', '45deg'],
-          }),
-        },
-      ],
-    },
-    upper: {
-      transform: [
-        {
-          translateY: animation.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 4],
-          }),
-        },
-        {
-          rotate: rotation.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0deg', '-45deg'],
-          }),
-        },
-      ],
-    },
-    middle: {
-      height: animation.interpolate({
-        inputRange: [0, 1],
-        outputRange: [1.5, 0],
-      }),
-    },
-    burgerButton: {
-      backgroundColor: animation.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['#3C455C', '#3C455C'],
-      }),
-    },
+  const onChangeHandler = () => {
+    navigation.navigate('Burger');
+    if (burgerList) {
+      navigation.goBack();
+    }
   };
 
+
   return (
-    <View>
-      <TouchableOpacity onPress={startAnimation}>
-        <Animated.View style={[styles.burger, animatedStyles.burgerButton]}>
-          <Animated.View style={[styles.burgerLine, animatedStyles.upper]} />
-          <Animated.View style={[styles.burgerLine, animatedStyles.middle]} />
-          <Animated.View style={[styles.burgerLine, animatedStyles.lower]} />
-        </Animated.View>
+    <View style={styles.burger}>
+      <TouchableOpacity
+        hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
+        onPress={onChangeHandler}>
+        {/*<Animated.View style={[styles.burger, animatedStyles.burgerButton]}>*/}
+        {/*  <Animated.View style={[styles.burgerLine, animatedStyles.upper]} />*/}
+        {/*  <Animated.View style={[styles.burgerLine, animatedStyles.middle]} />*/}
+        {/*  <Animated.View style={[styles.burgerLine, animatedStyles.lower]} />*/}
+        {/*</Animated.View>*/}
+        {!burgerList && (
+          <View>
+            <View style={styles.burgerLine} />
+            <View style={styles.burgerLine} />
+            <View style={styles.burgerLine} />
+          </View>
+        )}
+        {burgerList && (
+          <View>
+            <View
+              style={[
+                styles.burgerLine,
+                {
+                  transform: [
+                    {rotate: '45deg'},
+                    {translateY: 2},
+                    {translateX: 1.5},
+                  ],
+                },
+              ]}
+            />
+            <View
+              style={[
+                styles.burgerLine,
+                {
+                  transform: [
+                    {rotate: '-45deg'},
+                    {translateY: -2},
+                    {translateX: 1.5},
+                  ],
+                },
+              ]}
+            />
+          </View>
+        )}
       </TouchableOpacity>
     </View>
   );

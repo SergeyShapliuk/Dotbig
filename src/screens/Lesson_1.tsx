@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 
 import {
   Image,
-  Platform,
   RefreshControl,
   SafeAreaView,
   ScrollView,
@@ -17,13 +16,11 @@ import {
 import {DEVICE_WIDTH} from '../constans/constants';
 import {Images} from '../assets/image';
 import {message} from '../config/translations/resources/en';
-import {getStatusBarHeight} from '../common/deviceInfo';
 import VideoPlayer from '../components/VideoPlayers';
 import GradientText from '../common/utils/GradientText';
 import CheckBoxTxt from '../components/CheckBox';
 import LessonTextInput from '../components/LessonTextInput';
 import BonusContentWithAudio from '../components/BonusContentWithAudio';
-import Header from '../components/Header';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {
   setDisabled,
@@ -34,6 +31,7 @@ import {
 } from '../store/mainReducer';
 import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useLessonAppNavigation} from '../types/types';
 
 const wait = (timeout: any) => {
   // @ts-ignore
@@ -41,17 +39,30 @@ const wait = (timeout: any) => {
 };
 
 const Lesson_1 = () => {
+  // const getAll = async () => {
+  //   let keys = [];
+  //   try {
+  //     const clear = await AsyncStorage.removeItem('persist:root');
+  //     console.log('allKeysren', clear);
+  //     keys = await AsyncStorage.getAllKeys();
+  //   } catch (e) {
+  //     console.log('asybcstor', e);
+  //   }
+  //   console.log('allKeys', keys);
+  // };
+  // getAll();
   const lessonNumber = 'lesson1';
   const dispatch = useAppDispatch();
+  const navigation = useLessonAppNavigation();
   const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
   const progressBar1 = useAppSelector(state => state.mainReducer.progressBar1);
-  console.log('reduserLesson1', lesson1);
+  const state = navigation.getState();
+  console.log('reduserLesson1', state);
 
   // const [steps1, setSteps1] = useState<boolean>(false);
   // const [step2, setStep2] = useState<boolean>(false);
   // const [step3, setStep3] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [progressBar, setProgressBar] = useState<number>(0);
   const [input1, setInput1] = useState<string>('');
   const [input2, setInput2] = useState<string>('');
   const [input3, setInput3] = useState<string>('');
@@ -62,10 +73,8 @@ const Lesson_1 = () => {
       BackHandler.removeEventListener('hardwareBackPress', () => true);
     };
   }, []);
-  console.log('progressbar', progressBar1);
   useFocusEffect(() => {
     if (lesson1[3].isDone) {
-      console.log('lesson1useeffect');
       dispatch(setDisabled({value: true}));
       dispatch(setRoute({value: 'Lesson2'}));
     }
@@ -73,26 +82,24 @@ const Lesson_1 = () => {
   const onProgress = useCallback(
     async (taskNum: number, isDone: boolean) => {
       if (isDone) {
-        setProgressBar(prevState => prevState + 75);
-        dispatch(setProgressBar1({value: progressBar}));
+        dispatch(setProgressBar1({value: 75}));
+        const result = lesson1.map(m =>
+          m.step === taskNum ? {...m, isDone: isDone} : m,
+        );
+        dispatch(setLesson1Step(result));
+        const email = await AsyncStorage.getItem('dotbig_email');
+        const params = {
+          email: email,
+          lesson: lessonNumber,
+          step: taskNum,
+        };
+        dispatch(setLessonProgress(params));
       }
-      if (!isDone) {
-        setProgressBar(prevState => prevState - 75);
-        dispatch(setProgressBar1({value: progressBar}));
+      if (lesson1[3].step === taskNum) {
+        navigation.navigate('PopUpNext');
       }
-      const result = lesson1.map(m =>
-        m.step === taskNum ? {...m, isDone: isDone} : m,
-      );
-      dispatch(setLesson1Step(result));
-      const email = await AsyncStorage.getItem('dotbig_email');
-      const params = {
-        email: email,
-        lesson: lessonNumber,
-        step: taskNum,
-      };
-      dispatch(setLessonProgress(params));
     },
-    [lesson1, dispatch, progressBar],
+    [dispatch, lesson1, navigation],
   );
 
   const onRefresh = useCallback(() => {

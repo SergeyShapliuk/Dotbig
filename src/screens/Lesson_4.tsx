@@ -25,6 +25,7 @@ import CheckBoxTxt from '../components/CheckBox';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {setLesson4Step, setLessonProgress} from '../store/mainReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useLessonAppNavigation} from '../types/types';
 // import Header from '../components/Header';
 
 // import {LinearGradientText} from 'react-native-linear-gradient-text';
@@ -40,26 +41,31 @@ const wait = (timeout: any) => {
 const Lesson_4 = () => {
   const lessonNumber = 'lesson4';
   const dispatch = useAppDispatch();
-
+  const navigation = useLessonAppNavigation();
   const [refreshing, setRefreshing] = useState(false);
 
   const lesson4 = useAppSelector(state => state.mainReducer.lesson_4);
 
   const onProgress = useCallback(
     async (taskNum: number, isDone: boolean) => {
-      const result = lesson4.map(m =>
-        m.step === taskNum ? {...m, isDone: isDone} : m,
-      );
-      dispatch(setLesson4Step(result));
-      const email = await AsyncStorage.getItem('dotbig_email');
-      const params = {
-        email: email,
-        lesson: lessonNumber,
-        step: taskNum,
-      };
-      dispatch(setLessonProgress(params));
+      if (isDone) {
+        const result = lesson4.map(m =>
+          m.step === taskNum ? {...m, isDone: isDone} : m,
+        );
+        dispatch(setLesson4Step(result));
+        const email = await AsyncStorage.getItem('dotbig_email');
+        const params = {
+          email: email,
+          lesson: lessonNumber,
+          step: taskNum,
+        };
+        dispatch(setLessonProgress(params));
+      }
+      if (lesson4[1].step === taskNum) {
+        navigation.navigate('PopUpCongrats');
+      }
     },
-    [lesson4, dispatch],
+    [dispatch, lesson4, navigation],
   );
 
   const onRefresh = useCallback(() => {

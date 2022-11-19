@@ -1,6 +1,5 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {
-  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -10,33 +9,33 @@ import {
 } from 'react-native';
 import {message} from '../config/translations/resources/en';
 
-import {getStatusBarHeight} from '../common/deviceInfo';
-import {DEVICE_WIDTH} from '../constans/constants';
-import Header from '../components/Header';
 import LessonList from '../components/LessonList';
-import {
-  useFocusEffect,
-  useNavigationContainerRef,
-} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import {useLessonAppNavigation} from '../types/types';
-import {useAppDispatch} from '../store/store';
+import {useAppDispatch, useAppSelector} from '../store/store';
 import {setBurgerList} from '../store/mainReducer';
+import {DEVICE_WIDTH} from '../constans/constants';
 
 const Burger = () => {
   const dispatch = useAppDispatch();
 
-  const routeNameRef = useRef();
   const navigation = useLessonAppNavigation();
-  const navigationRef = useNavigationContainerRef();
   const routeName = navigation.getState().routes;
   const currentRouteName = routeName[routeName.length - 2].name;
+  const numberLesson = currentRouteName.slice(6, 7);
+  const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
+  const lesson2 = useAppSelector(state => state.mainReducer.lesson_2);
+  const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
+  const lesson4 = useAppSelector(state => state.mainReducer.lesson_4);
+
   useFocusEffect(() => {
     dispatch(setBurgerList({value: true}));
     return () => {
       dispatch(setBurgerList({value: false}));
     };
   });
-  console.log('routeName', currentRouteName);
+
+  console.log('routeName', routeName);
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -55,7 +54,7 @@ const Burger = () => {
         <View style={styles.mainText}>
           <View style={styles.mainTitle}>
             <Text style={styles.title}>Обучение</Text>
-            <Text style={styles.title}>1/4</Text>
+            <Text style={styles.title}>{numberLesson}/4</Text>
           </View>
           <LessonList
             numberLesson={'Урок 1'}
@@ -63,6 +62,7 @@ const Burger = () => {
             title={message.Lesson_1.title}
             description={message.Lesson_1.description}
             lesson={'Lesson1'}
+            success={lesson1[3].isDone}
             currentRouteName={currentRouteName}
           />
 
@@ -72,6 +72,7 @@ const Burger = () => {
             title={message.Lesson_2.title}
             description={message.Lesson_2.description}
             lesson={'Lesson2'}
+            success={lesson2[2].isDone}
             currentRouteName={currentRouteName}
           />
           <LessonList
@@ -80,6 +81,7 @@ const Burger = () => {
             title={message.Lesson_3.title}
             description={message.Lesson_3.description}
             lesson={'Lesson3'}
+            success={lesson3[2].isDone}
             currentRouteName={currentRouteName}
           />
           <LessonList
@@ -88,6 +90,7 @@ const Burger = () => {
             title={message.Lesson_4.title}
             description={message.Lesson_4.description}
             lesson={'Lesson4'}
+            success={lesson4[1].isDone}
             currentRouteName={currentRouteName}
           />
         </View>

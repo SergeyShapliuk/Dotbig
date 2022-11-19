@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AppNavigator from './navigation/AppNavigator';
 import {useAppDispatch, useAppSelector} from './store/store';
-import {getLesson} from './store/mainReducer';
+import {initializeApp} from './store/mainReducer';
 import {HEIGHT, WIDTH} from './constans/constants';
 
 import LessonNavigation from './navigation/LessonNavigation';
@@ -13,9 +13,10 @@ const Main = () => {
   const isInitialized = useAppSelector(
     state => state.mainReducer.isInitialized,
   );
-
+  console.log('isLigged', isLoggedIn);
+  console.log('isInitial', isInitialized);
   useEffect(() => {
-    dispatch(getLesson());
+    dispatch(initializeApp());
   }, [dispatch]);
 
   if (!isInitialized) {

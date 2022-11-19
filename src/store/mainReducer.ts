@@ -14,7 +14,12 @@ export const initializeApp = createAsyncThunk<any, void>(
   'mainReducer/initializeApp',
   async (_, {dispatch}) => {
     try {
-      dispatch(setIsLoggedIn({value: true}));
+      const localToken = await AsyncStorage.getItem('dotbig_token');
+      if (localToken !== null) {
+        console.log('getToken', localToken);
+        dispatch(getLesson(localToken));
+        dispatch(setIsLoggedIn({value: true}));
+      }
     } catch (error) {
       return console.log('error', error);
     }
@@ -50,7 +55,7 @@ export const getLogin = createAsyncThunk<any, any>(
         dispatch(setAppStatus({status: 'succeeded'}));
         await AsyncStorage.setItem('dotbig_token', response.data.token);
         await AsyncStorage.setItem('dotbig_email', response.data.user_email);
-        dispatch(setIsLoggedIn({value: true}));
+        // dispatch(setIsLoggedIn({value: true}));
         return response.data;
       }
     } catch (e) {
@@ -75,18 +80,14 @@ export const getForgot = createAsyncThunk<any, ForgotType>(
     }
   },
 );
-export const getLesson = createAsyncThunk<any>(
+export const getLesson = createAsyncThunk<any, any>(
   'mainReducer/getLesson',
-  async (_, {dispatch}) => {
+  async (localToken, {dispatch}) => {
     try {
-      const localToken = await AsyncStorage.getItem('dotbig_token');
-      if (localToken) {
-        console.log('token', localToken);
-        const response = await api.lesson(localToken);
-        if (response.status === 200 || response.status === 201) {
-          dispatch(initializeApp());
-          return response.data;
-        }
+      console.log('token', localToken);
+      const response = await api.lesson(localToken);
+      if (response.status === 200 || response.status === 201) {
+        return response.data;
       }
     } catch (e) {
       return console.log('error', e);
@@ -94,7 +95,7 @@ export const getLesson = createAsyncThunk<any>(
   },
 );
 export const setLessonProgress = createAsyncThunk<any, any>(
-  'mainReducer/getLesson',
+  'mainReducer/setLessonProgress',
   async params => {
     console.log('setLesssonProgressReducer:', params);
     try {
@@ -117,7 +118,6 @@ const mainSlice = createSlice({
     isInitialized: false as boolean,
     status: 'idle' as RequestStatusType,
     login: {} as LoginResponseType,
-    student_id: '' as string,
     disabled: false as boolean,
     route: '' as string,
     progressBar1: 0 as number,
@@ -148,6 +148,7 @@ const mainSlice = createSlice({
   },
   reducers: {
     setIsLoggedIn(state, action: PayloadAction<{value: boolean}>) {
+      console.log('setIsLoggedIn:', action.payload.value);
       state.isLoggedIn = action.payload.value;
     },
     setAppStatus(state, action: PayloadAction<RequestStatusType>) {
@@ -163,13 +164,13 @@ const mainSlice = createSlice({
       state.burgerList = action.payload.value;
     },
     setProgressBar1(state, action: PayloadAction<{value: number}>) {
-      state.progressBar1 = action.payload.value;
+      state.progressBar1 = state.progressBar1 + action.payload.value;
     },
     setProgressBar2(state, action: PayloadAction<{value: number}>) {
-      state.progressBar1 = action.payload.value;
+      state.progressBar2 = state.progressBar2 + action.payload.value;
     },
     setProgressBar3(state, action: PayloadAction<{value: number}>) {
-      state.progressBar1 = action.payload.value;
+      state.progressBar3 = state.progressBar3 + action.payload.value;
     },
     setLesson1Step(state, action: PayloadAction<LessonStepType[]>) {
       state.lesson_1 = action.payload;
@@ -189,9 +190,6 @@ const mainSlice = createSlice({
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .addCase(initializeApp.fulfilled, (state, action) => {
         state.isInitialized = true;
-      })
-      .addCase(getRegister.fulfilled, (state, action) => {
-        state.student_id = action.payload ? action.payload : '';
       })
       .addCase(getLesson.fulfilled, (state, action) => {
         state.course = action.payload ? action.payload : {};

@@ -11,8 +11,14 @@ import {
   View,
   Text,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
-import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
+import {
+  DEVICE_HEIGHT,
+  DEVICE_WIDTH,
+  HEIGHT,
+  WIDTH,
+} from '../constans/constants';
 import {Images} from '../assets/image';
 import {useAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
@@ -25,6 +31,7 @@ import MemoEllipseBonus from '../components/svg/EllipseBonus';
 import MemoVector1 from '../components/svg/Vector1';
 import MemoVector from '../components/svg/Vector';
 import MemoGroupBonus from '../components/svg/GroupBonus';
+import {useAppSelector} from '../store/store';
 
 const wait = (timeout: any) => {
   // @ts-ignore
@@ -34,6 +41,8 @@ const wait = (timeout: any) => {
 const Home = () => {
   const navigation = useAppNavigation();
   const [refreshing, setRefreshing] = useState(false);
+  const status = useAppSelector(state => state.mainReducer.status);
+  console.log('status', status);
   // const play = useRef<any>();
   // const onRefresh = async () => {
   //   setRefreshing({
@@ -50,6 +59,7 @@ const Home = () => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -58,6 +68,7 @@ const Home = () => {
         barStyle="default"
         networkActivityIndicatorVisible={true}
       />
+
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -153,6 +164,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0B1633',
     paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
+  },
+  overlay: {
+    width: WIDTH,
+    height: HEIGHT,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 0,
+    ...StyleSheet.absoluteFillObject,
   },
   play: {
     // position: 'absolute',

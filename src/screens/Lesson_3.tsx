@@ -20,16 +20,10 @@ import VideoPlayer from '../components/VideoPlayers';
 import GradientText from '../common/utils/GradientText';
 // import CheckBox from '@react-native-community/checkbox';
 import CheckBoxTxt from '../components/CheckBox';
-import {
-  setDisabled,
-  setLesson3Step,
-  setLessonProgress,
-  setProgressBar3,
-  setRoute,
-} from '../store/mainReducer';
+import {setLesson3Step, setProgressBar3} from '../store/mainReducer';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {useFocusEffect} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {setDisabled, setLessonProgress, setRoute} from '../store/authReducer';
 // import Header from '../components/Header';
 // import {LinearGradientText} from 'react-native-linear-gradient-text';
 // import {useFocusEffect} from '@react-navigation/native';
@@ -48,7 +42,9 @@ const Lesson_3 = () => {
   const [refreshing, setRefreshing] = useState(false);
   const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
   const progressBar3 = useAppSelector(state => state.mainReducer.progressBar3);
-
+  const login = useAppSelector(state => state.mainReducer.login);
+  const route = useAppSelector(state => state.authReducer.route);
+  console.log('route', route);
   useFocusEffect(() => {
     if (lesson3[2].isDone) {
       dispatch(setDisabled({value: true}));
@@ -56,26 +52,28 @@ const Lesson_3 = () => {
     }
   });
   const onProgress = useCallback(
-    async (taskNum: number, isDone: boolean) => {
+    (taskNum: number, isDone: boolean) => {
       if (isDone) {
         dispatch(setProgressBar3({value: 100}));
         const result = lesson3.map(m =>
           m.step === taskNum ? {...m, isDone: isDone} : m,
         );
         dispatch(setLesson3Step(result));
-        const email = await AsyncStorage.getItem('dotbig_email');
+
         const params = {
-          email: email,
+          email: login.user_email,
           lesson: lessonNumber,
           step: taskNum,
         };
         dispatch(setLessonProgress(params));
       }
       if (lesson3[2].step === taskNum) {
+        // dispatch(setDisabled({value: true}));
+        dispatch(setRoute({value: 'Lesson4'}));
         navigation.navigate('PopUpNext');
       }
     },
-    [dispatch, lesson3, navigation],
+    [dispatch, lesson3, login.user_email, navigation],
   );
 
   // useFocusEffect(

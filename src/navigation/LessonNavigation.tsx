@@ -12,6 +12,7 @@ import {useAppSelector} from '../store/store';
 import PopUpCongrats from '../screens/PopUpCongrats';
 import PopUpActive from '../screens/PopUpActive';
 import PopUpNext from '../screens/PopUpNext';
+import Forgot from '../screens/Forgot';
 
 // import BottomTab from '../components/BottomTab';
 
@@ -20,7 +21,7 @@ import PopUpNext from '../screens/PopUpNext';
 const Stack = createStackNavigator<LessonStackList>();
 
 const LessonNavigation = () => {
-  const burgerList = useAppSelector(state => state.mainReducer.burgerList);
+  const burgerList = useAppSelector(state => state.authReducer.burgerList);
   return (
     <>
       <Header />
@@ -48,6 +49,7 @@ const LessonNavigation = () => {
           <Stack.Screen name={'PopUpActive'} component={PopUpActive} />
           <Stack.Screen name={'PopUpCongrats'} component={PopUpCongrats} />
           <Stack.Screen name={'Burger'} component={Burger} />
+          <Stack.Screen name={'ForgotScreen'} component={Forgot} />
         </Stack.Group>
       </Stack.Navigator>
       {!burgerList && <BottomTab />}

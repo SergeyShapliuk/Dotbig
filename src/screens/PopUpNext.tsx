@@ -7,21 +7,27 @@ import MemoPopUpVector from '../components/svg/PopUpVector';
 import {useLessonAppNavigation} from '../types/types';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import Modal from 'react-native-modal/dist/modal';
-import {useFocusEffect} from '@react-navigation/native';
-import {setDisabled} from '../store/mainReducer';
+import {setDisabled} from '../store/authReducer';
 
 const PopUpActive = () => {
   const dispatch = useAppDispatch();
   const navigation = useLessonAppNavigation();
-  const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
-  const lesson2 = useAppSelector(state => state.mainReducer.lesson_2);
-  const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
-  const route = useAppSelector(state => state.mainReducer.route);
-  useFocusEffect(() => {
-    if (lesson1[3].isDone || lesson2[2].isDone || lesson3[2].isDone) {
-      dispatch(setDisabled({value: false}));
-    }
-  });
+  // const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
+  // const lesson2 = useAppSelector(state => state.mainReducer.lesson_2);
+  // const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
+  const route = useAppSelector(state => state.authReducer.route);
+  // useFocusEffect(() => {
+  //   if (lesson1[3].isDone || lesson2[2].isDone || lesson3[2].isDone) {
+  //     dispatch(setDisabled({value: false}));
+  //   }
+  // });
+  const onChangeHandler = () => {
+    console.log('routrPopup:', route);
+    navigation.goBack();
+    // @ts-ignore
+    navigation.navigate(route);
+    dispatch(setDisabled({value: false}));
+  };
   return (
     <Modal
       isVisible={true}
@@ -50,7 +56,7 @@ const PopUpActive = () => {
 
         <TouchableOpacity
           // @ts-ignore
-          onPress={() => navigation.navigate(route)}
+          onPress={onChangeHandler}
           style={styles.button}>
           <Text style={styles.buttonText}>Следующий урок </Text>
           <Image source={Images.diagonalArrow} />

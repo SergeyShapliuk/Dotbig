@@ -23,9 +23,9 @@ import GradientText from '../common/utils/GradientText';
 // import CheckBox from '@react-native-community/checkbox';
 import CheckBoxTxt from '../components/CheckBox';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {setLesson4Step, setLessonProgress} from '../store/mainReducer';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {setLesson4Step} from '../store/mainReducer';
 import {useLessonAppNavigation} from '../types/types';
+import {setLessonProgress} from '../store/authReducer';
 // import Header from '../components/Header';
 
 // import {LinearGradientText} from 'react-native-linear-gradient-text';
@@ -45,17 +45,16 @@ const Lesson_4 = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   const lesson4 = useAppSelector(state => state.mainReducer.lesson_4);
-
+  const login = useAppSelector(state => state.mainReducer.login);
   const onProgress = useCallback(
-    async (taskNum: number, isDone: boolean) => {
+    (taskNum: number, isDone: boolean) => {
       if (isDone) {
         const result = lesson4.map(m =>
           m.step === taskNum ? {...m, isDone: isDone} : m,
         );
         dispatch(setLesson4Step(result));
-        const email = await AsyncStorage.getItem('dotbig_email');
         const params = {
-          email: email,
+          email: login.user_email,
           lesson: lessonNumber,
           step: taskNum,
         };
@@ -65,7 +64,7 @@ const Lesson_4 = () => {
         navigation.navigate('PopUpCongrats');
       }
     },
-    [dispatch, lesson4, navigation],
+    [dispatch, lesson4, login.user_email, navigation],
   );
 
   const onRefresh = useCallback(() => {

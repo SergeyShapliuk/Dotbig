@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Image,
+  Linking,
   Platform,
   StyleSheet,
   Text,
@@ -16,7 +17,8 @@ import {Images} from '../assets/image';
 // import {useNavigationState} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {useLessonAppNavigation} from '../types/types';
-import {setDisabled} from '../store/mainReducer';
+import {setDisabled} from '../store/authReducer';
+
 // import {useLessonAppNavigation} from '../types/types';
 
 // const wait = (timeout: any) => {
@@ -27,10 +29,13 @@ import {setDisabled} from '../store/mainReducer';
 const BottomTab = () => {
   const dispatch = useAppDispatch();
 
-  const disabled = useAppSelector(state => state.mainReducer.disabled);
-  const route = useAppSelector(state => state.mainReducer.route);
+  const disabled = useAppSelector(state => state.authReducer.disabled);
+  const route = useAppSelector(state => state.authReducer.route);
   // const [disabled, setDisabled] = useState<boolean>(true);
-
+  const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
+  const lesson2 = useAppSelector(state => state.mainReducer.lesson_2);
+  const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
+  const lesson4 = useAppSelector(state => state.mainReducer.lesson_4);
   const navigation = useLessonAppNavigation();
   // useEffect(() => {
   //   BackHandler.addEventListener('hardwareBackPress', () => true);
@@ -38,7 +43,7 @@ const BottomTab = () => {
   //     BackHandler.removeEventListener('hardwareBackPress', () => true);
   //   };
   // }, []);
-  const sdjasd=navigation
+  const sdjasd = navigation;
   console.log('boooorrrwm', disabled);
   console.log('routeBottomtab', sdjasd);
   // const {state, navigation, descriptors, NavigationContent} =
@@ -124,7 +129,12 @@ const BottomTab = () => {
           </LinearGradient>
         }
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() =>
+          Linking.openURL(
+            'https://ru.dotbig.study/redirect-personal-account/?email={{email}}',
+          )
+        }>
         <View style={styles.btnBroker}>
           <Image source={Images.iconScreen} />
           <Text style={styles.btnBrokerText}>Кабинет брокера</Text>

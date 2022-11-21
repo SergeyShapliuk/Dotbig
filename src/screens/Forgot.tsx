@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
-  BackHandler,
   Image,
   Text,
   Keyboard,
@@ -21,43 +20,18 @@ import {message} from '../config/translations/resources/en';
 import LinearGradient from 'react-native-linear-gradient';
 import {validateEmail} from '../common/utils/validate';
 import {ForgotType} from '../api/api';
-import {getForgot} from '../store/mainReducer';
-import {useAppDispatch} from '../store/store';
+
+import {useAppDispatch, useAppSelector} from '../store/store';
+import Spinner from 'react-native-loading-spinner-overlay';
+import {getForgot} from '../store/authReducer';
 
 const Forgot = () => {
   const navigation = useAppNavigation();
   const dispatch = useAppDispatch();
+
   const [email, setEmail] = useState<string>('');
-  const [hidden, setHidden] = useState<boolean>(false);
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      _keyboardDidShow,
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      _keyboardDidHide,
-    );
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-
-  const _keyboardDidShow = () => {
-    setHidden(true);
-  };
-
-  const _keyboardDidHide = () => {
-    setHidden(false);
-  };
-
-  const handleBackPress = () => {
-    onBack(); // works best when the goBack is async
-    return true;
-  };
+  const [hidden] = useState<boolean>(false);
+  const status = useAppSelector(state => state.authReducer.status);
 
   const onBack = () => {
     navigation.goBack();
@@ -81,8 +55,10 @@ const Forgot = () => {
       email: email,
     };
     dispatch(getForgot(params));
+    if (status === 'succeeded') {
+      setEmail('');
+    }
   };
-
   return (
     <Modal
       isVisible={true}
@@ -112,6 +88,7 @@ const Forgot = () => {
           bounces={false}
           keyboardShouldPersistTaps="handled">
           <View style={styles.modalContainer}>
+            <Spinner visible={status === 'loading'} color={'#A968A0'} />
             <View style={{paddingHorizontal: 25, marginTop: 25}}>
               <Text style={styles.label}>Введите ваш Email</Text>
               <View

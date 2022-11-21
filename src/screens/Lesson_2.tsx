@@ -1,5 +1,4 @@
 import React, {useCallback, useState} from 'react';
-import LinearGradient from 'react-native-linear-gradient';
 import {
   Image,
   Platform,
@@ -24,16 +23,11 @@ import GradientText from '../common/utils/GradientText';
 // import CheckBox from '@react-native-community/checkbox';
 import CheckBoxTxt from '../components/CheckBox';
 import LessonTextInput from '../components/LessonTextInput';
-import {
-  setDisabled,
-  setLesson2Step,
-  setLessonProgress,
-  setProgressBar2,
-  setRoute,
-} from '../store/mainReducer';
+import {setLesson2Step, setProgressBar2} from '../store/mainReducer';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {setDisabled, setLessonProgress, setRoute} from '../store/authReducer';
 // import Header from '../components/Header';
 
 // import {LinearGradientText} from 'react-native-linear-gradient-text';
@@ -55,6 +49,9 @@ const Lesson_2 = () => {
   const [disabledChecked, setDisabledChecked] = useState<boolean>(false);
   const lesson2 = useAppSelector(state => state.mainReducer.lesson_2);
   const progressBar2 = useAppSelector(state => state.mainReducer.progressBar2);
+  const login = useAppSelector(state => state.mainReducer.login);
+  const route = useAppSelector(state => state.authReducer.route);
+  console.log('route', route);
   useFocusEffect(() => {
     if (lesson2[2].isDone) {
       dispatch(setDisabled({value: true}));
@@ -62,26 +59,28 @@ const Lesson_2 = () => {
     }
   });
   const onProgress = useCallback(
-    async (taskNum: number, isDone: boolean) => {
+    (taskNum: number, isDone: boolean) => {
       if (isDone) {
         dispatch(setProgressBar2({value: 100}));
         const result = lesson2.map(m =>
           m.step === taskNum ? {...m, isDone: isDone} : m,
         );
         dispatch(setLesson2Step(result));
-        const email = await AsyncStorage.getItem('dotbig_email');
+
         const params = {
-          email: email,
+          email: login.user_email,
           lesson: lessonNumber,
           step: taskNum,
         };
         dispatch(setLessonProgress(params));
       }
       if (lesson2[2].step === taskNum) {
+        // dispatch(setDisabled({value: true}));
+        dispatch(setRoute({value: 'Lesson3'}));
         navigation.navigate('PopUpNext');
       }
     },
-    [dispatch, lesson2, navigation],
+    [dispatch, lesson2, login.user_email, navigation],
   );
 
   console.log('props', navigation);

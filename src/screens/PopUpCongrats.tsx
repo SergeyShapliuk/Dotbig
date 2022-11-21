@@ -36,7 +36,7 @@ const PopUpCongrats = () => {
           предложению от компании Dotbig
         </Text>
         <TouchableOpacity onPress={() => {}} style={styles.button}>
-          <Text style={styles.buttonText}>Перейдите в кабинет</Text>
+          <Text style={styles.buttonText}>Перейдите в Ваш личный кабинет</Text>
           <Image source={Images.diagonalArrow} />
         </TouchableOpacity>
       </View>
@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 15,
     lineHeight: 25,
+    textAlign: 'center',
     paddingHorizontal: 10,
     color: '#FFFFFF',
   },

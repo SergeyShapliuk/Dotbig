@@ -27,6 +27,7 @@ const LessonList = ({
 }: LessonListType) => {
   const navigation = useLessonAppNavigation();
   const onLessonHandler = () => {
+    navigation.goBack();
     // @ts-ignore
     navigation.navigate(lesson);
   };

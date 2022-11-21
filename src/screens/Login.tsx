@@ -1,9 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
-  // Alert,
-  BackHandler,
   Image,
-  // Keyboard,
   ScrollView,
   StyleSheet,
   TextInput,
@@ -18,45 +15,42 @@ import {
 import {useAppNavigation} from '../types/types';
 import {Images} from '../assets/image';
 import {message} from '../config/translations/resources/en';
-import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
+import {
+  DEVICE_HEIGHT,
+  DEVICE_WIDTH,
+  HEIGHT,
+  WIDTH,
+} from '../constans/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal/dist/modal';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {validateEmail} from '../common/utils/validate';
-import {getLesson, getLogin} from '../store/mainReducer';
+import {getLogin} from '../store/mainReducer';
 
 import {LoginType} from '../api/api';
+import {useFocusEffect} from '@react-navigation/native';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const Login = () => {
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
-  const login = useAppSelector(state => state.mainReducer.login);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
   const token = useAppSelector(state => state.mainReducer.login.token);
+  const status = useAppSelector(state => state.authReducer.status);
   console.log('token:', token);
 
-  useEffect(() => {
-    navigation.addListener('focus', () => {
-      setModal(true);
-    });
-    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+  useFocusEffect(() => {
+    setModal(true);
     return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+      setModal(false);
     };
-  }, []);
-  console.log('loginComponent :', login);
-  console.log('loginComponent1 :', login);
+  });
 
-  const handleBackPress = () => {
-    onBack();
-    return true;
-  };
   const onForgot = () => {
     navigation.navigate('ForgotScreen');
-    setModal(false);
   };
   const validate = () => {
     if (!email || email.length === 0) {
@@ -83,14 +77,20 @@ const Login = () => {
     };
     console.log('params', params);
     dispatch(getLogin(params));
+    if (!token) {
+      return;
+    } else {
+      setEmail('');
+      setPassword('');
+    }
   };
-  if (token) {
-    dispatch(getLesson(token));
-  }
+
+  // if (token) {
+  //   dispatch(getLesson(token));
+  // }
   const onBack = () => {
     navigation.goBack();
   };
-
   return (
     <Modal
       isVisible={modal}
@@ -120,6 +120,7 @@ const Login = () => {
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{paddingBottom: 0}}>
           <View style={styles.modalContainer}>
+            <Spinner visible={status === 'loading'} color={'#A968A0'} />
             <View style={{paddingHorizontal: 25, marginTop: 15}}>
               <Text style={styles.label}>Email</Text>
               <View
@@ -217,6 +218,15 @@ const styles = StyleSheet.create({
     // backgroundColor: '#0B1633',
     // backgroundColor: 'rgba(0, 0, 0, 0.1)',
     // opacity: 0.7,
+  },
+  overlay: {
+    width: WIDTH,
+    height: HEIGHT,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 0,
+    ...StyleSheet.absoluteFillObject,
   },
   headerModal: {
     backgroundColor: 'rgba(11, 22, 51, 0.7)',

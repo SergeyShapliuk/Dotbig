@@ -12,22 +12,18 @@ import {
   REGISTER,
   REHYDRATE,
 } from 'redux-persist/es/constants';
+import {authReducer} from './authReducer';
 
-export const rootReducer = combineReducers({
-  mainReducer,
-});
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: [
-    'isLoggedIn',
-    'isLoading',
-    'isInitialized',
-    'disabled',
-    'burgerList',
-    'course',
-  ],
+  whitelist: ['mainReducer'],
+  blacklist: ['authReducer'],
 };
+export const rootReducer = combineReducers({
+  mainReducer,
+  authReducer,
+});
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({

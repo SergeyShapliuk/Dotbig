@@ -22,16 +22,14 @@ import CheckBoxTxt from '../components/CheckBox';
 import LessonTextInput from '../components/LessonTextInput';
 import BonusContentWithAudio from '../components/BonusContentWithAudio';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {
-  setDisabled,
-  setLesson1Step,
-  setLessonProgress,
-  setProgressBar1,
-  setRoute,
-} from '../store/mainReducer';
-import {useFocusEffect} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {setLesson1Step, setProgressBar1} from '../store/mainReducer';
+
 import {useLessonAppNavigation} from '../types/types';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useFocusEffect} from '@react-navigation/native';
+import {setDisabled, setLessonProgress, setRoute} from '../store/authReducer';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const wait = (timeout: any) => {
   // @ts-ignore
@@ -50,15 +48,16 @@ const Lesson_1 = () => {
   //   }
   //   console.log('allKeys', keys);
   // };
+  //
   // getAll();
+  // const navigationGroup = useGroupNavigation();
+
   const lessonNumber = 'lesson1';
   const dispatch = useAppDispatch();
   const navigation = useLessonAppNavigation();
   const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
   const progressBar1 = useAppSelector(state => state.mainReducer.progressBar1);
-  const state = navigation.getState();
-  console.log('reduserLesson1', state);
-
+  const login = useAppSelector(state => state.mainReducer.login);
   // const [steps1, setSteps1] = useState<boolean>(false);
   // const [step2, setStep2] = useState<boolean>(false);
   // const [step3, setStep3] = useState<boolean>(false);
@@ -68,10 +67,9 @@ const Lesson_1 = () => {
   const [input3, setInput3] = useState<string>('');
   const [disabledChecked, setDisabledChecked] = useState<boolean>(false);
   useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', () => true);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', () => true);
-    };
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+    BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
   }, []);
   useFocusEffect(() => {
     if (lesson1[3].isDone) {
@@ -79,27 +77,37 @@ const Lesson_1 = () => {
       dispatch(setRoute({value: 'Lesson2'}));
     }
   });
+  const handleBackPress = () => {
+    navigation.navigate('ForgotScreen');
+    return true;
+  };
+
+  // const currentRouteName = useRoute().name;
+  // const routeName = navigation.getState().routeNames;
+  // const nextRouteName = routeName[Symbol.iterator]();
+  // console.log('nexttttttRooooute:', nextRouteName.next());
   const onProgress = useCallback(
-    async (taskNum: number, isDone: boolean) => {
+    (taskNum: number, isDone: boolean) => {
       if (isDone) {
         dispatch(setProgressBar1({value: 75}));
         const result = lesson1.map(m =>
           m.step === taskNum ? {...m, isDone: isDone} : m,
         );
         dispatch(setLesson1Step(result));
-        const email = await AsyncStorage.getItem('dotbig_email');
         const params = {
-          email: email,
+          email: login.user_email,
           lesson: lessonNumber,
           step: taskNum,
         };
         dispatch(setLessonProgress(params));
       }
       if (lesson1[3].step === taskNum) {
+        // dispatch(setDisabled({value: true}));
+        dispatch(setRoute({value: 'Lesson2'}));
         navigation.navigate('PopUpNext');
       }
     },
-    [dispatch, lesson1, navigation],
+    [dispatch, lesson1, login.user_email, navigation],
   );
 
   const onRefresh = useCallback(() => {

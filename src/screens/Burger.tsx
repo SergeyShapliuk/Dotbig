@@ -13,8 +13,9 @@ import LessonList from '../components/LessonList';
 import {useFocusEffect} from '@react-navigation/native';
 import {useLessonAppNavigation} from '../types/types';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {setBurgerList} from '../store/mainReducer';
+
 import {DEVICE_WIDTH} from '../constans/constants';
+import {setBurgerList} from '../store/authReducer';
 
 const Burger = () => {
   const dispatch = useAppDispatch();

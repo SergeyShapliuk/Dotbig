@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
-  // Alert,
   BackHandler,
   Image,
-  // Keyboard,
   ScrollView,
   StyleSheet,
   TextInput,
@@ -18,7 +16,7 @@ import {
 import {useAppNavigation} from '../types/types';
 import {Images} from '../assets/image';
 import {message} from '../config/translations/resources/en';
-import {DEVICE_HEIGHT, DEVICE_WIDTH, HEIGHT} from '../constans/constants';
+import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal/dist/modal';
 import PhoneInput from 'react-native-phone-number-input';
@@ -30,6 +28,8 @@ import {
   validatePhone,
   validateUserName,
 } from '../common/utils/validate';
+import {useFocusEffect} from '@react-navigation/native';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const Register = () => {
   const navigation = useAppNavigation();
@@ -44,29 +44,27 @@ const Register = () => {
   console.log('modal', modal);
   console.log('modalOff', modal);
   // const phoneInput = useRef<PhoneInput>(null);
-  const student_id = useAppSelector(state => state.mainReducer.student_id);
-
+  const status = useAppSelector(state => state.authReducer.status);
+  const success = useAppSelector(state => state.mainReducer.register);
+  console.log('staaatusss', status);
   useEffect(() => {
-    if (student_id) {
-      console.log('stdisd:', student_id);
-      navigation.navigate('LoginScreen');
-      setModal(false);
-    }
-    navigation.addListener('focus', () => {
-      setModal(true);
-    });
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
-  }, [student_id]);
+  }, []);
+  useFocusEffect(() => {
+    setModal(true);
+    return () => {
+      setModal(false);
+    };
+  });
   const handleBackPress = () => {
     onBack();
     return true;
   };
   const onLoginForm = () => {
     navigation.navigate('LoginScreen');
-    setModal(false);
   };
   const validate = () => {
     if (!userName || userName.length === 0) {
@@ -109,14 +107,24 @@ const Register = () => {
       phone: formattedValue,
       password: password,
     };
-
-    console.log('reg', params);
-    dispatch(getRegister(params));
-    navigation.navigate('LoginScreen');
+    if (!success) {
+      return;
+    } else {
+      navigation.goBack();
+      navigation.navigate('LoginScreen');
+      console.log('reg', params);
+      dispatch(getRegister(params));
+      setUserName('');
+      setEmail('');
+      setPassword('');
+      setPhone('');
+    }
   };
+
   const onBack = () => {
     navigation.goBack();
   };
+
   return (
     <Modal
       isVisible={modal}
@@ -153,13 +161,7 @@ const Register = () => {
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{paddingTop: 0}}>
           <View style={styles.modalContainer}>
-            {/*<BlurView*/}
-            {/*  style={styles.absolute}*/}
-            {/*  blurType="light"*/}
-            {/*  blurAmount={10}*/}
-            {/*  reducedTransparencyFallbackColor="white"*/}
-            {/*/>*/}
-
+            <Spinner visible={status === 'loading'} color={'#A968A0'} />
             <View style={{marginHorizontal: 25, marginTop: 12}}>
               <Text style={styles.label}>Имя</Text>
               <View

@@ -11,7 +11,7 @@ const BurgerButton = ({}: // activated,
 // onHandlerActivated,
 BurgerButtonPropsType) => {
   const navigation = useLessonAppNavigation();
-  const burgerList = useAppSelector(state => state.mainReducer.burgerList);
+  const burgerList = useAppSelector(state => state.authReducer.burgerList);
   // const animation = useRef(new Animated.Value(0)).current;
   // const rotation = useRef(new Animated.Value(0)).current;
   console.log('burgerBUtton', burgerList);

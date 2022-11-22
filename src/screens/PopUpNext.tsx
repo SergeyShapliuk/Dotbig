@@ -4,14 +4,14 @@ import {Images} from '../assets/image';
 import GradientText from '../common/utils/GradientText';
 import MemoPopUpCheck from '../components/svg/PopUpCheck';
 import MemoPopUpVector from '../components/svg/PopUpVector';
-import {useLessonAppNavigation} from '../types/types';
+import { useAppNavigation } from "../types/types";
 import {useAppDispatch, useAppSelector} from '../store/store';
 import Modal from 'react-native-modal/dist/modal';
 import {setDisabled} from '../store/authReducer';
 
 const PopUpActive = () => {
   const dispatch = useAppDispatch();
-  const navigation = useLessonAppNavigation();
+  const navigation = useAppNavigation();
   // const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
   // const lesson2 = useAppSelector(state => state.mainReducer.lesson_2);
   // const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);

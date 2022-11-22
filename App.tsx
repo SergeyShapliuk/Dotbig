@@ -8,7 +8,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
-import AnimatedSplash from 'react-native-animated-splash-screen';
+// import AnimatedSplash from 'react-native-animated-splash-screen';
 
 let persistor = persistStore(store);
 
@@ -55,15 +55,15 @@ const App = () => {
             AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
           }>
           <SafeAreaView style={styles.sectionContainer}>
-            <AnimatedSplash
-              translucent={true}
-              isLoaded={true}
-              logoImage={require('./src/assets/launcher_round.png')}
-              backgroundColor={'#0b1633'}
-              logoHeight={150}
-              logoWidth={150}>
-              <Main />
-            </AnimatedSplash>
+            {/*<AnimatedSplash*/}
+            {/*  translucent={true}*/}
+            {/*  isLoaded={true}*/}
+            {/*  logoImage={require('./src/assets/launcher_round.png')}*/}
+            {/*  backgroundColor={'#0b1633'}*/}
+            {/*  logoHeight={150}*/}
+            {/*  logoWidth={150}>*/}
+            <Main />
+            {/*</AnimatedSplash>*/}
           </SafeAreaView>
         </NavigationContainer>
       </PersistGate>

@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {DEVICE_WIDTH} from '../constans/constants';
 
-import {useLessonAppNavigation} from '../types/types';
+import { useAppNavigation} from "../types/types";
 import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
 import VideoPlayer from '../components/VideoPlayers';
@@ -38,19 +38,21 @@ const wait = (timeout: any) => {
 const Lesson_3 = () => {
   const lessonNumber = 'lesson3';
   const dispatch = useAppDispatch();
-  const navigation = useLessonAppNavigation();
+  const navigation = useAppNavigation();
   const [refreshing, setRefreshing] = useState(false);
   const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
   const progressBar3 = useAppSelector(state => state.mainReducer.progressBar3);
   const login = useAppSelector(state => state.mainReducer.login);
   const route = useAppSelector(state => state.authReducer.route);
   console.log('route', route);
-  useFocusEffect(() => {
-    if (lesson3[2].isDone) {
-      dispatch(setDisabled({value: true}));
-      dispatch(setRoute({value: 'Lesson4'}));
-    }
-  });
+  useFocusEffect(
+    useCallback(() => {
+      if (lesson3[2].isDone) {
+        dispatch(setDisabled({value: true}));
+        dispatch(setRoute({value: 'Lesson4'}));
+      }
+    }, [dispatch, lesson3]),
+  );
   const onProgress = useCallback(
     (taskNum: number, isDone: boolean) => {
       if (isDone) {

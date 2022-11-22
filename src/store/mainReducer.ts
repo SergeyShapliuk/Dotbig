@@ -23,7 +23,7 @@ export const getRegister = createAsyncThunk<any, any>(
       }
     } catch (e) {
       dispatch(setAppStatus('failed'));
-      Alert.alert('', 'Попробуйте ещё раз');
+      Alert.alert('', 'Введите правильные данные ');
       return console.log('error', e);
     }
   },
@@ -41,7 +41,7 @@ export const getLogin = createAsyncThunk<any, any>(
       }
     } catch (e) {
       dispatch(setAppStatus('failed'));
-      Alert.alert('', 'Попробуйте ещё раз');
+      Alert.alert('', 'Введите правильные данные ');
       return console.log('error', e);
     }
   },

@@ -16,7 +16,7 @@ import {Images} from '../assets/image';
 
 // import {useNavigationState} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {useLessonAppNavigation} from '../types/types';
+import {useAppNavigation} from '../types/types';
 import {setDisabled} from '../store/authReducer';
 
 // import {useLessonAppNavigation} from '../types/types';
@@ -36,16 +36,14 @@ const BottomTab = () => {
   const lesson2 = useAppSelector(state => state.mainReducer.lesson_2);
   const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
   const lesson4 = useAppSelector(state => state.mainReducer.lesson_4);
-  const navigation = useLessonAppNavigation();
+  const navigation = useAppNavigation();
   // useEffect(() => {
   //   BackHandler.addEventListener('hardwareBackPress', () => true);
   //   return () => {
   //     BackHandler.removeEventListener('hardwareBackPress', () => true);
   //   };
   // }, []);
-  const sdjasd = navigation;
-  console.log('boooorrrwm', disabled);
-  console.log('routeBottomtab', sdjasd);
+
   // const {state, navigation, descriptors, NavigationContent} =
   //   useNavigationBuilder(TabRouter, {
   //     children: 'tab',
@@ -78,14 +76,14 @@ const BottomTab = () => {
   //   // onBack();
   //   // return true;
   // };
-
+  console.log('nextButBottomTab', route);
   const onBack = () => {
     if (navigation.canGoBack()) {
       navigation.goBack();
     }
   };
   const next = () => {
-    console.log('nextBut', route);
+    console.log('nextButBottomTab', route);
     // @ts-ignore
     navigation.navigate(route);
     dispatch(setDisabled({value: false}));

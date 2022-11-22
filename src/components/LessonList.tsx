@@ -3,8 +3,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Images} from '../assets/image';
 import {DEVICE_WIDTH} from '../constans/constants';
-import {useLessonAppNavigation} from '../types/types';
+import { useAppNavigation, useLessonAppNavigation } from "../types/types";
 import CheckLesson from './svg/CheckLesson';
+import {useAppSelector} from '../store/store';
 
 type LessonListType = {
   numberLesson: string;
@@ -25,7 +26,9 @@ const LessonList = ({
   success,
   currentRouteName,
 }: LessonListType) => {
-  const navigation = useLessonAppNavigation();
+  const navigation = useAppNavigation();
+  const route = useAppSelector(state => state.authReducer.route);
+  console.log('roteLessonList:', route);
   const onLessonHandler = () => {
     navigation.goBack();
     // @ts-ignore
@@ -35,7 +38,7 @@ const LessonList = ({
     <View>
       <TouchableOpacity
         onPress={onLessonHandler}
-        disabled={!success}
+        disabled={!success && lesson !== currentRouteName && lesson !== route}
         style={{marginTop: 30}}>
         <LinearGradient
           colors={

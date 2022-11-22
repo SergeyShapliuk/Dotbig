@@ -11,7 +11,7 @@ import {message} from '../config/translations/resources/en';
 
 import LessonList from '../components/LessonList';
 import {useFocusEffect} from '@react-navigation/native';
-import {useLessonAppNavigation} from '../types/types';
+import { useAppNavigation} from "../types/types";
 import {useAppDispatch, useAppSelector} from '../store/store';
 
 import {DEVICE_WIDTH} from '../constans/constants';
@@ -20,7 +20,7 @@ import {setBurgerList} from '../store/authReducer';
 const Burger = () => {
   const dispatch = useAppDispatch();
 
-  const navigation = useLessonAppNavigation();
+  const navigation = useAppNavigation();
   const routeName = navigation.getState().routes;
   const currentRouteName = routeName[routeName.length - 2].name;
   const numberLesson = currentRouteName.slice(6, 7);
@@ -36,7 +36,7 @@ const Burger = () => {
     };
   });
 
-  console.log('routeName', routeName);
+  console.log('routeNameBurger', navigation.getState());
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar

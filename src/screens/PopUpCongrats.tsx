@@ -4,11 +4,11 @@ import MemoPopUpCheck from '../components/svg/PopUpCheck';
 import MemoPopUpVector from '../components/svg/PopUpVector';
 import {Images} from '../assets/image';
 import GradientText from '../common/utils/GradientText';
-import {useLessonAppNavigation} from '../types/types';
+import { useAppNavigation } from "../types/types";
 import Modal from 'react-native-modal/dist/modal';
 
 const PopUpCongrats = () => {
-  const navigation = useLessonAppNavigation();
+  const navigation = useAppNavigation();
   return (
     <Modal
       isVisible={true}

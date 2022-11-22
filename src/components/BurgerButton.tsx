@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useLessonAppNavigation} from '../types/types';
+import {useAppNavigation} from '../types/types';
 import {useAppSelector} from '../store/store';
 
 type BurgerButtonPropsType = {
@@ -10,7 +10,7 @@ type BurgerButtonPropsType = {
 const BurgerButton = ({}: // activated,
 // onHandlerActivated,
 BurgerButtonPropsType) => {
-  const navigation = useLessonAppNavigation();
+  const navigation = useAppNavigation();
   const burgerList = useAppSelector(state => state.authReducer.burgerList);
   // const animation = useRef(new Animated.Value(0)).current;
   // const rotation = useRef(new Animated.Value(0)).current;
@@ -22,7 +22,6 @@ BurgerButtonPropsType) => {
       navigation.goBack();
     }
   };
-
 
   return (
     <View style={styles.burger}>

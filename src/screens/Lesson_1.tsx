@@ -24,7 +24,7 @@ import BonusContentWithAudio from '../components/BonusContentWithAudio';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {setLesson1Step, setProgressBar1} from '../store/mainReducer';
 
-import {useLessonAppNavigation} from '../types/types';
+import {useAppNavigation} from '../types/types';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
@@ -54,7 +54,7 @@ const Lesson_1 = () => {
 
   const lessonNumber = 'lesson1';
   const dispatch = useAppDispatch();
-  const navigation = useLessonAppNavigation();
+  const navigation = useAppNavigation();
   const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
   const progressBar1 = useAppSelector(state => state.mainReducer.progressBar1);
   const login = useAppSelector(state => state.mainReducer.login);
@@ -66,21 +66,24 @@ const Lesson_1 = () => {
   const [input2, setInput2] = useState<string>('');
   const [input3, setInput3] = useState<string>('');
   const [disabledChecked, setDisabledChecked] = useState<boolean>(false);
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-
-    BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
-  }, []);
-  useFocusEffect(() => {
-    if (lesson1[3].isDone) {
-      dispatch(setDisabled({value: true}));
-      dispatch(setRoute({value: 'Lesson2'}));
-    }
-  });
   const handleBackPress = () => {
-    navigation.navigate('ForgotScreen');
+    navigation.navigate('PopUpLeft');
     return true;
   };
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+    };
+  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      if (lesson1[3].isDone) {
+        dispatch(setDisabled({value: true}));
+        dispatch(setRoute({value: 'Lesson2'}));
+      }
+    }, [dispatch, lesson1]),
+  );
 
   // const currentRouteName = useRoute().name;
   // const routeName = navigation.getState().routeNames;

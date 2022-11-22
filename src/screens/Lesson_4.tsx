@@ -24,7 +24,7 @@ import GradientText from '../common/utils/GradientText';
 import CheckBoxTxt from '../components/CheckBox';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {setLesson4Step} from '../store/mainReducer';
-import {useLessonAppNavigation} from '../types/types';
+import { useAppNavigation} from "../types/types";
 import {setLessonProgress} from '../store/authReducer';
 // import Header from '../components/Header';
 
@@ -41,7 +41,7 @@ const wait = (timeout: any) => {
 const Lesson_4 = () => {
   const lessonNumber = 'lesson4';
   const dispatch = useAppDispatch();
-  const navigation = useLessonAppNavigation();
+  const navigation = useAppNavigation();
   const [refreshing, setRefreshing] = useState(false);
 
   const lesson4 = useAppSelector(state => state.mainReducer.lesson_4);

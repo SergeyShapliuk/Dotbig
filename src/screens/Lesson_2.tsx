@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import {DEVICE_WIDTH} from '../constans/constants';
 import {Images} from '../assets/image';
-import { useAppNavigation } from "../types/types";
+import {useAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
 import VideoPlayer from '../components/VideoPlayers';
@@ -63,7 +63,7 @@ const Lesson_2 = () => {
   const onProgress = useCallback(
     (taskNum: number, isDone: boolean) => {
       if (isDone) {
-        dispatch(setProgressBar2({value: 100}));
+        dispatch(setProgressBar2({value: 33.3}));
         const result = lesson2.map(m =>
           m.step === taskNum ? {...m, isDone: isDone} : m,
         );
@@ -144,7 +144,7 @@ const Lesson_2 = () => {
             <View style={styles.progressBar}>
               <View
                 style={{
-                  width: progressBar2,
+                  width: `${progressBar2}%`,
                   backgroundColor: '#8046A2',
                   borderRadius: 6,
                 }}
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    // paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
+    paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
   play: {
     position: 'absolute',
@@ -230,17 +230,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  header: {
-    // width: DEVICE_WIDTH,
-    height: 66,
-    paddingTop: Platform.OS === 'ios' ? getStatusBarHeight(0) : 0,
-    // marginTop: 10,
-    // paddingHorizontal: 80,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#0B1633',
-  },
+
   logoText: {
     fontSize: 25,
     fontWeight: '900',
@@ -307,6 +297,7 @@ const styles = StyleSheet.create({
   mainText: {
     paddingHorizontal: 32,
     paddingVertical: 30,
+    marginTop: 20,
     // fontFamily: 'Inter',
     // fontStyle: 'normal',
     // fontWeight: '800',
@@ -321,6 +312,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   mainTextTitle: {
+    // marginHorizontal: 32,
     // fontFamily: 'Sniglet',
     // fontStyle: 'normal',
     fontWeight: '900',
@@ -396,12 +388,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   mainLessonText: {
-    // width: DEVICE_WIDTH - 50,
+    width: DEVICE_WIDTH - 60,
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '900',
     fontSize: 20,
     lineHeight: 27,
+    textAlign: 'center',
     color: '#0B1633',
     marginTop: 25,
   },

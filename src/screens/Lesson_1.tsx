@@ -12,6 +12,7 @@ import {
   StatusBar,
   Linking,
   BackHandler,
+  Platform,
 } from 'react-native';
 import {DEVICE_WIDTH} from '../constans/constants';
 import {Images} from '../assets/image';
@@ -29,6 +30,7 @@ import {useAppNavigation} from '../types/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
 import {setDisabled, setLessonProgress, setRoute} from '../store/authReducer';
+import {getStatusBarHeight} from '../common/deviceInfo';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const wait = (timeout: any) => {
@@ -38,15 +40,17 @@ const wait = (timeout: any) => {
 
 const Lesson_1 = () => {
   // const getAll = async () => {
-  //   let keys = [];
+  //   // let keys = [];
   //   try {
+  //     // const keys = await AsyncStorage.getAllKeys();
   //     const clear = await AsyncStorage.removeItem('persist:root');
   //     console.log('allKeysren', clear);
-  //     keys = await AsyncStorage.getAllKeys();
+  //
+  //     // console.log('allKeys', keys);
   //   } catch (e) {
   //     console.log('asybcstor', e);
   //   }
-  //   console.log('allKeys', keys);
+  //   // console.log('allKeys', keys);
   // };
   //
   // getAll();
@@ -66,16 +70,16 @@ const Lesson_1 = () => {
   const [input2, setInput2] = useState<string>('');
   const [input3, setInput3] = useState<string>('');
   const [disabledChecked, setDisabledChecked] = useState<boolean>(false);
-  const handleBackPress = () => {
+  const handleBackPress = useCallback(() => {
     navigation.navigate('PopUpLeft');
     return true;
-  };
+  }, [navigation]);
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
-  }, []);
+  }, [handleBackPress]);
   useFocusEffect(
     useCallback(() => {
       if (lesson1[3].isDone) {
@@ -92,7 +96,7 @@ const Lesson_1 = () => {
   const onProgress = useCallback(
     (taskNum: number, isDone: boolean) => {
       if (isDone) {
-        dispatch(setProgressBar1({value: 75}));
+        dispatch(setProgressBar1({value: 25}));
         const result = lesson1.map(m =>
           m.step === taskNum ? {...m, isDone: isDone} : m,
         );
@@ -174,7 +178,7 @@ const Lesson_1 = () => {
             <View style={styles.progressBar}>
               <View
                 style={{
-                  width: progressBar1,
+                  width: `${progressBar1}%`,
                   backgroundColor: '#8046A2',
                   borderRadius: 6,
                 }}
@@ -251,6 +255,18 @@ const Lesson_1 = () => {
                 <Text style={styles.mainLesson_step}>
                   {message.Lesson_1.step_4}
                 </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    Linking.openURL(
+                      'https://ru.dotbig.study/redirect-personal-account/?email={{email}}',
+                    )
+                  }
+                  style={styles.button}>
+                  <Text style={styles.buttonText}>
+                    Перейдите в ваш личный кабинет
+                  </Text>
+                  <Image source={Images.diagonalArrow} />
+                </TouchableOpacity>
                 <CheckBoxTxt
                   step={lesson1[3].step}
                   isDone={lesson1[3].isDone}
@@ -281,28 +297,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    // paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
+    paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
-  play: {
-    position: 'absolute',
-    marginTop: 359,
-    width: 20,
-    height: 20,
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  imgBanner: {
-    // width: DEVICE_WIDTH,
-    // height: DEVICE_HEIGHT,
-    // resizeMode: 'contain',
-    // position: 'absolute',
-    // top: 120,
-    // zIndex: -1,
-  },
-
   mainText: {
+    marginTop: 20,
     paddingHorizontal: 32,
     paddingVertical: 30,
     // fontFamily: 'Inter',
@@ -395,12 +393,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   mainLessonText: {
-    // width: DEVICE_WIDTH - 50,
+    width: DEVICE_WIDTH - 60,
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '900',
     fontSize: 20,
     lineHeight: 27,
+    textAlign: 'center',
     color: '#0B1633',
     marginTop: 25,
   },
@@ -457,6 +456,24 @@ const styles = StyleSheet.create({
     fontSize: 14,
     borderWidth: 1,
     borderColor: '#E0E0E0',
+  },
+  button: {
+    width: DEVICE_WIDTH - 60,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 17,
+    borderRadius: 6,
+    marginTop: 20,
+    backgroundColor: '#0E1D45',
+  },
+  buttonText: {
+    fontFamily: 'Inter',
+    fontWeight: '500',
+    fontSize: 15,
+    lineHeight: 25,
+    paddingHorizontal: 10,
+    color: '#FFFFFF',
   },
   buttonStart: {
     width: DEVICE_WIDTH - 50,

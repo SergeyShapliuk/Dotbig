@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   BackHandler,
   Image,
@@ -16,7 +16,7 @@ import {
 import {useAppNavigation} from '../types/types';
 import {Images} from '../assets/image';
 import {message} from '../config/translations/resources/en';
-import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
+import {DEVICE_HEIGHT} from '../constans/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal/dist/modal';
 import PhoneInput from 'react-native-phone-number-input';
@@ -41,31 +41,30 @@ const Register = () => {
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
-  console.log('modal', modal);
-  console.log('modalOff', modal);
-  // const phoneInput = useRef<PhoneInput>(null);
+
   const status = useAppSelector(state => state.authReducer.status);
   const success = useAppSelector(state => state.mainReducer.register);
-  console.log('staaatusss', status);
+
+  const handleBackPress = useCallback(() => {
+    navigation.goBack();
+    return true;
+  }, [navigation]);
+  const onLoginForm = () => {
+    navigation.navigate('LoginScreen');
+  };
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
-  }, []);
+  }, [handleBackPress]);
   useFocusEffect(() => {
     setModal(true);
     return () => {
       setModal(false);
     };
   });
-  const handleBackPress = () => {
-    onBack();
-    return true;
-  };
-  const onLoginForm = () => {
-    navigation.navigate('LoginScreen');
-  };
+
   const validate = () => {
     if (!userName || userName.length === 0) {
       Alert.alert('', message.registerScreen.usernameEmpty);
@@ -73,7 +72,6 @@ const Register = () => {
     }
     if (!email || email.length === 0) {
       Alert.alert('', message.registerScreen.emailEmpty);
-
       return false;
     }
     if (!phone || phone.length === 0) {
@@ -84,12 +82,10 @@ const Register = () => {
   };
 
   const onLogin = async () => {
-    console.log('reg');
     Keyboard.dismiss();
     if (!validate()) {
       return;
     }
-    console.log('valireg2');
     if (
       !validateUserName(userName) ||
       !validateEmail(email) ||
@@ -98,7 +94,6 @@ const Register = () => {
       return;
     }
     const userNames = userName.replace(/^ +| +$|( ) +/g, '$1').split(' ');
-    console.log('username', userNames);
     const params: RegisterType = {
       first_name: userNames[0],
       last_name: userNames[1],
@@ -110,9 +105,9 @@ const Register = () => {
     if (!success) {
       return;
     } else {
+      Alert.alert(`Пользователь ${email} успешно зарегистрирован`);
       navigation.goBack();
       navigation.navigate('LoginScreen');
-      console.log('reg', params);
       dispatch(getRegister(params));
       setUserName('');
       setEmail('');
@@ -128,17 +123,10 @@ const Register = () => {
   return (
     <Modal
       isVisible={modal}
-      // animationIn={'fadeInDown'}
-      // animationOut={'fadeOutDown'}
-      // animationInTiming={700}
-      // animationOutTiming={700}
-      // deviceWidth={DEVICE_WIDTH}
       deviceHeight={DEVICE_HEIGHT + 50}
-      // hasBackdrop={true}
       backdropTransitionInTiming={700}
       backdropTransitionOutTiming={700}
       backdropOpacity={0.7}
-      // coverScreen={false}
       style={styles.modal}>
       <KeyboardAvoidingView
         keyboardVerticalOffset={-110}
@@ -148,7 +136,6 @@ const Register = () => {
           <View style={styles.title}>
             <Text style={styles.titleText}>{message.registerScreen.title}</Text>
           </View>
-
           <TouchableOpacity
             style={styles.imgButton}
             onPress={onBack}
@@ -172,9 +159,6 @@ const Register = () => {
                     : {},
                 ]}>
                 <TextInput
-                  // ref={ref => {
-                  //   this.username = ref;
-                  // }}
                   value={userName}
                   placeholder={message.registerScreen.usernamePlaceholder}
                   placeholderTextColor="#9E9E9E"
@@ -197,10 +181,6 @@ const Register = () => {
                   email.length > 0 ? {borderWidth: 2, borderColor: '#000'} : {},
                 ]}>
                 <TextInput
-                  // ref={ref => {
-                  //   this.password = ref;
-                  // }}
-                  // secureTextEntry={!showPassword}
                   placeholder={message.registerScreen.emailPlaceholder}
                   placeholderTextColor="#9E9E9E"
                   style={styles.textInput}
@@ -220,7 +200,6 @@ const Register = () => {
                     : {},
                 ]}>
                 <TextInput
-                  // ref={password}
                   secureTextEntry={!showPassword}
                   value={password}
                   placeholder={message.loginScreen.passwordPlaceholder}
@@ -250,7 +229,6 @@ const Register = () => {
                     : {},
                 ]}>
                 <PhoneInput
-                  // ref={phoneInput}
                   defaultValue={phone}
                   defaultCode="IT"
                   layout="first"
@@ -263,7 +241,6 @@ const Register = () => {
                   }}
                   withDarkTheme
                   withShadow
-                  // autoFocus
                   codeTextStyle={{
                     fontSize: 14,
                     marginRight: 12,
@@ -276,18 +253,6 @@ const Register = () => {
                   }}
                   containerStyle={styles.textInputPhone}
                 />
-                {/*<TextInput*/}
-                {/*  // ref={ref => {*/}
-                {/*  //   this.username = ref;*/}
-                {/*  // }}*/}
-                {/*  value={phone}*/}
-                {/*  placeholder={message.registerScreen.phonePlaceholder}*/}
-                {/*  placeholderTextColor="#9E9E9E"*/}
-                {/*  style={styles.textInput}*/}
-                {/*  autoCapitalize="none"*/}
-                {/*  autoCorrect={false}*/}
-                {/*  onChangeText={value => setPhone(value)}*/}
-                {/*/>*/}
                 {formattedValue.length > 0 && (
                   <Image source={Images.iconPhone} style={styles.icEnter} />
                 )}
@@ -333,10 +298,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     minHeight: '100%',
-    // width: DEVICE_WIDTH,
-    // justifyContent: 'center',
-    // alignSelf: 'center',
-    // backgroundColor: 'white',
   },
   headerModal: {
     backgroundColor: 'rgba(11, 22, 51, 0.7)',
@@ -345,17 +306,12 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
   },
   modalContainer: {
-    // opacity: 1,
-    // width: DEVICE_WIDTH,
-    // height: DEVICE_HEIGHT,
     backgroundColor: 'rgba(11, 22, 51, 0.7)',
     boxShadow: 'rgba(0, 0, 0, 0.55)',
     paddingBottom: 20,
-    // backdropFilter: 3.5,
   },
   modal: {
     justifyContent: 'flex-end',
-    // marginBottom: 10,
     margin: 0,
   },
   imgButton: {
@@ -368,18 +324,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: '#0B1633',
     resizeMode: 'contain',
-    // position: 'absolute',
     top: 10,
-    // bottom: 0,
     right: 10,
-    // left: 0,
-  },
-  imgBottom: {
-    marginTop: 10,
-    resizeMode: 'contain',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
   },
   textBottom: {
     marginTop: 2,
@@ -389,12 +335,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     fontWeight: '500',
     textAlign: 'center',
-  },
-  logo: {
-    height: (98 / 375) * DEVICE_WIDTH,
-    width: (73 / 375) * DEVICE_WIDTH,
-    resizeMode: 'contain',
-    // position: "absolute",
   },
   title: {
     alignItems: 'center',
@@ -408,12 +348,6 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: '#FFFFFF',
   },
-  containerImg: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    // paddingTop: 10,
-    flex: 1,
-  },
   label: {
     fontFamily: 'Inter',
     fontWeight: '400',
@@ -421,10 +355,6 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     marginBottom: 5,
     color: '#FFFFFF',
-  },
-  text: {
-    fontSize: 15,
-    color: '#000',
   },
   textInput: {
     flex: 1,
@@ -437,7 +367,6 @@ const styles = StyleSheet.create({
   },
   textInputPhone: {
     height: 55,
-    // marginTop: -20,
     fontFamily: 'Inter',
     fontSize: 14,
     marginHorizontal: -10,
@@ -449,32 +378,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     backgroundColor: '#FCFCFD',
   },
-  button: {
-    position: 'absolute',
-    alignSelf: 'center',
-    zIndex: 1,
-    top: DEVICE_HEIGHT / 2 - 20,
-  },
-  nextButton: {
-    height: (264 / 375) * DEVICE_WIDTH,
-    width: (264 / 375) * DEVICE_WIDTH,
-    resizeMode: 'contain',
-  },
   iconBack: {
-    // height: 22,
-    // width: 22,
     resizeMode: 'contain',
-  },
-  txtAccept: {
-    fontFamily: 'Poppins',
-    fontSize: 13,
-    color: '#9E9E9E',
-    fontWeight: '400',
-  },
-  iconCheck: {
-    fontSize: 22,
-    color: '#9E9E9E',
-    marginRight: 12,
   },
   linearGradient: {
     marginTop: 10,
@@ -484,13 +389,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     height: 49,
-    // marginVertical: 15,
-    // backgroundColor: '#FFC224',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
-    // alignSelf: 'stretch',
-    // alignContent: 'flex-end',
     borderRadius: 6,
   },
   txtSubmit: {
@@ -501,32 +402,10 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   arrow: {
-    // position: 'absolute',
-    // marginLeft: 42,
     width: 10,
     height: 10,
     resizeMode: 'contain',
     color: '#EEF5F8',
-  },
-  line: {
-    width: 90,
-    height: 1,
-    backgroundColor: '#DBDBDB',
-  },
-  iconFacebook: {
-    width: 20,
-    height: 20,
-    resizeMode: 'contain',
-  },
-  iconTwitter: {
-    width: 24,
-    height: 24,
-    resizeMode: 'contain',
-  },
-  iconGoogle: {
-    width: 32,
-    height: 32,
-    resizeMode: 'contain',
   },
   txtQuestion: {
     marginTop: 12,
@@ -535,22 +414,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
     color: '#FFFFFF',
-  },
-  viewLine: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: 250,
-    alignSelf: 'center',
-    marginTop: 71,
-  },
-  viewButton: {
-    marginTop: 25,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: 120,
-    alignSelf: 'center',
   },
   viewInput: {
     color: '#000',

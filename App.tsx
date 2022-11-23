@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Linking, Platform, SafeAreaView, StyleSheet} from 'react-native';
 import Main from './src/Main';
 import {store} from './src/store/store';
@@ -8,17 +8,22 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
-// import AnimatedSplash from 'react-native-animated-splash-screen';
+// @ts-ignore
+import AnimatedSplash from 'react-native-animated-splash-screen';
 
 let persistor = persistStore(store);
 
 const PERSISTENCE_KEY = 'NAVIGATION_STATE_V1';
 
 const App = () => {
-  const [isReady, setIsReady] = React.useState(false);
-  const [initialState, setInitialState] = React.useState();
+  const [isReady, setIsReady] = useState(false);
+  const [initialState, setInitialState] = useState();
+  const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     SplashScreen.hide();
+    setTimeout(() => {
+      setIsLoaded(true);
+    }, 500);
     const restoreState = async () => {
       try {
         const initialUrl = await Linking.getInitialURL();
@@ -55,15 +60,15 @@ const App = () => {
             AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
           }>
           <SafeAreaView style={styles.sectionContainer}>
-            {/*<AnimatedSplash*/}
-            {/*  translucent={true}*/}
-            {/*  isLoaded={true}*/}
-            {/*  logoImage={require('./src/assets/launcher_round.png')}*/}
-            {/*  backgroundColor={'#0b1633'}*/}
-            {/*  logoHeight={150}*/}
-            {/*  logoWidth={150}>*/}
-            <Main />
-            {/*</AnimatedSplash>*/}
+            <AnimatedSplash
+              translucent={true}
+              isLoaded={isLoaded}
+              logoImage={require('./src/assets/launcher_round.png')}
+              backgroundColor={'#0b1633'}
+              logoHeight={150}
+              logoWidth={150}>
+              <Main />
+            </AnimatedSplash>
           </SafeAreaView>
         </NavigationContainer>
       </PersistGate>

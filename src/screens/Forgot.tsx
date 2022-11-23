@@ -126,7 +126,6 @@ const Forgot = () => {
             </View>
           </View>
         </ScrollView>
-        {!hidden && <Text>Helloerterterte</Text>}
       </KeyboardAvoidingView>
     </Modal>
   );
@@ -166,18 +165,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: '#0B1633',
     resizeMode: 'contain',
-    // position: 'absolute',
     top: 10,
-    // bottom: 0,
     right: 10,
-    // left: 0,
-  },
-  imgBottom: {
-    marginTop: 10,
-    resizeMode: 'contain',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
   },
   textBottom: {
     marginTop: 5,

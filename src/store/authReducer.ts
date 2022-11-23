@@ -8,6 +8,7 @@ import {Alert} from 'react-native';
 import {api, ForgotType} from '../api/api';
 import {message} from '../config/translations/resources/en';
 import {CourseType} from '../types/types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const initializeApp = createAsyncThunk<any, string>(
   'authReducer/initializeApp',
@@ -23,23 +24,22 @@ export const initializeApp = createAsyncThunk<any, string>(
     }
   },
 );
-export const getLogin = createAsyncThunk<any, any>(
-  'authReducer/getLogin',
-  async (loginParams, {dispatch}) => {
-    dispatch(setAppStatus('loading'));
+export const getLogout = createAsyncThunk<any>(
+  'authReducer/getLogout',
+  async (_, {dispatch}) => {
     try {
-      const response = await api.login(loginParams);
-      if (response.status === 200 || response.status === 201) {
-        dispatch(setAppStatus('succeeded'));
-        dispatch(setIsLoggedIn({value: false}));
-        return response.data;
-      }
+      const key = await AsyncStorage.multiRemove([
+        'NAVIGATION_STATE_V1',
+        'persist:root',
+      ]);
+      dispatch(setIsLoggedIn({value: false}));
+      console.log('reducerKey', key);
     } catch (e) {
-      dispatch(setAppStatus('failed'));
       return console.log('error', e);
     }
   },
 );
+
 export const getForgot = createAsyncThunk<any, ForgotType>(
   'authReducer/getForgot',
   async (email, {dispatch}) => {

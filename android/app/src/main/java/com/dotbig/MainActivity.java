@@ -8,11 +8,7 @@ import android.os.Bundle;
 
 public class MainActivity extends ReactActivity {
 
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    SplashScreen.show(this, R.style.SplashStatusBarTheme, true);
-    super.onCreate(savedInstanceState);
-}
+
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule
    * rendering of the component.
@@ -22,6 +18,11 @@ protected void onCreate(Bundle savedInstanceState) {
     return "Dotbig";
   }
 
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    SplashScreen.show(this, R.style.SplashStatusBarTheme, true);
+    super.onCreate(savedInstanceState);
+}
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. There the RootView is created and
    * you can specify the renderer you wish to use - the new renderer (Fabric) or the old renderer

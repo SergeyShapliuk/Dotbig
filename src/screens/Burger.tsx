@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -11,11 +12,12 @@ import {message} from '../config/translations/resources/en';
 
 import LessonList from '../components/LessonList';
 import {useFocusEffect} from '@react-navigation/native';
-import { useAppNavigation} from "../types/types";
+import {useAppNavigation} from '../types/types';
 import {useAppDispatch, useAppSelector} from '../store/store';
 
 import {DEVICE_WIDTH} from '../constans/constants';
 import {setBurgerList} from '../store/authReducer';
+import {getStatusBarHeight} from '../common/deviceInfo';
 
 const Burger = () => {
   const dispatch = useAppDispatch();
@@ -35,7 +37,6 @@ const Burger = () => {
       dispatch(setBurgerList({value: false}));
     };
   });
-
   console.log('routeNameBurger', navigation.getState());
   return (
     <SafeAreaView style={styles.container}>
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
   mainText: {
     paddingHorizontal: 30,
     paddingVertical: 30,
+    marginTop: 10,
     // fontFamily: 'Inter',
     // fontStyle: 'normal',
     // fontWeight: '800',

@@ -1,6 +1,0 @@
-{
-  "name": "app-config",
-  "private": true,
-  "license": "MIT",
-  "main": "index.js"
-}

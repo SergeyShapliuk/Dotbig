@@ -18,7 +18,6 @@ export const getRegister = createAsyncThunk<any, any>(
       if (response.status === 200 || response.status === 201) {
         dispatch(setAppStatus('succeeded'));
         console.log('autologinREducer', response.data.student_id);
-        Alert.alert('', response.data.message);
         return response.data;
       }
     } catch (e) {

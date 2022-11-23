@@ -22,6 +22,7 @@ import Burger from './screens/Burger';
 import BottomTab from './components/BottomTab';
 import Header from './components/Header';
 import PopUpLeft from './screens/PopUpLeft';
+import PopUpReg from './screens/PopUpReg';
 const Stack = createStackNavigator<RootStackParamList>();
 const Main = () => {
   const dispatch = useAppDispatch();
@@ -79,13 +80,13 @@ const Main = () => {
           // navigationKey={burgerList ? 'user' : 'guest'}
           screenOptions={{
             header: props => <Header {...props} />,
-            // headerShown: false,
             animationEnabled: false,
             cardStyle: {backgroundColor: 'transparent'},
             presentation: 'transparentModal',
           }}>
+          <Stack.Screen name={'PopUpReg'} component={PopUpReg} />
           <Stack.Screen name={'PopUpNext'} component={PopUpNext} />
-          {/*<Stack.Screen name={'PopUpLeft'} component={PopUpLeft} />*/}
+          <Stack.Screen name={'PopUpLeft'} component={PopUpLeft} />
           <Stack.Screen name={'PopUpActive'} component={PopUpActive} />
           <Stack.Screen name={'PopUpCongrats'} component={PopUpCongrats} />
           <Stack.Screen name={'Burger'} component={Burger} />

@@ -13,52 +13,18 @@ export type RootStackParamList = {
   Lesson2: undefined;
   Lesson3: undefined;
   Lesson4: undefined;
+  PopUpReg: undefined;
   PopUpNext: undefined;
   PopUpLeft: undefined;
   PopUpActive: undefined;
   PopUpCongrats: undefined;
   Burger: undefined;
-  // Lessons: NavigatorScreenParams<NestedStack>;
 };
-// export type LessonStackList = {
-//   ForgotScreen: undefined;
-//   Lesson1: undefined;
-//   Lesson2: undefined;
-//   Lesson3: undefined;
-//   Lesson4: undefined;
-//   PopUpNext: undefined;
-//   PopUpActive: undefined;
-//   PopUpCongrats: undefined;
-//   Burger: undefined;
-//   // Forgot: {sort: 'user' | 'guest'};
-//
-//   // Lesson: NavigatorScreenParams<NestedStack>;
-// };
-// export type GroupStack = {
-//   ForgotScreen: undefined;
-//   // PopUpNext: undefined;
-//   // PopUpActive: undefined;
-//   // PopUpCongrats: undefined;
-//   // Burger: undefined;
-// };
 
 export type UseNavigationType = NavigationProp<RootStackParamList>;
-// export type UseLessonNavigationType = NavigationProp<LessonStackList>;
-// export type UseLessonGroupNavigationType = NavigationProp<GroupStack>;
-//
-// export type useGroup = CompositeNavigationProp<
-//   UseLessonNavigationType,
-//   UseLessonGroupNavigationType
-// >;
-// export const useGroupNavigation = () => useNavigation<useGroup>();
 
 export const useAppNavigation = () => useNavigation<UseNavigationType>();
-// export const useLessonAppNavigation = () =>
-//   useNavigation<UseLessonNavigationType>();
-// export const useLessonGroupNavigation = () =>
-//   useNavigation<UseLessonNavigationType>();
-// export const useLessonAppRef = () =>
-//   createNavigationContainerRef<LessonStackList>();
+
 export const useLessonAppRoute = () => useRoute();
 
 export type LessonBtn = {

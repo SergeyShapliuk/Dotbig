@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import GradientText from '../common/utils/GradientText';
 import MemoPopUpCheck from '../components/svg/PopUpCheck';
@@ -8,16 +8,22 @@ import {useAppNavigation} from '../types/types';
 import {DEVICE_HEIGHT} from '../constans/constants';
 import Modal from 'react-native-modal/dist/modal';
 import {useAppDispatch} from '../store/store';
-
+import {getLogout} from '../store/authReducer';
 
 const PopUpLeft = () => {
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
   const routeName = navigation.getState();
+
   console.log('popupLeft:', routeName);
-  const onChangeHandler = () => {
-    // dispatch(setIsLoggedIn({value: true}));
-    navigation.navigate('Lesson1');
+  const onChangeHandlerLeft = () => {
+    navigation.goBack();
+    dispatch(getLogout());
+  };
+  const onChangeHandlerStay = () => {
+    navigation.canGoBack()
+      ? navigation.goBack()
+      : navigation.navigate('Lesson1');
   };
   return (
     <Modal
@@ -38,20 +44,18 @@ const PopUpLeft = () => {
           <MemoPopUpVector style={{position: 'absolute'}} />
           <View style={styles.circle} />
         </View>
+
         <GradientText
           text={'Вы точно хотите покинуть 4-х дневный марафон?'}
           style={styles.title}
         />
-        <TouchableOpacity onPress={onChangeHandler} style={styles.button}>
+        <Text style={styles.textDescription}>
+          Весь ваш прогресс будет потерян.
+        </Text>
+        <TouchableOpacity onPress={onChangeHandlerLeft} style={styles.button}>
           <Text style={styles.buttonText}>Покинуть</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.canGoBack()
-              ? navigation.goBack()
-              : navigation.navigate('Lesson1')
-          }
-          style={styles.button}>
+        <TouchableOpacity onPress={onChangeHandlerStay} style={styles.button}>
           <Text style={styles.buttonText}>Остаться</Text>
         </TouchableOpacity>
       </View>
@@ -115,6 +119,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 80,
     color: 'black',
+  },
+  textDescription: {
+    fontFamily: 'Inter',
+    fontWeight: '400',
+    fontSize: 14,
+    lineHeight: 24,
+    textAlign: 'center',
+    marginHorizontal: 10,
+    marginTop: 10,
+    color: '#2A334C',
   },
   button: {
     flexDirection: 'row',

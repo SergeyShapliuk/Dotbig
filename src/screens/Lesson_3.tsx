@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {DEVICE_WIDTH} from '../constans/constants';
 
-import { useAppNavigation} from "../types/types";
+import {useAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
 import VideoPlayer from '../components/VideoPlayers';
@@ -56,7 +56,7 @@ const Lesson_3 = () => {
   const onProgress = useCallback(
     (taskNum: number, isDone: boolean) => {
       if (isDone) {
-        dispatch(setProgressBar3({value: 100}));
+        dispatch(setProgressBar3({value: 33.3}));
         const result = lesson3.map(m =>
           m.step === taskNum ? {...m, isDone: isDone} : m,
         );
@@ -132,7 +132,7 @@ const Lesson_3 = () => {
             <View style={styles.progressBar}>
               <View
                 style={{
-                  width: progressBar3,
+                  width: `${progressBar3}%`,
                   backgroundColor: '#8046A2',
                   borderRadius: 6,
                 }}
@@ -201,82 +201,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    // paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
+    paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
-  play: {
-    position: 'absolute',
-    marginTop: 359,
-    width: 20,
-    height: 20,
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  header: {
-    // width: DEVICE_WIDTH,
-    height: 66,
-    paddingTop: Platform.OS === 'ios' ? getStatusBarHeight(0) : 0,
-    // marginTop: 10,
-    // paddingHorizontal: 80,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#0B1633',
-  },
-  logoText: {
-    fontSize: 25,
-    fontWeight: '900',
-    letterSpacing: -2,
-    marginRight: 70,
-    bottom: 2,
-    left: 5,
-    resizeMode: 'contain',
-    color: '#FFFFFF',
-    // position: "absolute",
-  },
-  loginRegister: {
-    // flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 6,
-    backgroundColor: 'white',
-    margin: 2,
-  },
-  linearGradient: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 7,
-  },
-  startRegisterText: {
-    paddingHorizontal: 8,
-    fontFamily: 'Inter',
-    fontWeight: '500',
-    fontSize: 13,
-    lineHeight: 25,
-    textAlign: 'center',
-    marginBottom: 2,
-    padding: 3,
-    color: '#FFFFFF',
-  },
-  burger: {
-    width: 45,
-    height: 30,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 30,
-    marginLeft: 15,
-    // marginHorizontal: 5,
-    backgroundColor: '#3C455C',
-    // zIndex: 1,
-  },
-  burgerLine: {
-    width: 18,
-    height: 1.5,
-    margin: 1.5,
-    backgroundColor: '#FFFFFF',
-    // zIndex: 3,
-  },
+
   imgBanner: {
     // width: DEVICE_WIDTH,
     // height: DEVICE_HEIGHT,
@@ -289,6 +216,7 @@ const styles = StyleSheet.create({
   mainText: {
     paddingHorizontal: 32,
     paddingVertical: 30,
+    marginTop: 20,
     // fontFamily: 'Inter',
     // fontStyle: 'normal',
     // fontWeight: '800',
@@ -378,12 +306,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   mainLessonText: {
-    // width: DEVICE_WIDTH - 60,
+    width: DEVICE_WIDTH - 60,
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '900',
     fontSize: 20,
     lineHeight: 27,
+    textAlign: 'center',
     color: '#0B1633',
     marginTop: 25,
   },

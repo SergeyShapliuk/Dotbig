@@ -31,7 +31,6 @@ import MemoEllipseBonus from '../components/svg/EllipseBonus';
 import MemoVector1 from '../components/svg/Vector1';
 import MemoVector from '../components/svg/Vector';
 import MemoGroupBonus from '../components/svg/GroupBonus';
-import {useAppSelector} from '../store/store';
 
 const wait = (timeout: any) => {
   // @ts-ignore
@@ -41,8 +40,7 @@ const wait = (timeout: any) => {
 const Home = () => {
   const navigation = useAppNavigation();
   const [refreshing, setRefreshing] = useState(false);
-  const status = useAppSelector(state => state.mainReducer.status);
-  console.log('status', status);
+
   // const play = useRef<any>();
   // const onRefresh = async () => {
   //   setRefreshing({

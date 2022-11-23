@@ -63,7 +63,7 @@ const CheckBoxTxt = ({
       </TouchableOpacity>
       <Text
         style={
-          !checked ? styles.checkText : [styles.checkText, {color: '#61646F'}]
+          checked ? styles.checkText : [styles.checkText, {color: '#61646F'}]
         }>
         Готово
       </Text>

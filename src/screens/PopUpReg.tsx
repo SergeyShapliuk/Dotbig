@@ -9,12 +9,18 @@ import {useAppDispatch, useAppSelector} from '../store/store';
 import Modal from 'react-native-modal/dist/modal';
 import {setDisabled} from '../store/authReducer';
 
-const PopUpActive = () => {
+const PopUpReg = () => {
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
-
+  // const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
+  // const lesson2 = useAppSelector(state => state.mainReducer.lesson_2);
+  // const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
   const route = useAppSelector(state => state.authReducer.route);
-
+  // useFocusEffect(() => {
+  //   if (lesson1[3].isDone || lesson2[2].isDone || lesson3[2].isDone) {
+  //     dispatch(setDisabled({value: false}));
+  //   }
+  // });
   const onChangeHandler = () => {
     console.log('routrPopup:', route);
     navigation.goBack();
@@ -23,7 +29,12 @@ const PopUpActive = () => {
     dispatch(setDisabled({value: false}));
   };
   return (
-    <Modal isVisible={true} backdropOpacity={0.5} coverScreen={false}>
+    <Modal
+      isVisible={true}
+      // deviceWidth={DEVICE_WIDTH}
+      // deviceHeight={DEVICE_HEIGHT + 50}
+      backdropOpacity={0.5}
+      coverScreen={false}>
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.imgButton}
@@ -31,6 +42,7 @@ const PopUpActive = () => {
           hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
           <Image source={Images.iconBack} style={styles.iconBack} />
         </TouchableOpacity>
+
         <View style={styles.checkIcon}>
           <MemoPopUpCheck />
           <MemoPopUpVector style={{position: 'absolute'}} />
@@ -41,7 +53,11 @@ const PopUpActive = () => {
           Вскоре с Вами свяжется куратор для проверки домашнего задания! А пока
           переходите к следующему уроку
         </Text>
-        <TouchableOpacity onPress={onChangeHandler} style={styles.button}>
+
+        <TouchableOpacity
+          // @ts-ignore
+          onPress={onChangeHandler}
+          style={styles.button}>
           <Text style={styles.buttonText}>Следующий урок </Text>
           <Image source={Images.diagonalArrow} />
         </TouchableOpacity>
@@ -49,7 +65,7 @@ const PopUpActive = () => {
     </Modal>
   );
 };
-export default PopUpActive;
+export default PopUpReg;
 
 const styles = StyleSheet.create({
   container: {
@@ -57,6 +73,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 12,
     padding: 20,
+    // marginVertical: 20,
     borderRadius: 20,
     backgroundColor: '#FFFFFF',
   },
@@ -68,11 +85,16 @@ const styles = StyleSheet.create({
     height: 22,
     borderRadius: 50,
     backgroundColor: '#e0e0e1',
+    // opacity: 0.15,
     resizeMode: 'contain',
     top: 20,
+    // bottom: 0,
     right: 20,
+    // left: 0,
   },
   iconBack: {
+    // height: 22,
+    // width: 22,
     color: '#FFFFFF',
     resizeMode: 'contain',
   },

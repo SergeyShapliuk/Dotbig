@@ -43,12 +43,6 @@ export default LessonTextInput;
 const styles = StyleSheet.create({
   textInput: {
     height: 48,
-    // width: DEVICE_WIDTH - 60,
-    // // marginHorizontal: 132,
-    // // flexDirection: 'row',
-    // // justifyContent: 'space-between',
-    // // alignItems: 'flex-start',
-    // alignSelf: 'center',
     marginTop: 20,
     paddingHorizontal: 15,
     backgroundColor: '#FCFCFD',
@@ -60,10 +54,6 @@ const styles = StyleSheet.create({
     borderColor: '#E0E0E0',
   },
   inValidInput: {
-    // marginHorizontal: 132,
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // alignItems: 'flex-start',
     marginTop: 20,
     paddingHorizontal: 15,
     height: 48,

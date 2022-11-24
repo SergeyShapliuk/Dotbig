@@ -2,8 +2,7 @@ import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Images} from '../assets/image';
-import {DEVICE_WIDTH} from '../constans/constants';
-import { useAppNavigation, useLessonAppNavigation } from "../types/types";
+import {useAppNavigation} from '../types/types';
 import CheckLesson from './svg/CheckLesson';
 import {useAppSelector} from '../store/store';
 
@@ -115,115 +114,11 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: '#61646F',
   },
-
-  main: {
-    // height: HEIGHT,
-    // marginVertical: 60,
-    // flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    // alignSelf: 'center',
-    // backgroundColor: 'red',
-    // color: '#000',
-    // fontWeight: '500',
-    // marginHorizontal: 5,
-    // backgroundColor: 'red',
-  },
-  mainBonus: {
-    width: DEVICE_WIDTH - 65,
-    height: 250,
-    justifyContent: 'center',
-    alignItems: 'center',
-    // height: 50,
-    // padding: 0,
-    top: 230,
-    borderWidth: 2,
-    borderStyle: 'dashed',
-    borderColor: '#D9D9D9',
-  },
-  mainBonusTitle: {
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '600',
-    fontSize: 16,
-    lineHeight: 27,
-    bottom: 30,
-  },
-  btnBonus: {
-    width: 200,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  imgBonus: {
-    bottom: 20,
-    borderRadius: 6,
-  },
-  mainBonusLink: {
-    textAlign: 'center',
-    textDecorationLine: 'underline',
-    color: '#9356A1',
-  },
-  mainLesson: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    top: 250,
-  },
-  mainLessonText: {
-    // width: DEVICE_WIDTH - 50,
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '900',
-    fontSize: 20,
-    letterSpacing: 0.3,
-    lineHeight: 27,
-    color: '#0B1633',
-    marginHorizontal: 32,
-    marginTop: 25,
-  },
   underLine: {
     alignSelf: 'center',
-    // marginTop: 2,
     marginVertical: 10,
     paddingHorizontal: 115,
     borderWidth: 1,
     borderColor: '#dfe0e1',
-  },
-  mainLesson_step: {
-    marginHorizontal: 32,
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '700',
-    fontSize: 16,
-    lineHeight: 27,
-    alignSelf: 'flex-start',
-    color: '#0B1633',
-    marginTop: 30,
-  },
-  taskText: {
-    marginHorizontal: 32,
-    marginTop: 30,
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '400',
-    fontSize: 16,
-    lineHeight: 27,
-    color: '#61646F',
-  },
-  textInput: {
-    width: DEVICE_WIDTH - 65,
-    // marginHorizontal: 132,
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // alignItems: 'flex-start',
-    alignSelf: 'center',
-    marginTop: 30,
-    paddingHorizontal: 15,
-    // height: 45,
-    backgroundColor: '#FCFCFD',
-    color: '#8A8C95',
-    fontFamily: 'Inter',
-    fontSize: 14,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
   },
 });

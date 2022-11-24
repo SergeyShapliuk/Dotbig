@@ -11,7 +11,6 @@ import {
   View,
   Text,
   StatusBar,
-  ActivityIndicator,
 } from 'react-native';
 import {
   DEVICE_HEIGHT,
@@ -32,10 +31,6 @@ import MemoVector1 from '../components/svg/Vector1';
 import MemoVector from '../components/svg/Vector';
 import MemoGroupBonus from '../components/svg/GroupBonus';
 
-const wait = (timeout: any) => {
-  // @ts-ignore
-  return new Promise(resolve => setTimeout(resolve, timeout));
-};
 
 const Home = () => {
   const navigation = useAppNavigation();
@@ -53,11 +48,6 @@ const Home = () => {
   //   await this.onGetData();
   //   this.setState({refreshing: false});
   // };
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -68,15 +58,11 @@ const Home = () => {
       />
 
       <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 10}}>
         <View style={styles.header}>
           <Image source={Images.iconHome} style={styles.iconHome} />
           <Text style={styles.logoText}>Dotbig</Text>
-          {/*{!user?.token && (*/}
           <TouchableOpacity
             onPress={() => navigation.navigate('RegisterScreen')}>
             <LinearGradient
@@ -89,7 +75,6 @@ const Home = () => {
               </View>
             </LinearGradient>
           </TouchableOpacity>
-          {/*// )}*/}
         </View>
         <Image source={Images.bannerHome} style={styles.imgBanner} />
         <View style={styles.mainContent}>
@@ -163,55 +148,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#0B1633',
     paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
-  overlay: {
-    width: WIDTH,
-    height: HEIGHT,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 0,
-    ...StyleSheet.absoluteFillObject,
-  },
-  play: {
-    // position: 'absolute',
-    // marginTop: 359,
-    // width: 20,
-    // height: 20,
-    // backgroundColor: 'red',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-  },
-  // linearGradientUp: {
-  //   position: 'absolute',
-  //   width: 416,
-  //   height: 416,
-  //   left: -208,
-  //   top: -208,
-  //   opacity: 0.28,
-  // },
-  // gradientUp: {
-  //   position: 'absolute',
-  //   width: 416,
-  //   height: 416,
-  //   left: -108,
-  //   top: -108,
-  //   borderRadius: 50,
-  //   backgroundColor: '#314d94',
-  //   opacity: 0.05,
-  // },
-  // gradientUps: {
-  //   position: 'absolute',
-  //   top: 0,
-  //   left: 0,
-  //   bottom: 0,
-  //   right: 0,
-  // },
   header: {
-    // width: DEVICE_WIDTH,
     height: 66,
     paddingTop: Platform.OS === 'ios' ? getStatusBarHeight(0) : 0,
-    // marginTop: 10,
-    // paddingHorizontal: 80,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -220,11 +159,8 @@ const styles = StyleSheet.create({
   iconHome: {
     width: 24.15,
     height: 19.04,
-    // marginLeft: 30,
-    // right: '77%',
     resizeMode: 'contain',
   },
-
   logoText: {
     fontSize: 25,
     fontWeight: '900',
@@ -234,10 +170,8 @@ const styles = StyleSheet.create({
     left: 5,
     resizeMode: 'contain',
     color: '#0B1633',
-    // position: "absolute",
   },
   loginRegister: {
-    // flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,
@@ -268,15 +202,9 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   mainContent: {
-    // width: DEVICE_WIDTH,
-    // height: (550 / 375) * DEVICE_WIDTH,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'red',
-    // color: '#000',
-    // fontWeight: '500',
-    // marginHorizontal: 5,
   },
   textContent: {
     marginTop: 25,
@@ -290,7 +218,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 24,
     textAlign: 'center',
-    // padding: 50,
     color: '#FFFFFF',
   },
   mainTextTitle: {
@@ -309,11 +236,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     fontSize: 24,
     lineHeight: 34,
-    // padding: 50,
     textAlign: 'center',
-    // left: 10,
-    // margin: 20,
-    // marginBottom: -35,
     color: 'black',
   },
   bonusTitle: {
@@ -381,15 +304,9 @@ const styles = StyleSheet.create({
   },
   footer: {
     width: DEVICE_WIDTH - 30,
-    // flexDirection: 'row',
-    // flexWrap: 'wrap',
-    // height: (100 / 375) * DEVICE_WIDTH,
-    // paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
     justifyContent: 'center',
     alignItems: 'center',
-    // top: 140,
     marginTop: 15,
-    // backgroundColor: 'red',
   },
   footerText: {
     fontFamily: 'Inter',
@@ -401,14 +318,12 @@ const styles = StyleSheet.create({
     color: '#909CA9',
   },
   footerTextAgree: {
-    // width: DEVICE_WIDTH,
     fontFamily: 'e-Ukraine',
     fontStyle: 'normal',
     fontWeight: '300',
     fontSize: 12,
     lineHeight: 18,
     color: '#A363A1',
-    // flexWrap: 'wrap',
     textDecorationLine: 'underline',
   },
 });

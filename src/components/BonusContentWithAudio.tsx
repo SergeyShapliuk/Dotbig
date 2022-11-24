@@ -24,7 +24,6 @@ const BonusContentWithAudio = () => {
   const [play, setPlay] = useState<boolean>(false);
 
   useFocusEffect(() => {
-    console.log('useefeeeeeeeeeeeee');
     if (play) {
       music.play();
     } else {

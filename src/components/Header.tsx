@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Image,
-  Platform,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -12,16 +11,13 @@ import {
 import {Images} from '../assets/image';
 import LinearGradient from 'react-native-linear-gradient';
 import BurgerButton from './BurgerButton';
-import {getStatusBarHeight} from '../common/deviceInfo';
-import {DEVICE_WIDTH} from '../constans/constants';
 
-const Header = ({props}: any) => {
+const Header = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Image source={Images.iconHome} />
         <Text style={styles.logoText}>Dotbig</Text>
-        {/*{!user?.token && (*/}
         <LinearGradient
           colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
           start={{x: 0.0, y: 0.25}}
@@ -31,10 +27,7 @@ const Header = ({props}: any) => {
             <Text style={styles.startRegisterText}>Кабинет</Text>
           </TouchableOpacity>
         </LinearGradient>
-        <BurgerButton
-        // activated={activated}
-        // onHandlerActivated={onHandlerActivated}
-        />
+        <BurgerButton />
       </View>
     </SafeAreaView>
   );
@@ -48,12 +41,7 @@ const styles = StyleSheet.create({
     // paddingTop: Platform.OS === 'ios' ? getStatusBarHeight(0) : 0,
   },
   header: {
-    // flex: 1,
-    // width: DEVICE_WIDTH,
     height: 66,
-
-    // marginTop: 25,
-    // paddingHorizontal: 80,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -68,10 +56,8 @@ const styles = StyleSheet.create({
     left: 5,
     resizeMode: 'contain',
     color: '#FFFFFF',
-    // position: "absolute",
   },
   loginRegister: {
-    // flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,
@@ -93,24 +79,5 @@ const styles = StyleSheet.create({
     marginBottom: 2,
     padding: 3,
     color: '#FFFFFF',
-  },
-  burger: {
-    width: 45,
-    height: 30,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 30,
-    marginLeft: 15,
-    // marginHorizontal: 5,
-    backgroundColor: '#3C455C',
-    // zIndex: 1,
-  },
-  burgerLine: {
-    width: 18,
-    height: 1.5,
-    margin: 1.5,
-    backgroundColor: '#FFFFFF',
-    // zIndex: 3,
   },
 });

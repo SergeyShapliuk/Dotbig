@@ -4,7 +4,7 @@ import {Images} from '../assets/image';
 import GradientText from '../common/utils/GradientText';
 import MemoPopUpCheck from '../components/svg/PopUpCheck';
 import MemoPopUpVector from '../components/svg/PopUpVector';
-import { useAppNavigation, useLessonAppNavigation } from "../types/types";
+import {useAppNavigation} from '../types/types';
 import {DEVICE_HEIGHT} from '../constans/constants';
 import Modal from 'react-native-modal/dist/modal';
 
@@ -13,7 +13,6 @@ const PopUpActive = () => {
   return (
     <Modal
       isVisible={true}
-      // deviceWidth={DEVICE_WIDTH}
       deviceHeight={DEVICE_HEIGHT + 50}
       backdropOpacity={0.7}
       coverScreen={false}>
@@ -62,16 +61,11 @@ const styles = StyleSheet.create({
     height: 22,
     borderRadius: 50,
     backgroundColor: '#e0e0e1',
-    // opacity: 0.15,
     resizeMode: 'contain',
     top: 20,
-    // bottom: 0,
     right: 20,
-    // left: 0,
   },
   iconBack: {
-    // height: 22,
-    // width: 22,
     color: '#FFFFFF',
     resizeMode: 'contain',
   },

@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 
 import {
   Image,
-  RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -24,19 +23,11 @@ import LessonTextInput from '../components/LessonTextInput';
 import BonusContentWithAudio from '../components/BonusContentWithAudio';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {setLesson1Step, setProgressBar1} from '../store/mainReducer';
-
 import {useAppNavigation} from '../types/types';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
 import {setDisabled, setLessonProgress, setRoute} from '../store/authReducer';
 import {getStatusBarHeight} from '../common/deviceInfo';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const wait = (timeout: any) => {
-  // @ts-ignore
-  return new Promise(resolve => setTimeout(resolve, timeout));
-};
 
 const Lesson_1 = () => {
   // const getAll = async () => {
@@ -62,10 +53,7 @@ const Lesson_1 = () => {
   const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
   const progressBar1 = useAppSelector(state => state.mainReducer.progressBar1);
   const login = useAppSelector(state => state.mainReducer.login);
-  // const [steps1, setSteps1] = useState<boolean>(false);
-  // const [step2, setStep2] = useState<boolean>(false);
-  // const [step3, setStep3] = useState<boolean>(false);
-  const [refreshing, setRefreshing] = useState(false);
+
   const [input1, setInput1] = useState<string>('');
   const [input2, setInput2] = useState<string>('');
   const [input3, setInput3] = useState<string>('');
@@ -88,11 +76,6 @@ const Lesson_1 = () => {
       }
     }, [dispatch, lesson1]),
   );
-
-  // const currentRouteName = useRoute().name;
-  // const routeName = navigation.getState().routeNames;
-  // const nextRouteName = routeName[Symbol.iterator]();
-  // console.log('nexttttttRooooute:', nextRouteName.next());
   const onProgress = useCallback(
     (taskNum: number, isDone: boolean) => {
       if (isDone) {
@@ -109,18 +92,12 @@ const Lesson_1 = () => {
         dispatch(setLessonProgress(params));
       }
       if (lesson1[3].step === taskNum) {
-        // dispatch(setDisabled({value: true}));
         dispatch(setRoute({value: 'Lesson2'}));
         navigation.navigate('PopUpNext');
       }
     },
     [dispatch, lesson1, login.user_email, navigation],
   );
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -130,12 +107,8 @@ const Lesson_1 = () => {
         networkActivityIndicatorVisible={true}
       />
       <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 60}}>
-        {/*<Header />*/}
         <View style={styles.mainText}>
           <GradientText text={'Урок 1'} style={styles.mainTextTitleMasked} />
           <Text style={styles.mainTextTitle}>{message.Lesson_1.title}</Text>
@@ -274,20 +247,9 @@ const Lesson_1 = () => {
                 />
               </View>
             )}
-            {/*<Text style={styles.notAuthText}>{message.alert.notAuth}</Text>*/}
           </View>
         </View>
-
-        {/*<View style={styles.footer}>*/}
-        {/*  <Text style={styles.footerText}>*/}
-        {/*    {message.home.overview.footerText}*/}
-        {/*    <Text onPress={() => {}} style={styles.footerTextAgree}>*/}
-        {/*      {message.home.overview.footerTextAgree}*/}
-        {/*    </Text>*/}
-        {/*  </Text>*/}
-        {/*</View>*/}
       </ScrollView>
-      {/*<BottomTab step={false} screen={'Lesson_2'} />*/}
     </SafeAreaView>
   );
 };
@@ -303,22 +265,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingHorizontal: 32,
     paddingVertical: 30,
-    // fontFamily: 'Inter',
-    // fontStyle: 'normal',
-    // fontWeight: '800',
-    // backgroundColor: 'red',
   },
   mainTextTitleMasked: {
-    // fontFamily: 'Inter',
-    // fontStyle: 'normal',
     fontWeight: '900',
     fontSize: 24,
     lineHeight: 34,
     color: 'black',
   },
   mainTextTitle: {
-    // fontFamily: 'Sniglet',
-    // fontStyle: 'normal',
     fontWeight: '900',
     marginTop: 15,
     fontSize: 34,
@@ -336,25 +290,14 @@ const styles = StyleSheet.create({
     color: '#61646F',
   },
   main: {
-    // height: HEIGHT,
-    // marginVertical: 60,
-    // flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    // alignSelf: 'center',
-    // backgroundColor: 'red',
-    // color: '#000',
-    // fontWeight: '500',
-    // marginHorizontal: 5,
-    // backgroundColor: 'red',
   },
   mainBonus: {
     width: DEVICE_WIDTH - 60,
     height: 250,
     justifyContent: 'center',
     alignItems: 'center',
-    // height: 50,
-    // padding: 0,
     marginTop: 30,
     borderWidth: 2,
     borderStyle: 'dashed',
@@ -442,14 +385,9 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: DEVICE_WIDTH - 60,
-    // marginHorizontal: 132,
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // alignItems: 'flex-start',
     alignSelf: 'center',
     marginTop: 20,
     paddingHorizontal: 15,
-    // height: 45,
     backgroundColor: '#FCFCFD',
     color: '#8A8C95',
     fontFamily: 'Inter',
@@ -474,63 +412,5 @@ const styles = StyleSheet.create({
     lineHeight: 25,
     paddingHorizontal: 10,
     color: '#FFFFFF',
-  },
-  buttonStart: {
-    width: DEVICE_WIDTH - 50,
-    top: 110,
-    borderRadius: 6,
-    padding: 15,
-  },
-  buttonStartText: {
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '700',
-    fontSize: 15,
-    lineHeight: 25,
-    textAlign: 'center',
-    bottom: 2,
-    color: '#FFFFFF',
-  },
-  footer: {
-    width: DEVICE_WIDTH - 30,
-    // flexDirection: 'row',
-    // flexWrap: 'wrap',
-    // height: (100 / 375) * DEVICE_WIDTH,
-    // paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-    top: 140,
-    bottom: 0,
-    // backgroundColor: 'red',
-  },
-  footerText: {
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '500',
-    fontSize: 12,
-    lineHeight: 22,
-    textAlign: 'center',
-    color: '#909CA9',
-  },
-  footerTextAgree: {
-    // width: DEVICE_WIDTH,
-    fontFamily: 'e-Ukraine',
-    fontStyle: 'normal',
-    fontWeight: '300',
-    fontSize: 12,
-    lineHeight: 18,
-    color: '#A363A1',
-    // flexWrap: 'wrap',
-    textDecorationLine: 'underline',
-  },
-  notAuthText: {
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '400',
-    fontSize: 16,
-    lineHeight: 27,
-    marginTop: 20,
-    textAlign: 'center',
-    color: '#E24D36',
   },
 });

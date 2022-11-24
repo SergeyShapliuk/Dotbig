@@ -1,21 +1,29 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  Platform,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import MemoPopUpCheck from '../components/svg/PopUpCheck';
 import MemoPopUpVector from '../components/svg/PopUpVector';
 import {Images} from '../assets/image';
 import GradientText from '../common/utils/GradientText';
-import { useAppNavigation } from "../types/types";
+import {useAppNavigation} from '../types/types';
 import Modal from 'react-native-modal/dist/modal';
+import {getStatusBarHeight} from '../common/deviceInfo';
 
 const PopUpCongrats = () => {
   const navigation = useAppNavigation();
   return (
     <Modal
       isVisible={true}
-      // deviceWidth={DEVICE_WIDTH}
-      // deviceHeight={DEVICE_HEIGHT + 50}
       backdropOpacity={0.5}
-      coverScreen={false}>
+      coverScreen={false}
+      style={styles.modal}>
       <View style={styles.container}>
         <Image source={Images.imgBackground} />
         <TouchableOpacity
@@ -50,9 +58,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     marginHorizontal: 12,
-    // marginVertical: 100,
     borderRadius: 20,
     backgroundColor: '#FFFFFF',
+  },
+  modal: {
+    paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
   imgButton: {
     position: 'absolute',
@@ -62,16 +72,11 @@ const styles = StyleSheet.create({
     height: 22,
     borderRadius: 50,
     backgroundColor: '#e0e0e1',
-    // opacity: 0.15,
     resizeMode: 'contain',
     top: 20,
-    // bottom: 0,
     right: 20,
-    // left: 0,
   },
   iconBack: {
-    // height: 22,
-    // width: 22,
     color: '#FFFFFF',
     resizeMode: 'contain',
   },

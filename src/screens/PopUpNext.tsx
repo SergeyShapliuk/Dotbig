@@ -1,5 +1,12 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Images} from '../assets/image';
 import GradientText from '../common/utils/GradientText';
 import MemoPopUpCheck from '../components/svg/PopUpCheck';
@@ -8,6 +15,7 @@ import {useAppNavigation} from '../types/types';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import Modal from 'react-native-modal/dist/modal';
 import {setDisabled} from '../store/authReducer';
+import {getStatusBarHeight} from '../common/deviceInfo';
 
 const PopUpActive = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +31,11 @@ const PopUpActive = () => {
     dispatch(setDisabled({value: false}));
   };
   return (
-    <Modal isVisible={true} backdropOpacity={0.5} coverScreen={false}>
+    <Modal
+      isVisible={true}
+      backdropOpacity={0.5}
+      coverScreen={false}
+      style={styles.modal}>
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.imgButton}
@@ -59,6 +71,9 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 20,
     backgroundColor: '#FFFFFF',
+  },
+  modal: {
+    paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
   imgButton: {
     position: 'absolute',

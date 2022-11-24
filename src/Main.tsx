@@ -1,9 +1,7 @@
 import React, {useEffect} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-
 import {useAppDispatch, useAppSelector} from './store/store';
 import {HEIGHT, WIDTH} from './constans/constants';
-
 import {createStackNavigator} from '@react-navigation/stack';
 import {RootStackParamList} from './types/types';
 import {initializeApp} from './store/authReducer';
@@ -23,7 +21,9 @@ import BottomTab from './components/BottomTab';
 import Header from './components/Header';
 import PopUpLeft from './screens/PopUpLeft';
 import PopUpReg from './screens/PopUpReg';
+
 const Stack = createStackNavigator<RootStackParamList>();
+
 const Main = () => {
   const dispatch = useAppDispatch();
 
@@ -33,9 +33,7 @@ const Main = () => {
   );
   const login = useAppSelector(state => state.mainReducer.login);
   const burgerList = useAppSelector(state => state.authReducer.burgerList);
-  console.log('isLigged', isLoggedIn);
-  console.log('isInitial', isInitialized);
-  console.log('loginToken', login.token);
+
   useEffect(() => {
     dispatch(initializeApp(login.token));
   }, [dispatch, login.token]);
@@ -66,7 +64,7 @@ const Main = () => {
         ) : (
           <Stack.Group
             screenOptions={{
-              header: props => <Header {...props} />,
+              header: () => <Header />,
               animationEnabled: false,
             }}>
             <Stack.Screen name={'Lesson1'} component={Lesson_1} />
@@ -77,9 +75,8 @@ const Main = () => {
         )}
 
         <Stack.Group
-          // navigationKey={burgerList ? 'user' : 'guest'}
           screenOptions={{
-            header: props => <Header {...props} />,
+            header: () => <Header />,
             animationEnabled: false,
             cardStyle: {backgroundColor: 'transparent'},
             presentation: 'transparentModal',

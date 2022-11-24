@@ -6,7 +6,6 @@ import {Images} from '../assets/image';
 import EllipseButton from './svg/EllipseButton';
 import Rastangle from './svg/Rastangle';
 import Button from './svg/Button';
-// import {useFocusEffect} from '@react-navigation/native';
 
 type VideoType = {
   videoId: string;
@@ -70,8 +69,6 @@ const styles = StyleSheet.create({
   backgroundVideo: {
     width: DEVICE_WIDTH - 25,
     height: 180,
-    // margin: 0,
-    // position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
@@ -87,14 +84,10 @@ const styles = StyleSheet.create({
     width: DEVICE_WIDTH - 60,
     height: 180,
     top: 0,
-    // height: '100%',
-    // flex: 1,
-    // alignSelf: 'center',
   },
   previewContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    // zIndex: 1,
   },
   buttonContainer: {
     justifyContent: 'center',

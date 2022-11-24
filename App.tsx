@@ -20,10 +20,12 @@ const App = () => {
   const [initialState, setInitialState] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    SplashScreen.hide();
     setTimeout(() => {
+      SplashScreen.hide();
       setIsLoaded(true);
     }, 500);
+  }, []);
+  useEffect(() => {
     const restoreState = async () => {
       try {
         const initialUrl = await Linking.getInitialURL();
@@ -65,8 +67,8 @@ const App = () => {
               isLoaded={isLoaded}
               logoImage={require('./src/assets/launcher_round.png')}
               backgroundColor={'#0b1633'}
-              logoHeight={150}
-              logoWidth={150}>
+              logoHeight={170}
+              logoWidth={170}>
               <Main />
             </AnimatedSplash>
           </SafeAreaView>

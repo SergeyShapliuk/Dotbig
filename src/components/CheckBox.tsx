@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Checked from './svg/Checked';
@@ -21,8 +21,6 @@ const CheckBoxTxt = ({
   onProgress,
   setDisabledChecked,
 }: CheckBoxTxtType) => {
-  console.log('cheeebhcbj', step);
-  const [checked, setChecked] = useState<boolean>(false);
 
   const validate = () => {
     if (step === 3 && !input1 && !input2 && !input3) {
@@ -37,8 +35,7 @@ const CheckBoxTxt = ({
     if (!validate()) {
       return;
     }
-    setChecked(!checked);
-    onProgress(step, !checked);
+    onProgress(step, true);
   };
   return (
     <View style={styles.container}>
@@ -63,7 +60,7 @@ const CheckBoxTxt = ({
       </TouchableOpacity>
       <Text
         style={
-          checked ? styles.checkText : [styles.checkText, {color: '#61646F'}]
+          isDone ? styles.checkText : [styles.checkText, {color: '#61646F'}]
         }>
         Готово
       </Text>
@@ -73,7 +70,6 @@ const CheckBoxTxt = ({
 export default CheckBoxTxt;
 const styles = StyleSheet.create({
   container: {
-    // marginLeft: 0,
     marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'flex-start',

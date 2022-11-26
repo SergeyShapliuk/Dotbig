@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, TextInput} from 'react-native';
+import {scaleWidth} from '../constans/constants';
 
 type LessonTextInputProps = {
   input: string;
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
   textInput: {
     height: 48,
     marginTop: 20,
-    paddingHorizontal: 15,
+    paddingHorizontal: scaleWidth(15),
     backgroundColor: '#FCFCFD',
     color: '#8A8C95',
     fontFamily: 'Inter',

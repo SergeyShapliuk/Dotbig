@@ -1,7 +1,14 @@
 import React, {useState} from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Vimeo} from 'react-native-vimeo-iframe';
-import {DEVICE_WIDTH} from '../constans/constants';
+import {
+  DEVICE_HEIGHT,
+  DEVICE_WIDTH,
+  heightDP,
+  scaleHeight,
+  scaleWidth,
+  widthDP,
+} from '../constans/constants';
 import {Images} from '../assets/image';
 import EllipseButton from './svg/EllipseButton';
 import Rastangle from './svg/Rastangle';
@@ -28,7 +35,7 @@ const VideoPlayers = React.memo(({videoId}: VideoType) => {
     timeupdate: (data: any) => console.log('timeupdate: ', data),
     play: (data: any) => {
       console.log('play', data);
-      setPreview(data);
+      setPreview(true);
     },
     pause: (data: any) => console.log('pause: ', data),
     fullscreenchange: (data: any) => console.log('fullscreenchange: ', data),
@@ -44,7 +51,7 @@ const VideoPlayers = React.memo(({videoId}: VideoType) => {
             source={Images.imgVideoPreview}
             style={styles.imgVideoPreview}
           />
-          <TouchableOpacity>
+          <TouchableOpacity onPress={videoCallbacks.play}>
             <View style={styles.buttonContainer}>
               <Rastangle style={{position: 'absolute'}} />
               <EllipseButton style={{position: 'absolute'}} />
@@ -58,8 +65,12 @@ const VideoPlayers = React.memo(({videoId}: VideoType) => {
         params={'api=1&autoplay=0'}
         handlers={videoCallbacks}
         style={styles.backgroundVideo}
-        // minimumFontSize={4}
-        containerStyle={{width: DEVICE_WIDTH - 60, zIndex: -1}}
+        allowsFullscreenVideo={true}
+        containerStyle={{
+          width: scaleWidth(300),
+          height: scaleHeight(180),
+          zIndex: -1,
+        }}
       />
     </>
   );
@@ -67,22 +78,20 @@ const VideoPlayers = React.memo(({videoId}: VideoType) => {
 export default VideoPlayers;
 const styles = StyleSheet.create({
   backgroundVideo: {
-    width: DEVICE_WIDTH - 25,
-    height: 180,
+    width: scaleWidth(320),
     top: 0,
     left: 0,
     bottom: 0,
     right: 0,
-    marginHorizontal: 32,
-    // padding: 95,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
   },
   imgVideoPreview: {
     position: 'absolute',
-    width: DEVICE_WIDTH - 60,
-    height: 180,
+    width: scaleWidth(300),
+    height: scaleHeight(180),
+    resizeMode: 'cover',
     top: 0,
   },
   previewContainer: {

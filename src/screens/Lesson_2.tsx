@@ -11,7 +11,7 @@ import {
   StatusBar,
   Linking,
 } from 'react-native';
-import {DEVICE_WIDTH} from '../constans/constants';
+import { DEVICE_WIDTH, scaleWidth } from "../constans/constants";
 import {Images} from '../assets/image';
 import {useAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mainBonus: {
-    width: DEVICE_WIDTH - 60,
+    width: scaleWidth(300),
     height: 250,
     justifyContent: 'center',
     alignItems: 'center',

@@ -13,7 +13,7 @@ import {
   BackHandler,
   Platform,
 } from 'react-native';
-import {DEVICE_WIDTH} from '../constans/constants';
+import {DEVICE_WIDTH, scaleWidth} from '../constans/constants';
 import {Images} from '../assets/image';
 import {message} from '../config/translations/resources/en';
 import VideoPlayer from '../components/VideoPlayers';
@@ -53,7 +53,8 @@ const Lesson_1 = () => {
   const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
   const progressBar1 = useAppSelector(state => state.mainReducer.progressBar1);
   const login = useAppSelector(state => state.mainReducer.login);
-
+  const c = useAppSelector(state => state.authReducer.course);
+  console.log('course', JSON.stringify(c));
   const [input1, setInput1] = useState<string>('');
   const [input2, setInput2] = useState<string>('');
   const [input3, setInput3] = useState<string>('');
@@ -282,8 +283,6 @@ const styles = StyleSheet.create({
 
   mainTextDescription: {
     marginTop: 15,
-    // fontFamily: 'Inter',
-    // fontStyle: 'normal',
     fontWeight: '400',
     fontSize: 16,
     lineHeight: 27,
@@ -294,7 +293,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mainBonus: {
-    width: DEVICE_WIDTH - 60,
+    width: scaleWidth(300),
     height: 250,
     justifyContent: 'center',
     alignItems: 'center',
@@ -396,10 +395,11 @@ const styles = StyleSheet.create({
     borderColor: '#E0E0E0',
   },
   button: {
-    width: DEVICE_WIDTH - 60,
+    width: scaleWidth(300),
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
     paddingVertical: 17,
     borderRadius: 6,
     marginTop: 20,

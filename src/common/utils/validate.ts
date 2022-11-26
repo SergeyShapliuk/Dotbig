@@ -3,7 +3,7 @@ import {message} from '../../config/translations/resources/en';
 
 export const validateUserName = (userName: string) => {
   const re =
-    /([a-zA-Z,а-яА-Я,0-9][^...]{2,30})[\s]{1,30}([a-zA-Z,а-яА-Я,0-9][^...]{2,30})/;
+    /([a-zA-Z,а-яА-Я,0-9][^...]{1,30})[\s]{1,30}([a-zA-Z,а-яА-Я,0-9][^...]{1,30})/;
   if (!re.test(userName)) {
     console.log('userNmae:', re.test(userName));
     Alert.alert('', message.registerScreen.validUserName);

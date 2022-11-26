@@ -61,7 +61,7 @@ const BottomTab = () => {
           <Image source={Images.iconScreen} />
           <Text style={styles.btnBrokerText}>Кабинет брокера</Text>
         </View>
-      </TouchableOpacity>
+    ``      </TouchableOpacity>
       <TouchableOpacity onPress={next} disabled={!disabled}>
         <LinearGradient
           colors={

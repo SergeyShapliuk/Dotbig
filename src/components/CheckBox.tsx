@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Checked from './svg/Checked';
+import {scaleY} from '../constans/constants';
 
 type CheckBoxTxtType = {
   step: number;
@@ -21,7 +22,6 @@ const CheckBoxTxt = ({
   onProgress,
   setDisabledChecked,
 }: CheckBoxTxtType) => {
-
   const validate = () => {
     if (step === 3 && !input1 && !input2 && !input3) {
       if (setDisabledChecked) {
@@ -70,7 +70,7 @@ const CheckBoxTxt = ({
 export default CheckBoxTxt;
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: scaleY(20),
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',

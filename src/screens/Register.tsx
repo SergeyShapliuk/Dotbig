@@ -21,8 +21,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal/dist/modal';
 import PhoneInput from 'react-native-phone-number-input';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {getRegister} from '../store/mainReducer';
-import {RegisterType} from '../api/api';
+import {getLogin, getRegister} from '../store/mainReducer';
+import {LoginType, RegisterType} from '../api/api';
 import {
   validateEmail,
   validatePhone,
@@ -43,7 +43,9 @@ const Register = () => {
   const [modal, setModal] = useState<boolean>(false);
 
   const status = useAppSelector(state => state.authReducer.status);
-  const success = useAppSelector(state => state.mainReducer.register);
+  const studentId = useAppSelector(
+    state => state.mainReducer.register.student_id,
+  );
 
   const handleBackPress = useCallback(() => {
     navigation.goBack();
@@ -94,7 +96,7 @@ const Register = () => {
       return;
     }
     const userNames = userName.replace(/^ +| +$|( ) +/g, '$1').split(' ');
-    const params: RegisterType = {
+    const paramsRegister: RegisterType = {
       first_name: userNames[0],
       last_name: userNames[1],
       username: email,
@@ -102,18 +104,8 @@ const Register = () => {
       phone: formattedValue,
       password: password,
     };
-    if (!success) {
-      return;
-    } else {
-      Alert.alert(`Пользователь ${email} успешно зарегистрирован`);
-      navigation.goBack();
-      navigation.navigate('LoginScreen');
-      dispatch(getRegister(params));
-      setUserName('');
-      setEmail('');
-      setPassword('');
-      setPhone('');
-    }
+    dispatch(getRegister(paramsRegister));
+    console.log('studentId', studentId);
   };
 
   const onBack = () => {

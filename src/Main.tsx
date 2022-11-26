@@ -49,7 +49,7 @@ const Main = () => {
   return (
     <>
       <Stack.Navigator>
-        {!isLoggedIn ? (
+        {isLoggedIn ? (
           <Stack.Group
             screenOptions={{
               headerShown: false,
@@ -81,7 +81,7 @@ const Main = () => {
             cardStyle: {backgroundColor: 'transparent'},
             presentation: 'transparentModal',
           }}>
-          <Stack.Screen name={'PopUpReg'} component={PopUpReg} />
+          {/*<Stack.Screen name={'PopUpReg'} component={PopUpReg} />*/}
           <Stack.Screen name={'PopUpNext'} component={PopUpNext} />
           <Stack.Screen name={'PopUpLeft'} component={PopUpLeft} />
           <Stack.Screen name={'PopUpActive'} component={PopUpActive} />

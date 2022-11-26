@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 30,
+    paddingHorizontal: 22,
     paddingVertical: 17,
     borderRadius: 6,
     marginVertical: 20,
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 25,
     textAlign: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     color: '#FFFFFF',
   },
 });

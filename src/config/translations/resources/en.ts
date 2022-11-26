@@ -66,10 +66,7 @@ export const message = {
     validUserName: 'Введите правильно имя и фамилию',
     validEmail: 'Введите правильно электронную почту',
     validPhone: 'Введите правильно номер телефона',
-    passwordEmpty: 'Password is required',
-    confirmPasswordEmpty: 'Confirm password is required',
-    incorrectPassword: 'Confirmation password incorrect!',
-    termAndConditionEmpty: 'You must agree to the terms and conditions',
+    messageEmail: "Email already exists, please try 'Reset Password'",
   },
   forgotScreen: {
     message:

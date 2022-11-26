@@ -1,9 +1,8 @@
-import React, {useCallback, useState} from 'react';
+import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   Image,
   Platform,
-  RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -15,8 +14,8 @@ import {
 import {
   DEVICE_HEIGHT,
   DEVICE_WIDTH,
-  HEIGHT,
-  WIDTH,
+  scaleWidth,
+  scaleY,
 } from '../constans/constants';
 import {Images} from '../assets/image';
 import {useAppNavigation} from '../types/types';
@@ -31,10 +30,8 @@ import MemoVector1 from '../components/svg/Vector1';
 import MemoVector from '../components/svg/Vector';
 import MemoGroupBonus from '../components/svg/GroupBonus';
 
-
 const Home = () => {
   const navigation = useAppNavigation();
-  const [refreshing, setRefreshing] = useState(false);
 
   // const play = useRef<any>();
   // const onRefresh = async () => {
@@ -150,7 +147,6 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 66,
-    paddingTop: Platform.OS === 'ios' ? getStatusBarHeight(0) : 0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -207,8 +203,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textContent: {
-    marginTop: 25,
-    marginVertical: 15,
+    marginTop: scaleY(25),
+    marginVertical: scaleY(15),
     marginHorizontal: 32,
   },
   mainTextDescription: {
@@ -227,7 +223,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 34,
     textAlign: 'center',
-    marginTop: 10,
+    marginTop: scaleY(10),
     color: '#FFFFFF',
   },
   mainTextTitleMasked: {
@@ -285,9 +281,8 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   buttonStart: {
-    width: DEVICE_WIDTH - 60,
-    // marginHorizontal: 32,
-    marginTop: 25,
+    width: scaleWidth(300),
+    marginTop: scaleY(25),
     borderRadius: 6,
     padding: 15,
     backgroundColor: 'blue',
@@ -306,7 +301,7 @@ const styles = StyleSheet.create({
     width: DEVICE_WIDTH - 30,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 15,
+    marginTop: scaleY(15),
   },
   footerText: {
     fontFamily: 'Inter',

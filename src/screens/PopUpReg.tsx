@@ -1,21 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Images} from '../assets/image';
 import GradientText from '../common/utils/GradientText';
 import MemoPopUpCheck from '../components/svg/PopUpCheck';
 import MemoPopUpVector from '../components/svg/PopUpVector';
-import {useAppNavigation} from '../types/types';
+import {PopUpRegProps, useAppNavigation} from '../types/types';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import Modal from 'react-native-modal/dist/modal';
 import {setDisabled} from '../store/authReducer';
 
-const PopUpReg = () => {
+const PopUpReg = ({route}: PopUpRegProps) => {
   const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
+  const [active, setActive] = useState<boolean>(route.params.modal);
   // const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
   // const lesson2 = useAppSelector(state => state.mainReducer.lesson_2);
   // const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
-  const route = useAppSelector(state => state.authReducer.route);
+  const routes = useAppSelector(state => state.authReducer.route);
   // useFocusEffect(() => {
   //   if (lesson1[3].isDone || lesson2[2].isDone || lesson3[2].isDone) {
   //     dispatch(setDisabled({value: false}));
@@ -25,12 +26,12 @@ const PopUpReg = () => {
     console.log('routrPopup:', route);
     navigation.goBack();
     // @ts-ignore
-    navigation.navigate(route);
+    navigation.navigate(routes);
     dispatch(setDisabled({value: false}));
   };
   return (
     <Modal
-      isVisible={true}
+      isVisible={active}
       // deviceWidth={DEVICE_WIDTH}
       // deviceHeight={DEVICE_HEIGHT + 50}
       backdropOpacity={0.5}
@@ -38,7 +39,7 @@ const PopUpReg = () => {
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.imgButton}
-          onPress={() => navigation.goBack()}
+          onPress={() => setActive(false)}
           hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
           <Image source={Images.iconBack} style={styles.iconBack} />
         </TouchableOpacity>

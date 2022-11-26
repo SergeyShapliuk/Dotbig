@@ -3,10 +3,12 @@ import {
   api,
   LessonStepType,
   LoginResponseType,
+  LoginType,
   RegisterResponseType,
 } from '../api/api';
 import {Alert} from 'react-native';
 import {setAppStatus, setIsLoggedIn} from './authReducer';
+import {message} from '../config/translations/resources/en';
 
 export const getRegister = createAsyncThunk<any, any>(
   'mainReducer/getRegister',
@@ -16,14 +18,25 @@ export const getRegister = createAsyncThunk<any, any>(
     try {
       const response = await api.register(registerParams);
       if (response.status === 200 || response.status === 201) {
-        dispatch(setAppStatus('succeeded'));
+        const paramLogin: LoginType = {
+          username: registerParams.email,
+          password: registerParams.password,
+        };
+        dispatch(getLogin(paramLogin));
         console.log('autologinREducer', response.data.student_id);
         return response.data;
       }
     } catch (e) {
-      dispatch(setAppStatus('failed'));
-      Alert.alert('', 'Введите правильные данные ');
-      return console.log('error', e);
+      // @ts-ignore
+      if (e.response.data.message === message.registerScreen.messageEmail) {
+        dispatch(setAppStatus('failed'));
+        Alert.alert(
+          '',
+          'Такая электронная почта уже зарегистрирована. Поробуйте сбросить пароль.',
+        );
+      } else {
+        Alert.alert('', 'Попробуйте ещё раз ввести ваши данные.');
+      }
     }
   },
 );

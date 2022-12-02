@@ -21,8 +21,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal/dist/modal';
 import PhoneInput from 'react-native-phone-number-input';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {getLogin, getRegister} from '../store/mainReducer';
-import {LoginType, RegisterType} from '../api/api';
+import {getRegister} from '../store/mainReducer';
+import {RegisterType} from '../api/api';
 import {
   validateEmail,
   validatePhone,
@@ -142,7 +142,7 @@ const Register = () => {
           <View style={styles.modalContainer}>
             <Spinner visible={status === 'loading'} color={'#A968A0'} />
             <View style={{marginHorizontal: 25, marginTop: 12}}>
-              <Text style={styles.label}>Имя</Text>
+              <Text style={styles.label}>Имя и Фамилия</Text>
               <View
                 style={[
                   styles.viewInput,

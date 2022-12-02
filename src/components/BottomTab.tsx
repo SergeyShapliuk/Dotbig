@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {
   Image,
   Linking,
@@ -20,6 +20,7 @@ const BottomTab = () => {
   const navigation = useAppNavigation();
   const disabled = useAppSelector(state => state.authReducer.disabled);
   const route = useAppSelector(state => state.authReducer.route);
+  const url = useAppSelector(state => state.mainReducer.link);
 
   const onBack = () => {
     if (navigation.canGoBack()) {
@@ -32,7 +33,14 @@ const BottomTab = () => {
     navigation.navigate(route);
     dispatch(setDisabled({value: false}));
   };
-
+  const onLinking = useCallback(async () => {
+    console.log('link', url);
+    if (url) {
+      await Linking.openURL(url);
+    } else {
+      return false;
+    }
+  }, [url]);
   return (
     <View style={styles.tabContainer}>
       <TouchableOpacity onPress={onBack} disabled={false}>
@@ -51,17 +59,12 @@ const BottomTab = () => {
           </LinearGradient>
         }
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() =>
-          Linking.openURL(
-            'https://ru.dotbig.study/redirect-personal-account/?email={{email}}',
-          )
-        }>
+      <TouchableOpacity onPress={onLinking}>
         <View style={styles.btnBroker}>
           <Image source={Images.iconScreen} />
           <Text style={styles.btnBrokerText}>Кабинет брокера</Text>
         </View>
-    ``      </TouchableOpacity>
+      </TouchableOpacity>
       <TouchableOpacity onPress={next} disabled={!disabled}>
         <LinearGradient
           colors={

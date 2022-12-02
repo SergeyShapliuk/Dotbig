@@ -1,68 +1,53 @@
-import React, {useState} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React from 'react';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Images} from '../assets/image';
-import GradientText from '../common/utils/GradientText';
-import MemoPopUpCheck from '../components/svg/PopUpCheck';
-import MemoPopUpVector from '../components/svg/PopUpVector';
 import {PopUpRegProps, useAppNavigation} from '../types/types';
-import {useAppDispatch, useAppSelector} from '../store/store';
 import Modal from 'react-native-modal/dist/modal';
-import {setDisabled} from '../store/authReducer';
+import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constans/constants';
 
 const PopUpReg = ({route}: PopUpRegProps) => {
-  const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
-  const [active, setActive] = useState<boolean>(route.params.modal);
-  // const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
-  // const lesson2 = useAppSelector(state => state.mainReducer.lesson_2);
-  // const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
-  const routes = useAppSelector(state => state.authReducer.route);
-  // useFocusEffect(() => {
-  //   if (lesson1[3].isDone || lesson2[2].isDone || lesson3[2].isDone) {
-  //     dispatch(setDisabled({value: false}));
-  //   }
-  // });
+  // const [active, setActive] = useState<boolean>(route.params.modal);
+
   const onChangeHandler = () => {
     console.log('routrPopup:', route);
     navigation.goBack();
-    // @ts-ignore
-    navigation.navigate(routes);
-    dispatch(setDisabled({value: false}));
   };
   return (
     <Modal
-      isVisible={active}
+      isVisible={true}
       // deviceWidth={DEVICE_WIDTH}
-      // deviceHeight={DEVICE_HEIGHT + 50}
+      // deviceHeight={DEVICE_HEIGHT}
       backdropOpacity={0.5}
       coverScreen={false}>
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.imgButton}
-          onPress={() => setActive(false)}
-          hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
-          <Image source={Images.iconBack} style={styles.iconBack} />
-        </TouchableOpacity>
-
-        <View style={styles.checkIcon}>
-          <MemoPopUpCheck />
-          <MemoPopUpVector style={{position: 'absolute'}} />
-          <View style={styles.circle} />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: 0}}>
+        <View style={styles.container}>
+          <TouchableOpacity
+            style={styles.imgButton}
+            onPress={onChangeHandler}
+            hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
+            <Image source={Images.iconBack} style={styles.iconBack} />
+          </TouchableOpacity>
+          <Image
+            source={Images.bonus1}
+            style={{
+              // marginTop: StatusBar.currentHeight,
+              width: '95%',
+              height: DEVICE_HEIGHT - 100,
+              resizeMode: 'contain',
+              marginVertical: 20,
+            }}
+          />
         </View>
-        <GradientText text={'Поздравляем!'} style={styles.title} />
-        <Text style={styles.textDescription}>
-          Вскоре с Вами свяжется куратор для проверки домашнего задания! А пока
-          переходите к следующему уроку
-        </Text>
-
-        <TouchableOpacity
-          // @ts-ignore
-          onPress={onChangeHandler}
-          style={styles.button}>
-          <Text style={styles.buttonText}>Следующий урок </Text>
-          <Image source={Images.diagonalArrow} />
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     </Modal>
   );
 };
@@ -70,11 +55,12 @@ export default PopUpReg;
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'flex-start',
+    height: DEVICE_HEIGHT - 70,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 12,
-    padding: 20,
-    // marginVertical: 20,
+    // marginHorizontal: 12,
+    // padding: 20,
+    marginVertical: 20,
     borderRadius: 20,
     backgroundColor: '#FFFFFF',
   },
@@ -88,10 +74,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#e0e0e1',
     // opacity: 0.15,
     resizeMode: 'contain',
-    top: 20,
+    top: 30,
     // bottom: 0,
     right: 20,
     // left: 0,
+    zIndex: 10,
   },
   iconBack: {
     // height: 22,

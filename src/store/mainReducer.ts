@@ -58,6 +58,20 @@ export const getLogin = createAsyncThunk<any, any>(
     }
   },
 );
+export const getLink = createAsyncThunk<any, string>(
+  'mainReducer/getLink',
+  async token => {
+    try {
+      const response = await api.link(token);
+      if (response.status === 200 || response.status === 201) {
+        console.log('reduxcerUrl:', response.data);
+        return response.data.url;
+      }
+    } catch (e) {
+      return console.log('error', e);
+    }
+  },
+);
 const mainSlice = createSlice({
   name: 'mainReducer',
   initialState: {
@@ -86,6 +100,7 @@ const mainSlice = createSlice({
       {step: 1, isDone: false},
       {step: 2, isDone: false},
     ] as LessonStepType[],
+    link: '' as string,
   },
   reducers: {
     setProgressBar1(state, action: PayloadAction<{value: number}>) {
@@ -117,6 +132,10 @@ const mainSlice = createSlice({
       })
       .addCase(getRegister.fulfilled, (state, action) => {
         state.register = action.payload ? action.payload : {};
+      })
+      .addCase(getLink.fulfilled, (state, action) => {
+        console.log('reducerLinl', state.link);
+        state.link = action.payload ? action.payload : state.link;
       });
   },
 });

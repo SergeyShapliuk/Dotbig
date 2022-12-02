@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {
   Image,
+  Linking,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -11,8 +12,18 @@ import {
 import {Images} from '../assets/image';
 import LinearGradient from 'react-native-linear-gradient';
 import BurgerButton from './BurgerButton';
+import {useAppSelector} from '../store/store';
 
 const Header = () => {
+  const url = useAppSelector(state => state.mainReducer.link);
+  const onLinking = useCallback(async () => {
+    console.log('link', url);
+    if (url) {
+      await Linking.openURL(url);
+    } else {
+      return false;
+    }
+  }, [url]);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -23,7 +34,7 @@ const Header = () => {
           start={{x: 0.0, y: 0.25}}
           end={{x: 1.0, y: 1.0}}
           style={styles.linearGradient}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onLinking}>
             <Text style={styles.startRegisterText}>Кабинет</Text>
           </TouchableOpacity>
         </LinearGradient>

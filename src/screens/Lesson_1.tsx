@@ -22,7 +22,7 @@ import CheckBoxTxt from '../components/CheckBox';
 import LessonTextInput from '../components/LessonTextInput';
 import BonusContentWithAudio from '../components/BonusContentWithAudio';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {setLesson1Step, setProgressBar1} from '../store/mainReducer';
+import {getLink, setLesson1Step, setProgressBar1} from '../store/mainReducer';
 import {useAppNavigation} from '../types/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
@@ -53,22 +53,27 @@ const Lesson_1 = () => {
   const lesson1 = useAppSelector(state => state.mainReducer.lesson_1);
   const progressBar1 = useAppSelector(state => state.mainReducer.progressBar1);
   const login = useAppSelector(state => state.mainReducer.login);
-  const c = useAppSelector(state => state.authReducer.course);
-  console.log('course', JSON.stringify(c));
+  const token = useAppSelector(state => state.mainReducer.login.token);
+  const url = useAppSelector(state => state.mainReducer.link);
+
   const [input1, setInput1] = useState<string>('');
   const [input2, setInput2] = useState<string>('');
   const [input3, setInput3] = useState<string>('');
   const [disabledChecked, setDisabledChecked] = useState<boolean>(false);
+
   const handleBackPress = useCallback(() => {
-    navigation.navigate('PopUpLeft');
+    // navigation.navigate('PopUpLeft');
     return true;
-  }, [navigation]);
+  }, []);
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
   }, [handleBackPress]);
+  useEffect(() => {
+    dispatch(getLink(token));
+  }, []);
   useFocusEffect(
     useCallback(() => {
       if (lesson1[3].isDone) {
@@ -99,6 +104,14 @@ const Lesson_1 = () => {
     },
     [dispatch, lesson1, login.user_email, navigation],
   );
+  const onLink = useCallback(async () => {
+    console.log('link', url);
+    if (url) {
+      await Linking.openURL(url);
+    } else {
+      return false;
+    }
+  }, [url]);
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -118,7 +131,7 @@ const Lesson_1 = () => {
           </Text>
         </View>
         <View style={styles.main}>
-          <VideoPlayer videoId={'741155263'} />
+          <VideoPlayer videoId={'741155263'} poster={Images.imgVideoPreview} />
           <View style={styles.mainBonus}>
             <Text style={styles.mainBonusTitle}>
               {message.Lesson_1.bonusTitle1}
@@ -134,11 +147,7 @@ const Lesson_1 = () => {
             </Text>
             <TouchableOpacity
               style={styles.btnBonus}
-              onPress={() =>
-                Linking.openURL(
-                  'https://ru.dotbig.study/files/dotbig/lesson1/bonus.pdf',
-                )
-              }>
+              onPress={() => navigation.navigate('PopUpReg')}>
               <Image source={Images.btnBonus} style={styles.imgBonus2} />
               <Text style={styles.mainBonusLink}>
                 {message.Lesson_1.bonus2}
@@ -175,7 +184,10 @@ const Lesson_1 = () => {
                   {message.Lesson_1.step_2}
                 </Text>
                 <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
-                  <VideoPlayer videoId={'741155263'} />
+                  <VideoPlayer
+                    videoId={'741155263'}
+                    poster={Images.imgVideoPreview}
+                  />
                 </View>
                 <CheckBoxTxt
                   step={lesson1[1].step}
@@ -229,13 +241,7 @@ const Lesson_1 = () => {
                 <Text style={styles.mainLesson_step}>
                   {message.Lesson_1.step_4}
                 </Text>
-                <TouchableOpacity
-                  onPress={() =>
-                    Linking.openURL(
-                      'https://ru.dotbig.study/redirect-personal-account/?email={{email}}',
-                    )
-                  }
-                  style={styles.button}>
+                <TouchableOpacity onPress={onLink} style={styles.button}>
                   <Text style={styles.buttonText}>
                     Перейдите в ваш личный кабинет
                   </Text>

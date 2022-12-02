@@ -21,6 +21,7 @@ import {setLesson3Step, setProgressBar3} from '../store/mainReducer';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {useFocusEffect} from '@react-navigation/native';
 import {setDisabled, setLessonProgress, setRoute} from '../store/authReducer';
+import {Images} from '../assets/image';
 
 const Lesson_3 = () => {
   const lessonNumber = 'lesson3';
@@ -82,7 +83,7 @@ const Lesson_3 = () => {
           </Text>
         </View>
         <View style={styles.main}>
-          <VideoPlayer videoId={'758763314'} />
+          <VideoPlayer videoId={'758763314'} poster={Images.imgVideoPreview} />
           <View style={styles.mainLesson}>
             <Text style={styles.mainLessonText}>
               {message.Lesson_3.taskTitle}
@@ -112,7 +113,7 @@ const Lesson_3 = () => {
                   {message.Lesson_3.step_2}
                 </Text>
                 <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
-                  <VideoPlayer videoId={'758763314'} />
+                  <VideoPlayer videoId={'758763314'} poster={Images.poster3} />
                 </View>
                 <CheckBoxTxt
                   step={lesson3[1].step}

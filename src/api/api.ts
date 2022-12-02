@@ -37,6 +37,17 @@ export const api = {
       AxiosResponse<LessonProgressResponseType>
     >('wp-json/wp/v2/users/set-step-endpoint', body);
   },
+  link(token: string) {
+    return instance.get<string, AxiosResponse<LinkResponseType>>(
+      'wp-json/wp/v2/users/get-trader-link',
+      {
+        withCredentials: false,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+  },
 };
 export type LoginType = {
   username: string;
@@ -74,6 +85,11 @@ export type ForgotResponseType = {
 export type LessonStepType = {
   step: number;
   isDone: boolean;
+};
+export type LinkResponseType = {
+  code: number;
+  success: boolean;
+  url: string;
 };
 export type LessonProgressType = {
   email: string;

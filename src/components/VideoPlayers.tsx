@@ -1,35 +1,19 @@
 import React, {useState} from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Vimeo} from 'react-native-vimeo-iframe';
-import {
-  DEVICE_HEIGHT,
-  DEVICE_WIDTH,
-  heightDP,
-  scaleHeight,
-  scaleWidth,
-  widthDP,
-} from '../constans/constants';
-import {Images} from '../assets/image';
+import {scaleHeight, scaleWidth} from '../constans/constants';
 import EllipseButton from './svg/EllipseButton';
 import Rastangle from './svg/Rastangle';
 import Button from './svg/Button';
 
 type VideoType = {
   videoId: string;
+  poster: any;
 };
 
-const VideoPlayers = React.memo(({videoId}: VideoType) => {
+const VideoPlayers = React.memo(({videoId, poster}: VideoType) => {
   const [preview, setPreview] = useState<boolean>(false);
-  // useFocusEffect(() => {
-  //   if (play) {
-  //     music.play();
-  //   } else {
-  //     music.pause();
-  //   }
-  //   return () => {
-  //     music.pause();
-  //   };
-  // });
+
   console.log('preview', preview);
   const videoCallbacks = {
     timeupdate: (data: any) => console.log('timeupdate: ', data),
@@ -47,10 +31,7 @@ const VideoPlayers = React.memo(({videoId}: VideoType) => {
     <>
       {!preview && (
         <View style={styles.previewContainer}>
-          <Image
-            source={Images.imgVideoPreview}
-            style={styles.imgVideoPreview}
-          />
+          <Image source={poster} style={styles.imgVideoPreview} />
           <TouchableOpacity onPress={videoCallbacks.play}>
             <View style={styles.buttonContainer}>
               <Rastangle style={{position: 'absolute'}} />

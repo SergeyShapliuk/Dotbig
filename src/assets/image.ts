@@ -73,6 +73,10 @@ const iconScreen = require('./img/icon-tab/icon-screen.png');
 const imgVideoPreview = require('./img/preview.png');
 const imgRectangle = require('./img/icon-tab/Rectangle 251.jpg');
 const imgBackground = require('./img/image_background.png');
+const bonus1 = require('./img/bonus1.jpg');
+const poster2 = require('./img/postrer2.jpg');
+const poster3 = require('./img/poster3.jpg');
+const poster4 = require('./img/poster4.jpg');
 
 const Images = {
   iconScreen,
@@ -136,6 +140,10 @@ const Images = {
   imgVideoPreview,
   imgRectangle,
   imgBackground,
+  bonus1,
+  poster2,
+  poster3,
+  poster4,
 };
 export const logo = [D, o, t, b, i, g];
 

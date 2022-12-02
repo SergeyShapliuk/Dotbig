@@ -14,6 +14,8 @@ import {
 import {
   DEVICE_HEIGHT,
   DEVICE_WIDTH,
+  scaleFont,
+  scaleHeight,
   scaleWidth,
   scaleY,
 } from '../constans/constants';
@@ -87,7 +89,7 @@ const Home = () => {
               style={styles.mainTextTitleMasked}
             />
           </View>
-          <VideoPlayers videoId={'741155263'} />
+          <VideoPlayers videoId={'741131489'} />
           <View style={styles.bonusTitle}>
             <GradientText text={'БОНУС'} style={styles.textBonusMasked} />
             <Text style={styles.textBonus}>{message.home.overview.bonus}</Text>
@@ -146,15 +148,15 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
   header: {
-    height: 66,
+    height: scaleHeight(66),
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#FFFFFF',
   },
   iconHome: {
-    width: 24.15,
-    height: 19.04,
+    width: scaleWidth(24.15),
+    height: scaleHeight(19.04),
     resizeMode: 'contain',
   },
   logoText: {
@@ -183,8 +185,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     fontFamily: 'Inter',
     fontWeight: '700',
-    fontSize: 13,
-    lineHeight: 24,
+    fontSize: scaleFont(13),
+    lineHeight: scaleHeight(24),
     textAlign: 'center',
     marginBottom: 2,
     color: '#000000',
@@ -204,15 +206,15 @@ const styles = StyleSheet.create({
   },
   textContent: {
     marginTop: scaleY(25),
-    marginVertical: scaleY(15),
+    marginVertical: scaleHeight(15),
     marginHorizontal: 32,
   },
   mainTextDescription: {
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '400',
-    fontSize: 15,
-    lineHeight: 24,
+    fontSize: scaleFont(15),
+    lineHeight: scaleHeight(24),
     textAlign: 'center',
     color: '#FFFFFF',
   },
@@ -220,8 +222,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '800',
-    fontSize: 24,
-    lineHeight: 34,
+    fontSize: scaleFont(24),
+    lineHeight: scaleHeight(34),
     textAlign: 'center',
     marginTop: scaleY(10),
     color: '#FFFFFF',
@@ -236,7 +238,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   bonusTitle: {
-    marginVertical: 14,
+    marginVertical: scaleY(14),
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -284,7 +286,7 @@ const styles = StyleSheet.create({
     width: scaleWidth(300),
     marginTop: scaleY(25),
     borderRadius: 6,
-    padding: 15,
+    padding: scaleY(15),
     backgroundColor: 'blue',
   },
   buttonStartText: {
@@ -313,7 +315,7 @@ const styles = StyleSheet.create({
     color: '#909CA9',
   },
   footerTextAgree: {
-    fontFamily: 'e-Ukraine',
+    fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '300',
     fontSize: 12,

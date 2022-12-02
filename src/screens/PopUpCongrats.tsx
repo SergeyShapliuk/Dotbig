@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {
   Image,
+  Linking,
   Platform,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -15,9 +15,19 @@ import GradientText from '../common/utils/GradientText';
 import {useAppNavigation} from '../types/types';
 import Modal from 'react-native-modal/dist/modal';
 import {getStatusBarHeight} from '../common/deviceInfo';
+import {useAppSelector} from '../store/store';
 
 const PopUpCongrats = () => {
   const navigation = useAppNavigation();
+  const url = useAppSelector(state => state.mainReducer.link);
+  const onLinking = useCallback(async () => {
+    console.log('link', url);
+    if (url) {
+      await Linking.openURL(url);
+    } else {
+      return false;
+    }
+  }, [url]);
   return (
     <Modal
       isVisible={true}
@@ -43,7 +53,7 @@ const PopUpCongrats = () => {
           Вскоре с Вами свяжется куратор для активации доступа к специальному
           предложению от компании Dotbig
         </Text>
-        <TouchableOpacity onPress={() => {}} style={styles.button}>
+        <TouchableOpacity onPress={onLinking} style={styles.button}>
           <Text style={styles.buttonText}>Перейдите в Ваш личный кабинет</Text>
           <Image source={Images.diagonalArrow} />
         </TouchableOpacity>

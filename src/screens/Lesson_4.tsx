@@ -11,7 +11,7 @@ import {
   StatusBar,
   Linking,
 } from 'react-native';
-import { DEVICE_WIDTH, scaleWidth } from "../constans/constants";
+import {DEVICE_WIDTH, scaleWidth} from '../constans/constants';
 import {Images} from '../assets/image';
 import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
@@ -70,7 +70,7 @@ const Lesson_4 = () => {
           </Text>
         </View>
         <View style={styles.main}>
-          <VideoPlayer videoId={'744079947'} />
+          <VideoPlayer videoId={'744079947'} poster={Images.imgVideoPreview} />
           <View style={styles.mainBonus}>
             <Text style={styles.mainBonusTitle}>
               {message.Lesson_4.bonusTitle}
@@ -106,7 +106,7 @@ const Lesson_4 = () => {
                   {message.Lesson_4.step_2}
                 </Text>
                 <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
-                  <VideoPlayer videoId={'744079947'} />
+                  <VideoPlayer videoId={'744079947'} poster={Images.poster4} />
                 </View>
                 <CheckBoxTxt
                   step={lesson4[1].step}

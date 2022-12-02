@@ -14,7 +14,7 @@ export type RootStackParamList = {
   Lesson2: undefined;
   Lesson3: undefined;
   Lesson4: undefined;
-  PopUpReg: {modal: boolean};
+  PopUpReg: undefined;
   PopUpNext: undefined;
   PopUpLeft: undefined;
   PopUpActive: undefined;

@@ -11,7 +11,7 @@ import {
   StatusBar,
   Linking,
 } from 'react-native';
-import { DEVICE_WIDTH, scaleWidth } from "../constans/constants";
+import {DEVICE_WIDTH, scaleWidth} from '../constans/constants';
 import {Images} from '../assets/image';
 import {useAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
@@ -88,7 +88,7 @@ const Lesson_2 = () => {
           </Text>
         </View>
         <View style={styles.main}>
-          <VideoPlayer videoId={'744085304'} />
+          <VideoPlayer videoId={'744085304'} poster={Images.imgVideoPreview}/>
           <View style={styles.mainBonus}>
             <Text style={styles.mainBonusTitle}>
               {message.Lesson_2.bonusTitle}
@@ -133,7 +133,7 @@ const Lesson_2 = () => {
                   {message.Lesson_2.step_2}
                 </Text>
                 <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
-                  <VideoPlayer videoId={'744085304'} />
+                  <VideoPlayer videoId={'744085304'} poster={Images.poster2} />
                 </View>
                 <CheckBoxTxt
                   step={lesson2[1].step}

@@ -83,7 +83,7 @@ const Lesson_3 = () => {
           </Text>
         </View>
         <View style={styles.main}>
-          <VideoPlayer videoId={'758763314'} poster={Images.imgVideoPreview} />
+          <VideoPlayer videoId={'758763314'} poster={Images.poster3} />
           <View style={styles.mainLesson}>
             <Text style={styles.mainLessonText}>
               {message.Lesson_3.taskTitle}

@@ -147,7 +147,7 @@ const Lesson_1 = () => {
             </Text>
             <TouchableOpacity
               style={styles.btnBonus}
-              onPress={() => navigation.navigate('PopUpReg')}>
+              onPress={() => navigation.navigate('Bonus_1')}>
               <Image source={Images.btnBonus} style={styles.imgBonus2} />
               <Text style={styles.mainBonusLink}>
                 {message.Lesson_1.bonus2}

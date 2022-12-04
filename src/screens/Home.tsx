@@ -4,20 +4,19 @@ import {
   Image,
   Platform,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
   Text,
   StatusBar,
+  ScrollView,
 } from 'react-native';
 import {
   DEVICE_HEIGHT,
   DEVICE_WIDTH,
-  scaleFont,
-  scaleHeight,
-  scaleWidth,
+  heightDP,
   scaleY,
+  widthDP,
 } from '../constans/constants';
 import {Images} from '../assets/image';
 import {useAppNavigation} from '../types/types';
@@ -26,27 +25,14 @@ import {getStatusBarHeight} from '../common/deviceInfo';
 import VideoPlayers from '../components/VideoPlayers';
 import GradientText from '../common/utils/GradientText';
 import MemoHeadphonesSvg from '../components/svg/HeadphonesSvg';
-import MemoEllipseBonus2 from '../components/svg/EllipseBonus2';
 import MemoEllipseBonus from '../components/svg/EllipseBonus';
 import MemoVector1 from '../components/svg/Vector1';
 import MemoVector from '../components/svg/Vector';
 import MemoGroupBonus from '../components/svg/GroupBonus';
+import MemoEllipseBonus100 from '../components/svg/EllipseBonus100';
 
 const Home = () => {
   const navigation = useAppNavigation();
-
-  // const play = useRef<any>();
-  // const onRefresh = async () => {
-  //   setRefreshing({
-  //     refreshing: true,
-  //     loading1: true,
-  //     loading2: true,
-  //     loading3: true,
-  //     loading4: true,
-  //   });
-  //   await this.onGetData();
-  //   this.setState({refreshing: false});
-  // };
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -55,7 +41,6 @@ const Home = () => {
         barStyle="default"
         networkActivityIndicatorVisible={true}
       />
-
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 10}}>
@@ -89,7 +74,7 @@ const Home = () => {
               style={styles.mainTextTitleMasked}
             />
           </View>
-          <VideoPlayers videoId={'741131489'} />
+          <VideoPlayers videoId={'741131489'} poster={Images.imgVideoPreview} />
           <View style={styles.bonusTitle}>
             <GradientText text={'БОНУС'} style={styles.textBonusMasked} />
             <Text style={styles.textBonus}>{message.home.overview.bonus}</Text>
@@ -107,7 +92,7 @@ const Home = () => {
               <MemoEllipseBonus
                 style={{position: 'absolute', right: 0, top: 11}}
               />
-              <MemoEllipseBonus2
+              <MemoEllipseBonus100
                 style={{position: 'absolute', left: 8, top: 7}}
               />
             </View>
@@ -148,19 +133,19 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
   },
   header: {
-    height: scaleHeight(66),
+    height: heightDP('9.5%'),
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
   },
   iconHome: {
-    width: scaleWidth(24.15),
-    height: scaleHeight(19.04),
+    width: widthDP('7%'),
+    height: heightDP('7%'),
     resizeMode: 'contain',
   },
   logoText: {
-    fontSize: 25,
+    fontSize: widthDP('7.5%'),
     fontWeight: '900',
     letterSpacing: -2,
     marginRight: 70,
@@ -185,8 +170,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     fontFamily: 'Inter',
     fontWeight: '700',
-    fontSize: scaleFont(13),
-    lineHeight: scaleHeight(24),
+    fontSize: widthDP('3.5%'),
+    lineHeight: heightDP('3.5%'),
     textAlign: 'center',
     marginBottom: 2,
     color: '#000000',
@@ -196,7 +181,7 @@ const styles = StyleSheet.create({
     height: DEVICE_HEIGHT,
     resizeMode: 'contain',
     position: 'absolute',
-    top: 120,
+    top: heightDP('16%'),
     zIndex: -1,
   },
   mainContent: {
@@ -205,16 +190,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textContent: {
-    marginTop: scaleY(25),
-    marginVertical: scaleHeight(15),
-    marginHorizontal: 32,
+    marginTop: heightDP('3%'),
+    marginVertical: heightDP('2%'),
+    marginHorizontal: widthDP('7%'),
   },
   mainTextDescription: {
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '400',
-    fontSize: scaleFont(15),
-    lineHeight: scaleHeight(24),
+    fontSize: widthDP('4.2%'),
+    lineHeight: heightDP('3.3%'),
     textAlign: 'center',
     color: '#FFFFFF',
   },
@@ -222,23 +207,23 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '800',
-    fontSize: scaleFont(24),
-    lineHeight: scaleHeight(34),
+    fontSize: widthDP('6.3%'),
+    lineHeight: heightDP('4.7%'),
     textAlign: 'center',
-    marginTop: scaleY(10),
+    marginTop: heightDP('2%'),
     color: '#FFFFFF',
   },
   mainTextTitleMasked: {
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '800',
-    fontSize: 24,
-    lineHeight: 34,
+    fontSize: widthDP('6.3%'),
+    lineHeight: heightDP('4.7%'),
     textAlign: 'center',
     color: 'black',
   },
   bonusTitle: {
-    marginVertical: scaleY(14),
+    marginTop: heightDP('2%'),
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -247,19 +232,20 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '800',
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: widthDP('4%'),
+    lineHeight: heightDP('3.5%'),
     color: 'black',
   },
   textBonus: {
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '800',
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: widthDP('4%'),
+    lineHeight: heightDP('3.5%'),
     color: '#FFFFFF',
   },
   bonusContent: {
+    marginTop: heightDP('2%'),
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -283,8 +269,8 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   buttonStart: {
-    width: scaleWidth(300),
-    marginTop: scaleY(25),
+    width: widthDP('82%'),
+    marginTop: heightDP('2.5%'),
     borderRadius: 6,
     padding: scaleY(15),
     backgroundColor: 'blue',
@@ -293,17 +279,17 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '700',
-    fontSize: 15,
-    lineHeight: 25,
+    fontSize: widthDP('4%'),
+    lineHeight: heightDP('3.5%'),
     textAlign: 'center',
     bottom: 2,
     color: '#FFFFFF',
   },
   footer: {
-    width: DEVICE_WIDTH - 30,
+    width: DEVICE_WIDTH - 60,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: scaleY(15),
+    marginTop: heightDP('2%'),
   },
   footerText: {
     fontFamily: 'Inter',

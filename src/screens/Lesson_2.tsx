@@ -88,18 +88,14 @@ const Lesson_2 = () => {
           </Text>
         </View>
         <View style={styles.main}>
-          <VideoPlayer videoId={'744085304'} poster={Images.imgVideoPreview}/>
+          <VideoPlayer videoId={'744085304'} poster={Images.poster2} />
           <View style={styles.mainBonus}>
             <Text style={styles.mainBonusTitle}>
               {message.Lesson_2.bonusTitle}
             </Text>
             <TouchableOpacity
               style={styles.btnBonus}
-              onPress={() =>
-                Linking.openURL(
-                  'https://ru.dotbig.study/files/dotbig/lesson2/bonus.pdf',
-                )
-              }>
+              onPress={() => navigation.navigate('Bonus_2')}>
               <Image source={Images.btnBonus} style={styles.imgBonus} />
               <Text style={styles.mainBonusLink}>{message.Lesson_2.bonus}</Text>
             </TouchableOpacity>

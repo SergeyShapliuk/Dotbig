@@ -3,7 +3,6 @@ import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Vimeo} from 'react-native-vimeo-iframe';
 import {scaleHeight, scaleWidth} from '../constans/constants';
 import EllipseButton from './svg/EllipseButton';
-import Rastangle from './svg/Rastangle';
 import Button from './svg/Button';
 
 type VideoType = {
@@ -34,9 +33,9 @@ const VideoPlayers = React.memo(({videoId, poster}: VideoType) => {
           <Image source={poster} style={styles.imgVideoPreview} />
           <TouchableOpacity onPress={videoCallbacks.play}>
             <View style={styles.buttonContainer}>
-              <Rastangle style={{position: 'absolute'}} />
-              <EllipseButton style={{position: 'absolute'}} />
-              <Button style={{position: 'absolute'}} />
+              <View style={styles.rectangle} />
+              <EllipseButton style={{position: 'absolute', top: -23}} />
+              <Button style={{position: 'absolute', top: -12}} />
             </View>
           </TouchableOpacity>
         </View>
@@ -78,6 +77,17 @@ const styles = StyleSheet.create({
   previewContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  rectangle: {
+    position: 'absolute',
+    width: 53,
+    height: 53,
+    top: -31,
+    borderRadius: 50,
+    borderWidth: 1,
+    backgroundColor: 'white',
+    opacity: 0.4,
+    borderColor: '#D58EA4',
   },
   buttonContainer: {
     justifyContent: 'center',

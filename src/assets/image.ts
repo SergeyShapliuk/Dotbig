@@ -64,9 +64,6 @@ const i = require('./img/dotbig_logo/i.png');
 const g = require('./img/dotbig_logo/g.png');
 // Lessons
 const btnBonus = require('./img/pdf-btn-download.png');
-const imgProgressBar1 = require('./img/progressBar_1.png');
-const imgProgressBar2 = require('./img/image-progressBar.png');
-const imgProgressBar3 = require('./img/progressBar_3.png');
 const iconCheckBox = require('./img/icon-tab/icon-checkBox.png');
 const iconChecked = require('./img/icon/icon-arrow_down.png');
 const iconScreen = require('./img/icon-tab/icon-screen.png');
@@ -74,6 +71,8 @@ const imgVideoPreview = require('./img/preview.png');
 const imgRectangle = require('./img/icon-tab/Rectangle 251.jpg');
 const imgBackground = require('./img/image_background.png');
 const bonus1 = require('./img/bonus1.jpg');
+const bonus2 = require('./img/bonus2.png');
+const bonus4 = require('./img/bonus4.png');
 const poster2 = require('./img/postrer2.jpg');
 const poster3 = require('./img/poster3.jpg');
 const poster4 = require('./img/poster4.jpg');
@@ -134,13 +133,12 @@ const Images = {
   backgroundBanner,
   iconCart,
   btnBonus,
-  imgProgressBar3,
-  imgProgressBar2,
-  imgProgressBar1,
   imgVideoPreview,
   imgRectangle,
   imgBackground,
   bonus1,
+  bonus2,
+  bonus4,
   poster2,
   poster3,
   poster4,

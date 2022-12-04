@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {
-  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -17,7 +16,6 @@ import {useAppDispatch, useAppSelector} from '../store/store';
 
 import {DEVICE_WIDTH} from '../constans/constants';
 import {setBurgerList} from '../store/authReducer';
-import {getStatusBarHeight} from '../common/deviceInfo';
 
 const Burger = () => {
   const dispatch = useAppDispatch();
@@ -31,12 +29,14 @@ const Burger = () => {
   const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
   const lesson4 = useAppSelector(state => state.mainReducer.lesson_4);
 
-  useFocusEffect(() => {
-    dispatch(setBurgerList({value: true}));
-    return () => {
-      dispatch(setBurgerList({value: false}));
-    };
-  });
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(setBurgerList({value: true}));
+      return () => {
+        dispatch(setBurgerList({value: false}));
+      };
+    }, [dispatch]),
+  );
   console.log('routeNameBurger', navigation.getState());
   return (
     <SafeAreaView style={styles.container}>

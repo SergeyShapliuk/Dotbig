@@ -9,7 +9,6 @@ import {
   View,
   Text,
   StatusBar,
-  Linking,
 } from 'react-native';
 import {DEVICE_WIDTH, scaleWidth} from '../constans/constants';
 import {Images} from '../assets/image';
@@ -70,18 +69,14 @@ const Lesson_4 = () => {
           </Text>
         </View>
         <View style={styles.main}>
-          <VideoPlayer videoId={'744079947'} poster={Images.imgVideoPreview} />
+          <VideoPlayer videoId={'744079947'} poster={Images.poster4} />
           <View style={styles.mainBonus}>
             <Text style={styles.mainBonusTitle}>
               {message.Lesson_4.bonusTitle}
             </Text>
             <TouchableOpacity
               style={styles.btnBonus}
-              onPress={() =>
-                Linking.openURL(
-                  'https://ru.dotbig.study/files/dotbig/lesson4/bonus.pdf',
-                )
-              }>
+              onPress={() => navigation.navigate('Bonus_4')}>
               <Image source={Images.btnBonus} style={styles.imgBonus} />
               <Text style={styles.mainBonusLink}>{message.Lesson_4.bonus}</Text>
             </TouchableOpacity>

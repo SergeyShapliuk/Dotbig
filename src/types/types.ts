@@ -3,7 +3,6 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import {StackScreenProps} from '@react-navigation/stack';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -14,7 +13,9 @@ export type RootStackParamList = {
   Lesson2: undefined;
   Lesson3: undefined;
   Lesson4: undefined;
-  PopUpReg: undefined;
+  Bonus_1: undefined;
+  Bonus_2: undefined;
+  Bonus_4: undefined;
   PopUpNext: undefined;
   PopUpLeft: undefined;
   PopUpActive: undefined;
@@ -23,7 +24,7 @@ export type RootStackParamList = {
 };
 
 export type UseNavigationType = NavigationProp<RootStackParamList>;
-export type PopUpRegProps = StackScreenProps<RootStackParamList, 'PopUpReg'>;
+
 export const useAppNavigation = () => useNavigation<UseNavigationType>();
 
 export const useLessonAppRoute = () => useRoute();

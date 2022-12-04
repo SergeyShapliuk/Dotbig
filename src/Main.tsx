@@ -20,7 +20,9 @@ import Burger from './screens/Burger';
 import BottomTab from './components/BottomTab';
 import Header from './components/Header';
 import PopUpLeft from './screens/PopUpLeft';
-import PopUpReg from "./screens/PopUpReg";
+import Bonus_1 from "./screens/Bonus_1";
+import Bonus_2 from "./screens/Bonus_2";
+import Bonus_4 from "./screens/Bonus_4";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -81,7 +83,9 @@ const Main = () => {
             cardStyle: {backgroundColor: 'transparent'},
             presentation: 'transparentModal',
           }}>
-          <Stack.Screen name={'PopUpReg'} component={PopUpReg} />
+          <Stack.Screen name={'Bonus_1'} component={Bonus_1} />
+          <Stack.Screen name={'Bonus_2'} component={Bonus_2} />
+          <Stack.Screen name={'Bonus_4'} component={Bonus_4} />
           <Stack.Screen name={'PopUpNext'} component={PopUpNext} />
           <Stack.Screen name={'PopUpLeft'} component={PopUpLeft} />
           <Stack.Screen name={'PopUpActive'} component={PopUpActive} />

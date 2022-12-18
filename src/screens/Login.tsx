@@ -69,7 +69,7 @@ const Login = () => {
       username: email,
       password: password,
     };
-    dispatch(getLogin(params));
+    await dispatch(getLogin(params));
     if (!token) {
       return;
     } else {

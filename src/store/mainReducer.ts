@@ -24,6 +24,7 @@ export const getRegister = createAsyncThunk<any, any>(
         };
         dispatch(getLogin(paramLogin));
         console.log('autologinREducer', response.data.student_id);
+        dispatch(setAppStatus('succeeded'));
         return response.data;
       }
     } catch (e) {

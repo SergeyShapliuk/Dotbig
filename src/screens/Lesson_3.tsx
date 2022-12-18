@@ -113,7 +113,7 @@ const Lesson_3 = () => {
                   {message.Lesson_3.step_2}
                 </Text>
                 <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
-                  <VideoPlayer videoId={'758763314'} poster={Images.poster3} />
+                  <VideoPlayer videoId={'781593833'} poster={Images.preview3} />
                 </View>
                 <CheckBoxTxt
                   step={lesson3[1].step}

@@ -60,7 +60,7 @@ const Lesson_4 = () => {
       />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 70}}>
+        contentContainerStyle={{paddingBottom: 170}}>
         <View style={styles.mainText}>
           <GradientText text={'Урок 4'} style={styles.mainTextTitleMasked} />
           <Text style={styles.mainTextTitle}>{message.Lesson_4.title}</Text>
@@ -101,7 +101,7 @@ const Lesson_4 = () => {
                   {message.Lesson_4.step_2}
                 </Text>
                 <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
-                  <VideoPlayer videoId={'744079947'} poster={Images.poster4} />
+                  <VideoPlayer videoId={'781593945'} poster={Images.preview4} />
                 </View>
                 <CheckBoxTxt
                   step={lesson4[1].step}

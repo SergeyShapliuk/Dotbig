@@ -11,7 +11,7 @@ import {
   StatusBar,
   Linking,
 } from 'react-native';
-import {DEVICE_WIDTH, scaleWidth} from '../constans/constants';
+import {DEVICE_WIDTH, scaleHeight, scaleWidth} from '../constans/constants';
 import {Images} from '../assets/image';
 import {useAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
@@ -70,7 +70,7 @@ const Lesson_2 = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar
         translucent
         backgroundColor={'#FFFFFF'}
@@ -129,7 +129,7 @@ const Lesson_2 = () => {
                   {message.Lesson_2.step_2}
                 </Text>
                 <View style={{height: 180, marginTop: 20, alignSelf: 'center'}}>
-                  <VideoPlayer videoId={'744085304'} poster={Images.poster2} />
+                  <VideoPlayer videoId={'781593742'} poster={Images.preview2} />
                 </View>
                 <CheckBoxTxt
                   step={lesson2[1].step}
@@ -163,7 +163,7 @@ const Lesson_2 = () => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 export default Lesson_2;
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   },
   mainBonus: {
     width: scaleWidth(300),
-    height: 250,
+    height: scaleHeight(250),
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 30,

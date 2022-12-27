@@ -60,7 +60,7 @@ const Lesson_4 = () => {
       />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 170}}>
+        contentContainerStyle={{paddingBottom: 70}}>
         <View style={styles.mainText}>
           <GradientText text={'Урок 4'} style={styles.mainTextTitleMasked} />
           <Text style={styles.mainTextTitle}>{message.Lesson_4.title}</Text>

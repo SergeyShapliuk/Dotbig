@@ -28,13 +28,11 @@ const BottomTab = () => {
     }
   };
   const next = () => {
-    console.log('nextButBottomTab', route);
     // @ts-ignore
     navigation.navigate(route);
     dispatch(setDisabled({value: false}));
   };
   const onLinking = useCallback(async () => {
-    console.log('link', url);
     if (url) {
       await Linking.openURL(url);
     } else {

@@ -30,7 +30,6 @@ const Forgot = () => {
   const dispatch = useAppDispatch();
 
   const [email, setEmail] = useState<string>('');
-  const [hidden] = useState<boolean>(false);
   const status = useAppSelector(state => state.authReducer.status);
 
   const onBack = () => {

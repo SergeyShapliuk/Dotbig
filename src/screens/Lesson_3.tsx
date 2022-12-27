@@ -1,5 +1,4 @@
 import React, {useCallback} from 'react';
-
 import {
   Platform,
   SafeAreaView,
@@ -10,7 +9,6 @@ import {
   StatusBar,
 } from 'react-native';
 import {DEVICE_WIDTH} from '../constans/constants';
-
 import {useAppNavigation} from '../types/types';
 import {message} from '../config/translations/resources/en';
 import {getStatusBarHeight} from '../common/deviceInfo';
@@ -31,8 +29,7 @@ const Lesson_3 = () => {
   const lesson3 = useAppSelector(state => state.mainReducer.lesson_3);
   const progressBar3 = useAppSelector(state => state.mainReducer.progressBar3);
   const login = useAppSelector(state => state.mainReducer.login);
-  const route = useAppSelector(state => state.authReducer.route);
-  console.log('route', route);
+
   useFocusEffect(
     useCallback(() => {
       if (lesson3[2].isDone) {

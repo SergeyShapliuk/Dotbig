@@ -20,9 +20,9 @@ import Burger from './screens/Burger';
 import BottomTab from './components/BottomTab';
 import Header from './components/Header';
 import PopUpLeft from './screens/PopUpLeft';
-import Bonus_1 from "./screens/Bonus_1";
-import Bonus_2 from "./screens/Bonus_2";
-import Bonus_4 from "./screens/Bonus_4";
+import Bonus_1 from './screens/Bonus_1';
+import Bonus_2 from './screens/Bonus_2';
+import Bonus_4 from './screens/Bonus_4';
 
 const Stack = createStackNavigator<RootStackParamList>();
 

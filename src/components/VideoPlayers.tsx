@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {Vimeo} from 'react-native-vimeo-iframe';
 import {scaleHeight, scaleWidth} from '../constans/constants';
 import EllipseButton from './svg/EllipseButton';
@@ -13,7 +19,6 @@ type VideoType = {
 const VideoPlayers = React.memo(({videoId, poster}: VideoType) => {
   const [preview, setPreview] = useState<boolean>(false);
 
-  console.log('preview', preview);
   const videoCallbacks = {
     timeupdate: (data: any) => console.log('timeupdate: ', data),
     play: (data: any) => {
@@ -31,13 +36,13 @@ const VideoPlayers = React.memo(({videoId, poster}: VideoType) => {
       {!preview && (
         <View style={styles.previewContainer}>
           <Image source={poster} style={styles.imgVideoPreview} />
-          <TouchableOpacity onPress={videoCallbacks.play}>
+          <TouchableWithoutFeedback onPress={videoCallbacks.play}>
             <View style={styles.buttonContainer}>
               <View style={styles.rectangle} />
               <EllipseButton style={{position: 'absolute', top: -23}} />
               <Button style={{position: 'absolute', top: -12}} />
             </View>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
         </View>
       )}
       <Vimeo
@@ -49,7 +54,6 @@ const VideoPlayers = React.memo(({videoId, poster}: VideoType) => {
         containerStyle={{
           width: scaleWidth(300),
           height: scaleHeight(180),
-          zIndex: -1,
         }}
       />
     </>
@@ -77,6 +81,7 @@ const styles = StyleSheet.create({
   previewContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 3,
   },
   rectangle: {
     position: 'absolute',

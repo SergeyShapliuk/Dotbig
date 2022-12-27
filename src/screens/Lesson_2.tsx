@@ -2,14 +2,12 @@ import React, {useCallback, useState} from 'react';
 import {
   Image,
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
   Text,
   StatusBar,
-  Linking,
 } from 'react-native';
 import {DEVICE_WIDTH, scaleHeight, scaleWidth} from '../constans/constants';
 import {Images} from '../assets/image';
@@ -35,8 +33,7 @@ const Lesson_2 = () => {
   const lesson2 = useAppSelector(state => state.mainReducer.lesson_2);
   const progressBar2 = useAppSelector(state => state.mainReducer.progressBar2);
   const login = useAppSelector(state => state.mainReducer.login);
-  const route = useAppSelector(state => state.authReducer.route);
-  console.log('route', route);
+
   useFocusEffect(
     useCallback(() => {
       if (lesson2[2].isDone) {

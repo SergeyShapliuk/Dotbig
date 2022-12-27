@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {
-  SafeAreaView,
+  Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -16,6 +16,7 @@ import {useAppDispatch, useAppSelector} from '../store/store';
 
 import {DEVICE_WIDTH} from '../constans/constants';
 import {setBurgerList} from '../store/authReducer';
+import {getStatusBarHeight} from '../common/deviceInfo';
 
 const Burger = () => {
   const dispatch = useAppDispatch();
@@ -39,7 +40,7 @@ const Burger = () => {
   );
   console.log('routeNameBurger', navigation.getState());
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar
         translucent
         backgroundColor={'#FFFFFF'}
@@ -51,7 +52,7 @@ const Burger = () => {
         //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         // }
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 150}}>
+        contentContainerStyle={{paddingBottom: 0}}>
         {/*<Header />*/}
         <View style={styles.mainText}>
           <View style={styles.mainTitle}>
@@ -106,7 +107,7 @@ const Burger = () => {
         {/*  </Text>*/}
         {/*</View>*/}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 export default Burger;
@@ -115,17 +116,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    // paddingTop: Platform.OS !== 'ios' ? getStatusBarHeight(0) : 0,
+    paddingTop: Platform.OS !== 'android' ? getStatusBarHeight(0) : 50,
   },
 
   mainText: {
     paddingHorizontal: 30,
     paddingVertical: 30,
     marginTop: 10,
-    // fontFamily: 'Inter',
-    // fontStyle: 'normal',
-    // fontWeight: '800',
-    // backgroundColor: 'red',
   },
   mainTitle: {
     flexDirection: 'row',

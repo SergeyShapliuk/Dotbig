@@ -15,7 +15,6 @@ export const initializeApp = createAsyncThunk<any, string>(
   async (token, {dispatch}) => {
     try {
       if (token) {
-        console.log('getToken', token);
         dispatch(getLesson(token));
         dispatch(setIsLoggedIn({value: true}));
       }
@@ -43,7 +42,6 @@ export const getLogout = createAsyncThunk<any>(
 export const getForgot = createAsyncThunk<any, ForgotType>(
   'authReducer/getForgot',
   async (email, {dispatch}) => {
-    console.log('redicerFogot:', email);
     dispatch(setAppStatus('loading'));
     try {
       const response = await api.forgot(email);

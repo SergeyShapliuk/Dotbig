@@ -13,7 +13,6 @@ import {message} from '../config/translations/resources/en';
 export const getRegister = createAsyncThunk<any, any>(
   'mainReducer/getRegister',
   async (registerParams, {dispatch}) => {
-    console.log('getReg:', registerParams);
     dispatch(setAppStatus('loading'));
     try {
       const response = await api.register(registerParams);
@@ -23,7 +22,6 @@ export const getRegister = createAsyncThunk<any, any>(
           password: registerParams.password,
         };
         dispatch(getLogin(paramLogin));
-        console.log('autologinREducer', response.data.student_id);
         dispatch(setAppStatus('succeeded'));
         return response.data;
       }
@@ -65,7 +63,6 @@ export const getLink = createAsyncThunk<any, string>(
     try {
       const response = await api.link(token);
       if (response.status === 200 || response.status === 201) {
-        console.log('reduxcerUrl:', response.data);
         return response.data.url;
       }
     } catch (e) {
@@ -135,7 +132,6 @@ const mainSlice = createSlice({
         state.register = action.payload ? action.payload : {};
       })
       .addCase(getLink.fulfilled, (state, action) => {
-        console.log('reducerLinl', state.link);
         state.link = action.payload ? action.payload : state.link;
       });
   },

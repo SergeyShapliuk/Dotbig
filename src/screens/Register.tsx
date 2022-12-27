@@ -43,9 +43,6 @@ const Register = () => {
   const [modal, setModal] = useState<boolean>(false);
 
   const status = useAppSelector(state => state.authReducer.status);
-  const studentId = useAppSelector(
-    state => state.mainReducer.register.student_id,
-  );
 
   const handleBackPress = useCallback(() => {
     navigation.goBack();
@@ -74,6 +71,10 @@ const Register = () => {
     }
     if (!email || email.length === 0) {
       Alert.alert('', message.registerScreen.emailEmpty);
+      return false;
+    }
+    if (!password || password.length === 0) {
+      Alert.alert('', message.registerScreen.passwordEmpty);
       return false;
     }
     if (!phone || phone.length === 0) {
@@ -105,7 +106,6 @@ const Register = () => {
       password: password,
     };
     dispatch(getRegister(paramsRegister));
-    console.log('studentId', studentId);
   };
 
   const onBack = () => {

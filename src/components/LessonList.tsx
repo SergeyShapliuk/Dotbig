@@ -27,7 +27,6 @@ const LessonList = ({
 }: LessonListType) => {
   const navigation = useAppNavigation();
   const route = useAppSelector(state => state.authReducer.route);
-  console.log('roteLessonList:', route);
   const onLessonHandler = () => {
     navigation.goBack();
     // @ts-ignore

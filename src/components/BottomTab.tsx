@@ -20,7 +20,7 @@ const BottomTab = () => {
   const navigation = useAppNavigation();
   const disabled = useAppSelector(state => state.authReducer.disabled);
   const route = useAppSelector(state => state.authReducer.route);
-  const url = useAppSelector(state => state.mainReducer.link);
+  const link = useAppSelector(state => state.mainReducer.link);
 
   const onBack = () => {
     if (navigation.canGoBack()) {
@@ -33,12 +33,12 @@ const BottomTab = () => {
     dispatch(setDisabled({value: false}));
   };
   const onLinking = useCallback(async () => {
-    if (url) {
-      await Linking.openURL(url);
+    if (link.url) {
+      await Linking.openURL(link.url);
     } else {
       return false;
     }
-  }, [url]);
+  }, [link.url]);
   return (
     <View style={styles.tabContainer}>
       <TouchableOpacity onPress={onBack} disabled={false}>
@@ -57,12 +57,18 @@ const BottomTab = () => {
           </LinearGradient>
         }
       </TouchableOpacity>
-      <TouchableOpacity onPress={onLinking}>
-        <View style={styles.btnBroker}>
-          <Image source={Images.iconScreen} />
-          <Text style={styles.btnBrokerText}>Кабинет брокера</Text>
-        </View>
-      </TouchableOpacity>
+      <LinearGradient
+        colors={['#EAB9AC', '#D58EA4', '#A968A0', '#8046A2']}
+        start={{x: 0.0, y: 0.25}}
+        end={{x: 1.0, y: 1.0}}
+        style={styles.linearGradient}>
+        <TouchableOpacity onPress={onLinking}>
+          <View style={styles.btnBroker}>
+            <Image source={Images.iconScreen} />
+            <Text style={styles.btnBrokerText}>Кабинет брокера</Text>
+          </View>
+        </TouchableOpacity>
+      </LinearGradient>
       <TouchableOpacity onPress={next} disabled={!disabled}>
         <LinearGradient
           colors={
@@ -128,8 +134,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    borderRadius: 6,
-    backgroundColor: '#909CA9',
+    borderRadius: 7,
+    // backgroundColor: '#909CA9',
   },
   btnText: {
     width: 77,

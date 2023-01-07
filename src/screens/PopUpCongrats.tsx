@@ -19,15 +19,15 @@ import {useAppSelector} from '../store/store';
 
 const PopUpCongrats = () => {
   const navigation = useAppNavigation();
-  const url = useAppSelector(state => state.mainReducer.link);
+  const link = useAppSelector(state => state.mainReducer.link);
   const onLinking = useCallback(async () => {
-    console.log('link', url);
-    if (url) {
-      await Linking.openURL(url);
+    console.log('linkPopUpCongrats', link.url);
+    if (link.url) {
+      await Linking.openURL(link.url);
     } else {
       return false;
     }
-  }, [url]);
+  }, [link.url]);
   return (
     <Modal
       isVisible={true}

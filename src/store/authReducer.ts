@@ -62,7 +62,7 @@ export const getLesson = createAsyncThunk<any, any>(
       console.log('token', localToken);
       const response = await api.lesson(localToken);
       if (response.status === 200 || response.status === 201) {
-        return console.log('lesson----', JSON.stringify(response.data));
+        return response.data;
       }
     } catch (e) {
       dispatch(setAppStatus('failed'));

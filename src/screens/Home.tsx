@@ -114,7 +114,9 @@ const Home = () => {
           <View style={styles.footer}>
             <Text style={styles.footerText}>
               {message.home.overview.footerText}
-              <Text onPress={() => {}} style={styles.footerTextAgree}>
+              <Text
+                onPress={() => navigation.navigate('PrivacyPolicy')}
+                style={styles.footerTextAgree}>
                 {message.home.overview.footerTextAgree}
               </Text>
             </Text>

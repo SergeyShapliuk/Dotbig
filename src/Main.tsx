@@ -23,6 +23,7 @@ import PopUpLeft from './screens/PopUpLeft';
 import Bonus_1 from './screens/Bonus_1';
 import Bonus_2 from './screens/Bonus_2';
 import Bonus_4 from './screens/Bonus_4';
+import PrivacyPolicyScreen from './screens/PrivacyPolicyScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -62,6 +63,10 @@ const Main = () => {
             <Stack.Screen name={'RegisterScreen'} component={Register} />
             <Stack.Screen name={'LoginScreen'} component={Login} />
             <Stack.Screen name={'ForgotScreen'} component={Forgot} />
+            <Stack.Screen
+              name={'PrivacyPolicy'}
+              component={PrivacyPolicyScreen}
+            />
           </Stack.Group>
         ) : (
           <Stack.Group

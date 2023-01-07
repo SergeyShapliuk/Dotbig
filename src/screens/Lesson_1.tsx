@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useState} from 'react';
-
 import {
   Image,
   SafeAreaView,
@@ -33,11 +32,11 @@ const Lesson_1 = () => {
   // const getAll = async () => {
   //   // let keys = [];
   //   try {
-  //     // const keys = await AsyncStorage.getAllKeys();
+  //     const keys = await AsyncStorage.getAllKeys();
   //     const clear = await AsyncStorage.removeItem('persist:root');
   //     console.log('allKeysren', clear);
   //
-  //     // console.log('allKeys', keys);
+  //     console.log('allKeys', keys);
   //   } catch (e) {
   //     console.log('asybcstor', e);
   //   }
@@ -54,11 +53,12 @@ const Lesson_1 = () => {
   const progressBar1 = useAppSelector(state => state.mainReducer.progressBar1);
   const login = useAppSelector(state => state.mainReducer.login);
   const token = useAppSelector(state => state.mainReducer.login.token);
-  const url = useAppSelector(state => state.mainReducer.link);
+  const link = useAppSelector(state => state.mainReducer.link);
 
   const [input1, setInput1] = useState<string>('');
   const [input2, setInput2] = useState<string>('');
   const [input3, setInput3] = useState<string>('');
+  const [onClickLink, setOnClickLink] = useState<boolean>(false);
   const [disabledChecked, setDisabledChecked] = useState<boolean>(false);
 
   const handleBackPress = useCallback(() => {
@@ -105,13 +105,14 @@ const Lesson_1 = () => {
     [dispatch, lesson1, login.user_email, navigation],
   );
   const onLink = useCallback(async () => {
-    console.log('link', url);
-    if (url) {
-      await Linking.openURL(url);
+    console.log('link', link.url);
+    setOnClickLink(true);
+    if (link.url) {
+      await Linking.openURL(link.url);
     } else {
       return false;
     }
-  }, [url]);
+  }, [link.url]);
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -131,7 +132,7 @@ const Lesson_1 = () => {
           </Text>
         </View>
         <View style={styles.main}>
-          <VideoPlayer videoId={'741155263'} poster={Images.imgVideoPreview} />
+          <VideoPlayer videoId={'741155263'} poster={Images.poster1} />
           <View style={styles.mainBonus}>
             <Text style={styles.mainBonusTitle}>
               {message.Lesson_1.bonusTitle1}
@@ -248,6 +249,8 @@ const Lesson_1 = () => {
                   step={lesson1[3].step}
                   isDone={lesson1[3].isDone}
                   onProgress={onProgress}
+                  onClickLink={onClickLink}
+                  setDisabledChecked={setDisabledChecked}
                 />
               </View>
             )}

@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Checked from './svg/Checked';
 import {scaleY} from '../constans/constants';
@@ -11,6 +11,7 @@ type CheckBoxTxtType = {
   input1?: string;
   input2?: string;
   input3?: string;
+  onClickLink?: boolean;
   setDisabledChecked?: (item: boolean) => void;
 };
 const CheckBoxTxt = ({
@@ -20,6 +21,7 @@ const CheckBoxTxt = ({
   input2,
   input3,
   onProgress,
+  onClickLink,
   setDisabledChecked,
 }: CheckBoxTxtType) => {
   const validate = () => {
@@ -28,6 +30,10 @@ const CheckBoxTxt = ({
         setDisabledChecked(true);
         return false;
       }
+    }
+    if (step === 4 && !onClickLink) {
+      Alert.alert('', 'Активируйте брокерский счёт.');
+      return;
     }
     return true;
   };

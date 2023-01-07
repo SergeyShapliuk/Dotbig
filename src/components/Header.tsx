@@ -15,15 +15,15 @@ import BurgerButton from './BurgerButton';
 import {useAppSelector} from '../store/store';
 
 const Header = () => {
-  const url = useAppSelector(state => state.mainReducer.link);
+  const link = useAppSelector(state => state.mainReducer.link);
   const onLinking = useCallback(async () => {
-    console.log('link', url);
-    if (url) {
-      await Linking.openURL(url);
+    console.log('linkHeader', link.url);
+    if (link.url) {
+      await Linking.openURL(link.url);
     } else {
       return false;
     }
-  }, [url]);
+  }, [link.url]);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>

@@ -9,6 +9,7 @@ export type RootStackParamList = {
   LoginScreen: undefined;
   RegisterScreen: undefined;
   ForgotScreen: undefined;
+  PrivacyPolicy: undefined;
   Lesson1: undefined;
   Lesson2: undefined;
   Lesson3: undefined;
@@ -20,6 +21,7 @@ export type RootStackParamList = {
   PopUpLeft: undefined;
   PopUpActive: undefined;
   PopUpCongrats: undefined;
+
   Burger: undefined;
 };
 

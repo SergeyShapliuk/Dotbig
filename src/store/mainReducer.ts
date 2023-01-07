@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {
   api,
   LessonStepType,
+  LinkResponseType,
   LoginResponseType,
   LoginType,
   RegisterResponseType,
@@ -63,7 +64,8 @@ export const getLink = createAsyncThunk<any, string>(
     try {
       const response = await api.link(token);
       if (response.status === 200 || response.status === 201) {
-        return response.data.url;
+        console.log('mainReducer/getLink', response.data);
+        return response.data;
       }
     } catch (e) {
       return console.log('error', e);
@@ -98,7 +100,7 @@ const mainSlice = createSlice({
       {step: 1, isDone: false},
       {step: 2, isDone: false},
     ] as LessonStepType[],
-    link: '' as string,
+    link: {} as LinkResponseType,
   },
   reducers: {
     setProgressBar1(state, action: PayloadAction<{value: number}>) {
@@ -132,7 +134,7 @@ const mainSlice = createSlice({
         state.register = action.payload ? action.payload : {};
       })
       .addCase(getLink.fulfilled, (state, action) => {
-        state.link = action.payload ? action.payload : state.link;
+        state.link = action.payload ? action.payload : {};
       });
   },
 });

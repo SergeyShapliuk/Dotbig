@@ -15,6 +15,7 @@ const iconPhone = require('./img/phone-icon.png');
 const bonus1 = require('./img/bonus1.jpg');
 const bonus2 = require('./img/bonus2.png');
 const bonus4 = require('./img/bonus4.png');
+const poster1 = require('./img/poster1.jpg');
 const poster2 = require('./img/poster2.jpg');
 const poster3 = require('./img/poster3.jpg');
 const poster4 = require('./img/poster4.jpg');
@@ -38,6 +39,7 @@ const Images = {
   imgRectangle,
   imgBackground,
   iconBack,
+  poster1,
   poster2,
   poster3,
   poster4,

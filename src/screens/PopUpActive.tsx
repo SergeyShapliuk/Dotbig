@@ -1,5 +1,12 @@
-import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useCallback} from 'react';
+import {
+  Image,
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Images} from '../assets/image';
 import GradientText from '../common/utils/GradientText';
 import MemoPopUpCheck from '../components/svg/PopUpCheck';
@@ -7,9 +14,18 @@ import MemoPopUpVector from '../components/svg/PopUpVector';
 import {useAppNavigation} from '../types/types';
 import {DEVICE_HEIGHT} from '../constans/constants';
 import Modal from 'react-native-modal/dist/modal';
+import {useAppSelector} from '../store/store';
 
 const PopUpActive = () => {
   const navigation = useAppNavigation();
+  const link = useAppSelector(state => state.mainReducer.link);
+  const onLinking = useCallback(async () => {
+    if (link.url) {
+      await Linking.openURL(link.url);
+    } else {
+      return false;
+    }
+  }, [link.url]);
   return (
     <Modal
       isVisible={true}
@@ -33,7 +49,7 @@ const PopUpActive = () => {
           Активируйте брокерский счет в Dotbig.
         </Text>
 
-        <TouchableOpacity onPress={() => {}} style={styles.button}>
+        <TouchableOpacity onPress={onLinking} style={styles.button}>
           <Text style={styles.buttonText}>Перейдите в кабинет</Text>
           <Image source={Images.diagonalArrow} />
         </TouchableOpacity>
